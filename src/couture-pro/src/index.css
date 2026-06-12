@@ -1,0 +1,291 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #FAFAF8;
+  color: #1a1a1a;
+}
+
+/* ───────────────────────────────────────────────
+   LandingPage “vivante” — animations globales
+   Respecte prefers-reduced-motion
+─────────────────────────────────────────────── */
+@keyframes bb-float {
+  0% { transform: translateY(0px) }
+  50% { transform: translateY(-8px) }
+  100% { transform: translateY(0px) }
+}
+
+@keyframes bb-shimmer {
+  0% { transform: translateX(-120%) }
+  100% { transform: translateX(120%) }
+}
+
+@keyframes bb-pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 rgba(249,115,22,0.0) }
+  50% { box-shadow: 0 0 24px rgba(249,115,22,0.25) }
+}
+
+.bb-liv-btn {
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.bb-liv-btn::after {
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: -60%;
+  width: 60%;
+  height: 180%;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+.bb-liv-btn:hover::after {
+  animation: bb-shimmer 0.9s ease;
+}
+
+.bb-liv-glow {
+  animation: bb-pulse-glow 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bb-liv-btn::after { display: none !important; }
+  .bb-liv-glow { animation: none !important; }
+
+  /* Animations section tarifs + footer */
+  .bb-tarif-card { transition: none !important; }
+  .bb-tarif-card:hover { transform: none !important; }
+  .bb-footer-breathe { animation: none !important; }
+}
+
+/* ───────────────────────────────────────────────
+   LandingPage — animations manquantes
+─────────────────────────────────────────────── */
+
+@keyframes bb-footer-breathe {
+  0%, 100% { box-shadow: 0 0 0 rgba(249,115,22,0); }
+  50% { box-shadow: 0 0 30px rgba(249,115,22,0.18); }
+}
+
+.bb-footer-breathe {
+  animation: bb-footer-breathe 2.6s ease-in-out infinite;
+}
+
+.bb-tarif-card {
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.bb-tarif-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 24px 70px rgba(249,115,22,0.14) !important;
+}
+
+.bb-tarif-cta {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
+}
+
+.bb-tarif-cta:hover {
+  filter: saturate(1.05);
+}
+
+.bb-animate-in {
+  animation: bb-animate-in 0.7s ease both;
+}
+
+@keyframes bb-animate-in {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Marquee */
+@keyframes bb-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.bb-marquee {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.bb-marquee-track {
+  display: flex;
+  gap: 16px;
+  flex: none;
+  min-width: 200%;
+  animation: bb-marquee 18s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bb-marquee-track { animation: none !important; }
+}
+
+/* ═══════════════════════════════════════════
+   COUTURE PRO — ANIMATIONS GLOBALES
+═══════════════════════════════════════════ */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideWordIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideWordOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-20px); }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulsePro {
+  0%, 100% { box-shadow: 0 24px 60px rgba(0,0,0,0.18); }
+  50% { box-shadow: 0 32px 80px rgba(249,115,22,0.28); }
+}
+
+@keyframes glowBadge {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(249,115,22,0); }
+  50% { box-shadow: 0 0 16px 4px rgba(249,115,22,0.18); }
+}
+
+@keyframes navReveal {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes cursorGlow {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Dashboard flottant */
+.cp-dashboard-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Texte shimmer sur mot clé */
+.cp-shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #F97316 0%,
+    #ff9a4d 40%,
+    #F97316 60%,
+    #d4580a 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 2.5s linear infinite;
+}
+
+/* Carte Pro pulse */
+.cp-pro-pulse {
+  animation: pulsePro 3s ease-in-out infinite;
+}
+
+/* Badge Hero glow */
+.cp-badge-glow {
+  animation: glowBadge 2.5s ease-in-out infinite;
+}
+
+/* Navbar animate à l'entrée */
+.cp-nav-reveal {
+  animation: navReveal 0.5s ease forwards;
+}
+
+/* Navbar hide/show au scroll */
+.cp-nav-hidden {
+  transform: translateY(-100%) !important;
+  transition: transform 0.3s ease !important;
+}
+.cp-nav-visible {
+  transform: translateY(0) !important;
+  transition: transform 0.3s ease !important;
+  backdrop-filter: blur(14px) !important;
+  box-shadow: 0 4px 32px rgba(249,115,22,0.10) !important;
+}
+
+/* Scroll reveal générique */
+.cp-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.cp-reveal.cp-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays pour les cartes features */
+.cp-stagger-1 { transition-delay: 0.05s; }
+.cp-stagger-2 { transition-delay: 0.13s; }
+.cp-stagger-3 { transition-delay: 0.21s; }
+.cp-stagger-4 { transition-delay: 0.29s; }
+.cp-stagger-5 { transition-delay: 0.37s; }
+.cp-stagger-6 { transition-delay: 0.45s; }
+
+/* Cursor glow (desktop) */
+#cp-cursor {
+  position: fixed;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249,115,22,0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: left 0.12s ease, top 0.12s ease;
+  animation: cursorGlow 0.5s ease forwards;
+}
+
+@media (hover: none) {
+  #cp-cursor { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cp-dashboard-float,
+  .cp-shimmer-text,
+  .cp-pro-pulse,
+  .cp-badge-glow,
+  .cp-reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+
+
+
+

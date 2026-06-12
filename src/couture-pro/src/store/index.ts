@@ -1,0 +1,6 @@
+export { useAuthStore } from './authStore'
+export { useClientesStore } from './clientesStore'
+export { useCommandesStore } from './commandesStore'
+export { usePaiementsStore } from './paiementsStore'
+export { useMesuresStore } from './mesuresStore'
+export { useFacturesStore } from './facturesStore'

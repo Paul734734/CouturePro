@@ -1,0 +1,69 @@
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+
+export default function Register() {
+  const navigate = useNavigate()
+  const [form, setForm] = useState({ nom: '', atelierNom: '', email: '', telephone: '', password: '', confirm: '' })
+  const [error, setError] = useState('')
+
+  const handleRegister = () => {
+    if (!form.nom || !form.email || !form.password) { setError('Veuillez remplir tous les champs obligatoires.'); return }
+    if (form.password !== form.confirm) { setError('Les mots de passe ne correspondent pas.'); return }
+    if (form.password.length < 6) { setError('Le mot de passe doit contenir au moins 6 caractères.'); return }
+    navigate('/dashboard')
+  }
+
+  const inp = { width: '100%', padding: '12px 14px', border: '1.5px solid #e5e0d8', borderRadius: 12, fontSize: 14, outline: 'none', background: 'white', boxSizing: 'border-box' as const }
+  const label = { fontSize: 13, fontWeight: 600 as const, color: '#374151', display: 'block' as const, marginBottom: 5 }
+
+  return (
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #FFF4ED 0%, #FAFAF8 60%, #FFF4ED 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'Inter, sans-serif' }}>
+
+      <div style={{ textAlign: 'center', marginBottom: 28 }}>
+        <div style={{ width: 52, height: 52, background: '#F97316', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, margin: '0 auto 10px' }}>✂</div>
+        <div style={{ fontSize: 20, fontWeight: 800 }}>Couture Pro</div>
+        <div style={{ fontSize: 12, color: '#888', marginTop: 3 }}>Créez votre espace atelier gratuitement</div>
+      </div>
+
+      <div style={{ background: 'white', borderRadius: 24, padding: '32px 28px', width: '100%', maxWidth: 440, boxShadow: '0 8px 40px rgba(0,0,0,0.08)' }}>
+        <h2 style={{ margin: '0 0 4px', fontSize: 22, fontWeight: 800 }}>Créer mon compte ✨</h2>
+        <p style={{ margin: '0 0 24px', fontSize: 13, color: '#888' }}>Rejoignez +1000 couturières qui gèrent leur atelier</p>
+
+        {error && (
+          <div style={{ background: '#FEF2F2', border: '1px solid #FCA5A5', borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#dc2626', marginBottom: 18 }}>
+            ⚠️ {error}
+          </div>
+        )}
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+          {[
+            { key: 'nom', label: 'Votre nom complet *', placeholder: 'Aminata Diallo', full: true, type: 'text' },
+            { key: 'atelierNom', label: "Nom de l'atelier", placeholder: 'Atelier Lumière', full: true, type: 'text' },
+            { key: 'email', label: 'Adresse email *', placeholder: 'votre@email.com', full: false, type: 'email' },
+            { key: 'telephone', label: 'Téléphone', placeholder: '+221 77 000 00 00', full: false, type: 'tel' },
+            { key: 'password', label: 'Mot de passe *', placeholder: '••••••••', full: false, type: 'password' },
+            { key: 'confirm', label: 'Confirmer le mot de passe *', placeholder: '••••••••', full: false, type: 'password' },
+          ].map(f => (
+            <div key={f.key} style={f.full ? { gridColumn: 'span 2' } : {}}>
+              <label style={label}>{f.label}</label>
+              <input type={f.type} value={(form as any)[f.key]} onChange={e => { setForm(p => ({ ...p, [f.key]: e.target.value })); setError('') }} placeholder={f.placeholder} style={inp} />
+            </div>
+          ))}
+        </div>
+
+        <button onClick={handleRegister} style={{ width: '100%', background: '#F97316', color: 'white', border: 'none', padding: '14px', borderRadius: 12, fontSize: 15, fontWeight: 700, cursor: 'pointer', marginTop: 20, marginBottom: 16 }}>
+          Créer mon compte gratuitement →
+        </button>
+
+        <p style={{ textAlign: 'center', fontSize: 13, color: '#888', margin: 0 }}>
+          Déjà un compte ?{' '}
+          <Link to="/login" style={{ color: '#F97316', fontWeight: 700, textDecoration: 'none' }}>Se connecter</Link>
+        </p>
+      </div>
+
+      <p style={{ marginTop: 20, fontSize: 11, color: '#aaa', textAlign: 'center', maxWidth: 340 }}>
+        En créant un compte, vous acceptez nos CGU. Vos données sont sécurisées et confidentielles.
+      </p>
+    </div>
+  )
+}

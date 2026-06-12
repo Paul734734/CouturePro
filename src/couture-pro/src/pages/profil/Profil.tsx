@@ -1,0 +1,309 @@
+import { useState, useEffect } from 'react'
+import AppLayout from '../../components/layout/AppLayout'
+import { useAuthStore } from '../../store/authStore'
+
+export default function Profil() {
+  const user = useAuthStore((s) => s.user)
+  const updateProfil = useAuthStore((s) => s.updateProfil)
+  const [form, setForm] = useState({
+    nom: user?.nom || '',
+    atelier: user?.nomAtelier || '',
+    email: user?.email || '',
+    telephone: user?.telephone || '',
+    ville: user?.ville || '',
+    description: '',
+  })
+  const [saved, setSaved] = useState(false)
+  const [activeSection, setActiveSection] = useState<'profil' | 'securite' | 'abonnement'>('profil')
+
+  useEffect(() => {
+    if (user) {
+      setForm({
+        nom: user.nom,
+        atelier: user.nomAtelier,
+        email: user.email,
+        telephone: user.telephone || '',
+        ville: user.ville || '',
+        description: '',
+      })
+    }
+  }, [user])
+
+  const set = (key: string, val: string) => setForm((f) => ({ ...f, [key]: val }))
+
+  const handleSave = () => {
+    updateProfil({
+      nom: form.nom,
+      nomAtelier: form.atelier,
+      email: form.email,
+      telephone: form.telephone,
+      ville: form.ville,
+    })
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
+  }
+
+  const expirationDate = user?.dateExpiration ? new Date(user.dateExpiration) : null
+  const joursRestants = expirationDate
+    ? Math.ceil((expirationDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    : null
+
+  return (
+    <AppLayout titre="Mon profil">
+      <div style={{ maxWidth: 600, margin: '0 auto', paddingBottom: 40 }}>
+
+        <div style={{ marginBottom: 24 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#1a1a1a', margin: '0 0 4px' }}>
+            ⚙️ Mon profil
+          </h1>
+          <p style={{ color: '#888', fontSize: 14, margin: 0 }}>Gérez les informations de votre atelier</p>
+        </div>
+
+        <div style={{
+          background: '#fff', border: '1px solid #f0f0f0', borderRadius: 14,
+          padding: '24px', marginBottom: 16, textAlign: 'center',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+        }}>
+          <div style={{
+            width: 80, height: 80, borderRadius: '50%',
+            background: 'linear-gradient(135deg, #F97316, #fb923c)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 32, fontWeight: 700, color: '#fff',
+            margin: '0 auto 12px',
+          }}>
+            {user?.nom?.charAt(0).toUpperCase()}
+          </div>
+          <div style={{ fontWeight: 700, fontSize: 18, color: '#1a1a1a' }}>{user?.nom}</div>
+          <div style={{ color: '#F97316', fontSize: 14, fontWeight: 600, marginTop: 2 }}>{user?.nomAtelier}</div>
+          <div style={{ color: '#888', fontSize: 13, marginTop: 2 }}>{user?.email}</div>
+          <div style={{
+            display: 'inline-block', marginTop: 10,
+            background: '#FFF7ED', color: '#F97316', border: '1px solid #fed7aa',
+            borderRadius: 20, padding: '3px 14px', fontSize: 12, fontWeight: 600,
+          }}>
+            Couturière
+          </div>
+        </div>
+
+        <div style={{
+          display: 'flex', gap: 4, marginBottom: 16,
+          background: '#fff', borderRadius: 12, padding: 5,
+          boxShadow: '0 1px 3px rgba(0,0,0,0.06)', border: '1px solid #f0f0f0',
+        }}>
+          {[
+            { key: 'profil', label: '👤 Profil' },
+            { key: 'securite', label: '🔒 Sécurité' },
+            { key: 'abonnement', label: '💳 Abonnement' },
+          ].map((t) => (
+            <button
+              key={t.key}
+              onClick={() => setActiveSection(t.key as any)}
+              type="button"
+              style={{
+                flex: 1, padding: '10px 6px', borderRadius: 8, border: 'none',
+                background: activeSection === t.key ? '#F97316' : 'transparent',
+                color: activeSection === t.key ? '#fff' : '#666',
+                fontWeight: activeSection === t.key ? 700 : 500,
+                fontSize: 12, cursor: 'pointer',
+              }}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {activeSection === 'profil' && (
+          <div>
+            <div style={{
+              background: '#fff', border: '1px solid #f0f0f0', borderRadius: 14,
+              padding: '20px', marginBottom: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+            }}>
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#F97316', margin: '0 0 16px', textTransform: 'uppercase' }}>
+                🏪 Informations atelier
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                {[
+                  { key: 'nom', label: 'Votre nom complet', placeholder: 'Nom prénom' },
+                  { key: 'atelier', label: "Nom de l'atelier", placeholder: 'Ex: Couture Pro' },
+                  { key: 'telephone', label: 'Téléphone', placeholder: '+221 77 000 00 00' },
+                  { key: 'ville', label: 'Ville', placeholder: 'Ex: Douala' },
+                ].map((f) => (
+                  <div key={f.key}>
+                    <label style={{ fontSize: 13, fontWeight: 600, color: '#444', display: 'block', marginBottom: 6 }}>
+                      {f.label}
+                    </label>
+                    <input
+                      value={(form as any)[f.key]}
+                      onChange={(e) => set(f.key, e.target.value)}
+                      placeholder={f.placeholder}
+                      style={{
+                        width: '100%', padding: '11px 14px', borderRadius: 10, fontSize: 14,
+                        border: '1.5px solid #e5e5e5', outline: 'none', background: '#FAFAF8',
+                        boxSizing: 'border-box', color: '#1a1a1a',
+                      }}
+                    />
+                  </div>
+                ))}
+                <div>
+                  <label style={{ fontSize: 13, fontWeight: 600, color: '#444', display: 'block', marginBottom: 6 }}>
+                    Description de l'atelier
+                  </label>
+                  <textarea
+                    value={form.description}
+                    onChange={(e) => set('description', e.target.value)}
+                    placeholder="Décrivez votre atelier, spécialités..."
+                    rows={3}
+                    style={{
+                      width: '100%', padding: '11px 14px', borderRadius: 10, fontSize: 14,
+                      border: '1.5px solid #e5e5e5', outline: 'none', background: '#FAFAF8',
+                      boxSizing: 'border-box', resize: 'vertical', color: '#1a1a1a',
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={handleSave}
+              style={{
+                width: '100%', padding: '14px', borderRadius: 12, border: 'none',
+                background: saved ? '#16a34a' : '#F97316', color: '#fff',
+                fontWeight: 700, fontSize: 15, cursor: 'pointer', transition: 'background 0.2s',
+              }}
+            >
+              {saved ? '✅ Enregistré !' : '💾 Enregistrer les modifications'}
+            </button>
+          </div>
+        )}
+
+        {activeSection === 'securite' && (
+          <div style={{
+            background: '#fff', border: '1px solid #f0f0f0', borderRadius: 14,
+            padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          }}>
+            <h3 style={{ fontSize: 13, fontWeight: 700, color: '#F97316', margin: '0 0 16px', textTransform: 'uppercase' }}>
+              🔒 Changer le mot de passe
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {[
+                { key: 'ancienMdp', label: 'Mot de passe actuel', placeholder: '••••••••' },
+                { key: 'nouveauMdp', label: 'Nouveau mot de passe', placeholder: '••••••••' },
+                { key: 'confirmerMdp', label: 'Confirmer le nouveau', placeholder: '••••••••' },
+              ].map((f) => (
+                <div key={f.key}>
+                  <label style={{ fontSize: 13, fontWeight: 600, color: '#444', display: 'block', marginBottom: 6 }}>
+                    {f.label}
+                  </label>
+                  <input
+                    type="password"
+                    placeholder={f.placeholder}
+                    style={{
+                      width: '100%', padding: '11px 14px', borderRadius: 10, fontSize: 14,
+                      border: '1.5px solid #e5e5e5', outline: 'none', background: '#FAFAF8',
+                      boxSizing: 'border-box', color: '#1a1a1a',
+                    }}
+                  />
+                </div>
+              ))}
+              <button
+                type="button"
+                style={{
+                  width: '100%', padding: '13px', borderRadius: 10, border: 'none',
+                  background: '#F97316', color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer',
+                }}
+              >
+                🔐 Mettre à jour le mot de passe
+              </button>
+            </div>
+
+            <div style={{
+              marginTop: 20, padding: '14px 16px',
+              background: '#f0fdf4', borderRadius: 10, border: '1px solid #bbf7d0',
+            }}>
+              <div style={{ fontWeight: 600, color: '#16a34a', fontSize: 13, marginBottom: 4 }}>
+                ✅ Compte sécurisé
+              </div>
+              <div style={{ color: '#555', fontSize: 12 }}>
+                Email : {user?.email}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeSection === 'abonnement' && (
+          <div>
+            <div style={{
+              background: joursRestants && joursRestants <= 7
+                ? 'linear-gradient(135deg, #fee2e2, #fef2f2)'
+                : 'linear-gradient(135deg, #FFF7ED, #fff)',
+              border: `1px solid ${joursRestants && joursRestants <= 7 ? '#fca5a5' : '#fed7aa'}`,
+              borderRadius: 14, padding: '24px', marginBottom: 16,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+            }}>
+              <div style={{ fontSize: 36, marginBottom: 12 }}>
+                {joursRestants && joursRestants <= 7 ? '⚠️' : '💳'}
+              </div>
+              <div style={{ fontWeight: 700, fontSize: 16, color: '#1a1a1a', marginBottom: 4 }}>
+                Abonnement trimestriel
+              </div>
+              {expirationDate && (
+                <div style={{ color: '#888', fontSize: 14, marginBottom: 12 }}>
+                  Expire le : <strong style={{ color: '#1a1a1a' }}>{expirationDate.toLocaleDateString('fr-FR')}</strong>
+                </div>
+              )}
+              {joursRestants !== null && (
+                <div style={{
+                  display: 'inline-block',
+                  background: joursRestants <= 7 ? '#fee2e2' : joursRestants <= 30 ? '#fff7ed' : '#dcfce7',
+                  color: joursRestants <= 7 ? '#ef4444' : joursRestants <= 30 ? '#F97316' : '#16a34a',
+                  borderRadius: 20, padding: '6px 16px', fontSize: 13, fontWeight: 700,
+                }}>
+                  {joursRestants > 0 ? `${joursRestants} jours restants` : 'Abonnement expiré'}
+                </div>
+              )}
+            </div>
+
+            <div style={{
+              background: '#fff', border: '1px solid #f0f0f0', borderRadius: 14,
+              padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+            }}>
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#F97316', margin: '0 0 14px', textTransform: 'uppercase' }}>
+                📦 Renouveler l'abonnement
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {[
+                  { label: '3 mois', prix: '15 000 FCFA', tag: '' },
+                  { label: '6 mois', prix: '27 000 FCFA', tag: 'Économisez 10%' },
+                  { label: '12 mois', prix: '48 000 FCFA', tag: 'Meilleur prix' },
+                ].map((plan) => (
+                  <div key={plan.label} style={{
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    padding: '14px 16px', border: '1.5px solid #e5e5e5',
+                    borderRadius: 10, cursor: 'pointer', background: '#FAFAF8',
+                  }}>
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: 14 }}>{plan.label}</div>
+                      {plan.tag && (
+                        <div style={{ fontSize: 11, color: '#16a34a', fontWeight: 600, marginTop: 2 }}>
+                          ✅ {plan.tag}
+                        </div>
+                      )}
+                    </div>
+                    <div style={{ fontWeight: 700, color: '#F97316', fontSize: 15 }}>{plan.prix}</div>
+                  </div>
+                ))}
+              </div>
+              <button style={{
+                width: '100%', padding: '14px', borderRadius: 10, border: 'none',
+                background: '#F97316', color: '#fff', fontWeight: 700, fontSize: 15,
+                cursor: 'pointer', marginTop: 16,
+              }}>
+                💰 Payer via MoMo / Orange Money
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </AppLayout>
+  )
+}
