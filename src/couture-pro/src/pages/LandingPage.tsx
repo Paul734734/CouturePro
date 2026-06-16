@@ -773,7 +773,7 @@ export default function LandingPage() {
                     ›
                   </button>
 
-                  <div
+          <div
                     data-temo-wrap="1"
                     style={{
                       display: 'flex',
@@ -792,27 +792,8 @@ export default function LandingPage() {
                         e.preventDefault()
                       }
                     }}
-                    ref={(el) => {
-                      if (!el) return
-                      if (prefersReducedMotion) return
-                      // Auto-scroll léger (loop)
-                      let raf: number | null = null
-                      let last = performance.now()
-                      const speed = 0.18 // px/ms
-                      const tick = (now: number) => {
-                        const dt = now - last
-                        last = now
-                        el.scrollLeft += dt * speed
-                        const max = el.scrollWidth - el.clientWidth
-                        if (max > 0 && el.scrollLeft >= max - 5) el.scrollLeft = 0
-                        raf = requestAnimationFrame(tick)
-                      }
-                      raf = requestAnimationFrame(tick)
-                      return () => {
-                        if (raf) cancelAnimationFrame(raf)
-                      }
-                    }}
                   >
+
                     {temoins.map((t, idx) => (
                       <div
                         key={idx}

@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+
 
 const navItems = [
   { href: '/dashboard', icon: '📊', label: 'Tableau de bord' },
@@ -11,12 +13,13 @@ const navItems = [
 ]
 
 const bottomNavItems = [
-  { href: '/dashboard', icon: '🗂️', label: 'Tableau' },
-  { href: '/clientes', icon: '👩‍🦱', label: 'Clientes' },
-  { href: '/mesures', icon: '📐', label: 'Mesures' },
+  { href: '/dashboard', icon: '🏠', label: 'Accueil' },
+  { href: '/clientes', icon: '👩', label: 'Clientes' },
   { href: '/commandes', icon: '📋', label: 'Commandes' },
   { href: '/paiements', icon: '💰', label: 'Paiements' },
+  { href: '/factures', icon: '🧾', label: 'Factures' },
 ]
+
 
 interface AppLayoutProps {
   children: ReactNode
@@ -111,7 +114,11 @@ export default function AppLayout({
       </div>
 
       {/* ✅ Bottom nav reste pour mobile */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around py-2 z-50">
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around py-2 z-50"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
+
         {bottomNavItems.map((item) => {
           const active = location.pathname === item.href
           return (
@@ -123,8 +130,10 @@ export default function AppLayout({
               }`}
             >
               <span className="text-xl">{item.icon}</span>
-              <span>{item.label}</span>
+
+              <span className="text-[10px]">{item.label}</span>
             </Link>
+
           )
         })}
       </nav>

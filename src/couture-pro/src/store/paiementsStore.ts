@@ -1,13 +1,36 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Paiement, SuiviPaiement, FormulairePaiement } from "@/types";
+import type { Paiement } from "@/types";
+import type { Commande } from "@/types";
+
+
+
 import { genererIdUnique, calculReste } from "@/lib/utils";
 import { useCommandesStore } from "./commandesStore";
 
+type SuiviPaiement = {
+  commandeId?: string
+  clienteNom?: string
+  commandeLabel?: string
+  prixTotal?: number
+  totalPaye: number
+  resteAPayer: number
+  statut: 'solde' | 'impaye' | 'partiel'
+  paiements: Paiement[]
+}
+
 interface PaiementsState {
   paiements: Paiement[];
+
   ajouterPaiement: (
-    data: FormulairePaiement,
+    data: {
+      commandeId: string
+      montant: number
+      type: 'avance' | 'solde' | 'partiel'
+      date: string
+      notes?: string
+    },
+
     userId: string,
     clienteNom: string,
     commandeLabel: string
@@ -56,32 +79,45 @@ export const usePaiementsStore = create<PaiementsState>()(
       },
 
       getSuiviByUser: (userId) => {
-        const commandes = useCommandesStore.getState().getCommandesByUser(userId);
+        const commandes = useCommandesStore.getState().commandes.filter((c) => c.userId === userId)
 
         return commandes.map((cmd) => {
-          const paiementsCmd = get().getPaiementsByCommande(cmd.id);
-          const totalPaye = paiementsCmd.reduce((s, p) => s + p.montant, 0);
-          const reste = calculReste(cmd.prixTotal, totalPaye);
+          const paiementsCmd = get().getPaiementsByCommande(cmd.id)
+          const totalPaye = paiementsCmd.reduce((s, p) => s + p.montant, 0)
+          const reste = calculReste(cmd.prixTotal, totalPaye)
+
           return {
             commandeId: cmd.id,
-            clienteNom: cmd.clienteNom,
+            // Certaines données de commande peuvent ne pas porter directement clienteNom.
+            clienteNom: (cmd as any).clienteNom ?? '',
             commandeLabel: cmd.typeVetement,
             prixTotal: cmd.prixTotal,
-            totalPaye,
-            resteAPayer: reste,
-            statut: reste === 0 ? "solde" : totalPaye === 0 ? "impaye" : "partiel",
+            totalPaye: Math.max(0, cmd.avancePaye ?? totalPaye),
+            resteAPayer: Math.max(0, reste),
+            statut:
+              Math.max(0, reste) === 0
+                ? 'solde'
+                : Math.max(0, totalPaye) === 0
+                  ? 'impaye'
+                  : 'partiel',
             paiements: paiementsCmd,
-          } satisfies SuiviPaiement;
-        });
+          } satisfies SuiviPaiement
+        })
       },
 
+
       getTotalEncaisseByUser: (userId) => {
-        return get().getPaiementsByUser(userId).reduce((s, p) => s + p.montant, 0);
+        const commandes = useCommandesStore.getState().commandes.filter((c) => c.userId === userId);
+        return commandes.reduce((s, c) => s + Math.max(0, c.avancePaye ?? 0), 0);
       },
 
       getTotalResteByUser: (userId) => {
-        return get().getSuiviByUser(userId).reduce((s, p) => s + p.resteAPayer, 0);
+        const commandes = useCommandesStore.getState().commandes.filter((c) => c.userId === userId);
+        return commandes
+          .filter((c) => c.statut !== 'annule' && c.statut !== 'livre')
+          .reduce((s, c) => s + Math.max(0, c.resteAPayer ?? 0), 0);
       },
+
     }),
     {
       name: "couture-pro-paiements",

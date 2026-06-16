@@ -431,11 +431,11 @@ export default function Paiements() {
   // Heuristique UI: on estime les avances comme "total payé - reste" sur le suivi.
   // (UI) total avances n’est pas réutilisé; on le garde pour compat éventuelle.
   const totalAvances = useMemo(() => {
-
     if (!user) return 0
     const suivi = getSuiviByUser(user.id)
-    return suivi.reduce((acc, x) => acc + (x.totalPaye - x.resteAPayer), 0)
+    return suivi.reduce((acc, x) => acc + Math.max(0, x.totalPaye ?? 0), 0)
   }, [user, getSuiviByUser])
+
 
   const formatFCFA = (n: number) => `${n.toLocaleString('fr-FR')} FCFA`
 
@@ -494,7 +494,8 @@ export default function Paiements() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, marginBottom: 24 }}>
               {[
                 { label: 'Total encaissé', valeur: formatFCFA(totalEncaisse), sub: 'Ce mois', couleur: '#22c55e', icon: '✅' },
-                { label: 'Avances reçues', valeur: formatFCFA(totalAvances), sub: 'En attente de solde', couleur: '#F97316', icon: '💰' },
+                { label: 'Avances reçues', valeur: formatFCFA(Math.max(0, totalAvances)), sub: 'En attente de solde', couleur: '#F97316', icon: '💰' },
+
                 { label: 'Restes à encaisser', valeur: formatFCFA(totalReste), sub: 'Commandes non soldées', couleur: '#ef4444', icon: '⏳' },
               ].map((k) => (
                 <div
