@@ -8,7 +8,63 @@ import { useNavScroll } from '@/hooks/useNavScroll'
 import { useWordMorph } from '@/hooks/useWordMorph'
 import { useCountUp } from '@/hooks/useCountUp'
 
+// ─── Styles responsive injectés globalement ───────────────────────────────────
+const mobileStyles = `
+  @media (max-width: 768px) {
+    .cp-nav { padding: 14px 20px !important; }
+    .cp-nav-links { display: none !important; }
+    .cp-nav-actions { gap: 8px !important; }
+    .cp-nav-actions a { font-size: 13px !important; }
+    .cp-nav-actions button { padding: 8px 16px !important; font-size: 13px !important; }
 
+    .cp-hero { 
+      grid-template-columns: 1fr !important; 
+      padding: 40px 20px 40px !important; 
+      gap: 40px !important;
+    }
+    .cp-hero h1 { font-size: 34px !important; }
+    .cp-hero p { font-size: 15px !important; }
+    .cp-hero-btns { flex-direction: column !important; gap: 10px !important; }
+    .cp-hero-btns button { width: 100% !important; text-align: center !important; }
+    .cp-dashboard-float { display: none !important; }
+
+    .cp-features-section { padding: 60px 20px 50px !important; }
+    .cp-features-section h2 { font-size: 26px !important; }
+    .cp-features-grid { 
+      grid-template-columns: 1fr !important; 
+      gap: 16px !important; 
+    }
+
+    .cp-tarifs-section { padding: 60px 20px 50px !important; }
+    .cp-tarifs-section h2 { font-size: 26px !important; }
+    .cp-tarifs-grid { 
+      grid-template-columns: 1fr !important; 
+      gap: 20px !important;
+    }
+    .cp-tarif-card { transform: scale(1) !important; }
+
+    .cp-temo-section { padding: 60px 20px 50px !important; }
+    .cp-temo-section h2 { font-size: 26px !important; }
+    .cp-temo-card { flex: 0 0 280px !important; }
+
+    .cp-cta-section { padding: 60px 20px !important; }
+    .cp-cta-section h2 { font-size: 26px !important; }
+    .cp-cta-btns { flex-direction: column !important; align-items: center !important; }
+    .cp-cta-btns button { width: 100% !important; max-width: 340px !important; }
+
+    .cp-footer { padding: 24px 20px !important; flex-direction: column !important; text-align: center !important; gap: 12px !important; }
+
+    .cp-modal-plans { grid-template-columns: 1fr !important; gap: 12px !important; }
+    .cp-modal-form-grid { grid-template-columns: 1fr !important; }
+    .cp-modal-box { padding: 20px 16px 24px !important; }
+    .cp-modal-header { padding: 20px 20px 0 !important; }
+  }
+
+  @media (max-width: 480px) {
+    .cp-hero h1 { font-size: 28px !important; }
+    .cp-tarifs-section h2, .cp-features-section h2, .cp-temo-section h2, .cp-cta-section h2 { font-size: 22px !important; }
+  }
+`
 
 // ─── Modal Inscription ───────────────────────────────────────────────────────
 function ModalInscription({ onClose }: { onClose: () => void }) {
@@ -111,22 +167,25 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
         position: 'fixed', inset: 0, zIndex: 1000,
         background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '20px',
+        padding: '16px',
+        overflowY: 'auto',
       }}
       onClick={onClose}
     >
       <div
+        className="cp-modal-box"
         style={{
           background: 'white', borderRadius: 24, width: '100%',
           maxWidth: step === 1 ? 860 : 520,
           maxHeight: '90vh', overflowY: 'auto',
           boxShadow: '0 32px 80px rgba(0,0,0,0.25)',
           transition: 'max-width 0.3s ease',
+          margin: 'auto',
         }}
         onClick={e => e.stopPropagation()}
       >
         {/* Header modal */}
-        <div style={{ padding: '28px 32px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className="cp-modal-header" style={{ padding: '28px 32px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <div style={{ fontSize: 11, color: '#F97316', fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 4 }}>
               {step === 1 ? 'Étape 1 / 2' : 'Étape 2 / 2'}
@@ -137,7 +196,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
           </div>
           <button
             onClick={onClose}
-            style={{ background: '#F4F4F4', border: 'none', width: 36, height: 36, borderRadius: '50%', cursor: 'pointer', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            style={{ background: '#F4F4F4', border: 'none', width: 36, height: 36, borderRadius: '50%', cursor: 'pointer', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
           >✕</button>
         </div>
 
@@ -152,6 +211,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
                   width: 50, height: 26, borderRadius: 13,
                   background: billing === 'annuel' ? '#F97316' : '#E5E7EB',
                   position: 'relative', cursor: 'pointer', transition: 'background 0.2s',
+                  flexShrink: 0,
                 }}
                 onClick={() => setBilling(b => b === 'mensuel' ? 'annuel' : 'mensuel')}
               >
@@ -169,7 +229,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
               </span>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
+            <div className="cp-modal-plans" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
               {plans.map(p => {
                 const selected = forfait === p.id
                 return (
@@ -192,9 +252,9 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
                       </div>
                     )}
                     <div style={{ fontSize: 13, fontWeight: 700, color: p.couleur, marginBottom: 4 }}>{p.nom}</div>
-                    <div style={{ fontSize: 26, fontWeight: 900, color: '#1a1a1a', marginBottom: 2 }}>
+                    <div style={{ fontSize: 22, fontWeight: 900, color: '#1a1a1a', marginBottom: 2 }}>
                       {getPrix(p).toLocaleString('fr-FR')}
-                      <span style={{ fontSize: 12, fontWeight: 500, color: '#888' }}> FCFA/mois</span>
+                      <span style={{ fontSize: 11, fontWeight: 500, color: '#888' }}> FCFA/mois</span>
                     </div>
                     {billing === 'annuel' && (
                       <div style={{ fontSize: 11, color: '#16a34a', fontWeight: 600, marginBottom: 12 }}>
@@ -227,7 +287,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
                   background: forfait ? '#F97316' : '#E5E7EB', color: forfait ? 'white' : '#aaa',
                   border: 'none', padding: '14px 40px', borderRadius: 50,
                   fontSize: 15, fontWeight: 700, cursor: forfait ? 'pointer' : 'not-allowed',
-                  transition: 'background 0.2s',
+                  transition: 'background 0.2s', width: '100%', maxWidth: 320,
                 }}
               >
                 Continuer avec {forfait ? plans.find(p => p.id === forfait)?.nom : '...'} →
@@ -240,11 +300,10 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
         {/* Étape 2 : formulaire compte */}
         {step === 2 && (
           <div style={{ padding: '24px 32px 32px' }}>
-            {/* Récap forfait choisi */}
             {forfait && (() => {
               const p = plans.find(x => x.id === forfait)!
               return (
-                <div style={{ background: p.bg, border: `1px solid ${p.border}`, borderRadius: 14, padding: '12px 16px', marginBottom: 22, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ background: p.bg, border: `1px solid ${p.border}`, borderRadius: 14, padding: '12px 16px', marginBottom: 22, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
                   <div>
                     <span style={{ fontSize: 12, color: p.couleur, fontWeight: 700 }}>Forfait {p.nom} · {billing}</span>
                     <span style={{ fontSize: 13, fontWeight: 800, color: '#1a1a1a', marginLeft: 10 }}>
@@ -256,7 +315,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
               )
             })()}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+            <div className="cp-modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
               {[
                 { label: 'Prénom *', placeholder: 'Ex : Aminata', type: 'text', key: 'prenom' },
                 { label: 'Nom *', placeholder: 'Ex : Koné', type: 'text', key: 'nom' },
@@ -332,18 +391,15 @@ export default function LandingPage() {
   const tarifRef = useRef<HTMLElement>(null)
   const temoRef = useRef<HTMLElement>(null)
 
-  // ── Animations hooks ──────────────────────────
   const navRef = useRef<HTMLElement>(null)
   useScrollReveal()
   useNavScroll(navRef)
   const { word: morphWord, visible: morphVisible } = useWordMorph()
 
-  // CountUp stats dashboard
   const { value: vClientes, ref: refClientes } = useCountUp({ start: 0, end: 48 })
   const { value: vEnCours, ref: refEnCours } = useCountUp({ start: 0, end: 12 })
   const { value: vImpayes, ref: refImpayes } = useCountUp({ start: 0, end: 3 })
   const { value: vLivrees, ref: refLivrees } = useCountUp({ start: 0, end: 127 })
-
 
   const scrollTo = (ref: React.RefObject<HTMLElement | null>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -358,11 +414,14 @@ export default function LandingPage() {
   return (
     <div style={{ fontFamily: 'Inter,sans-serif', background: '#FAFAF8', color: '#1a1a1a' }}>
 
+      {/* Injection des styles responsive */}
+      <style>{mobileStyles}</style>
+
       {/* ─── NAV ─────────────────────────────────────────────── */}
       <nav
         ref={navRef}
+        className="cp-nav"
         style={{
-
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -377,11 +436,11 @@ export default function LandingPage() {
           animation: 'bb-float 6s ease-in-out infinite',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
           <div style={{ width: 38, height: 38, background: '#F97316', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 18, fontWeight: 700 }}>✂</div>
           <span style={{ fontSize: 20, fontWeight: 700 }}>Couture Pro</span>
         </div>
-        <div style={{ display: 'flex', gap: 32 }}>
+        <div className="cp-nav-links" style={{ display: 'flex', gap: 32 }}>
           {[
             { label: 'Fonctionnalités', ref: featRef },
             { label: 'Tarifs', ref: tarifRef },
@@ -395,7 +454,7 @@ export default function LandingPage() {
             >{l.label}</a>
           ))}
         </div>
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+        <div className="cp-nav-actions" style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           <Link to="/login" style={{ fontSize: 14, color: '#F97316', textDecoration: 'none', fontWeight: 500 }}>Connexion</Link>
           <button
             onClick={() => setShowModal(true)}
@@ -405,7 +464,17 @@ export default function LandingPage() {
       </nav>
 
       {/* ─── HERO ────────────────────────────────────────────── */}
-      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 48px 60px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }}>
+      <section
+        className="cp-hero"
+        style={{
+          maxWidth: 1200, margin: '0 auto',
+          padding: '80px 48px 60px',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 60,
+          alignItems: 'center',
+        }}
+      >
         <div>
           <div className="cp-badge-glow" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#FFF4ED', color: '#F97316', padding: '6px 14px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 24, border: '1px solid #FED7AA' }}>
             ✨ Plateforme #1 pour les ateliers africains
@@ -417,7 +486,7 @@ export default function LandingPage() {
               className="cp-shimmer-text"
               style={{
                 display: 'inline-block',
-                minWidth: 260,
+                minWidth: 200,
                 transition: 'opacity 0.35s ease, transform 0.35s ease',
                 opacity: morphVisible ? 1 : 0,
                 transform: morphVisible ? 'translateY(0)' : 'translateY(16px)',
@@ -430,25 +499,19 @@ export default function LandingPage() {
           <p style={{ fontSize: 16, color: '#666', lineHeight: 1.7, marginBottom: 36, maxWidth: 460 }}>
             Gérez vos clientes, mesures, commandes et factures depuis votre téléphone. Simple, élégant, taillé pour les couturières africaines.
           </p>
-          <div style={{ display: 'flex', gap: 14, marginBottom: 40, flexWrap: 'wrap' }}>
+          <div className="cp-hero-btns" style={{ display: 'flex', gap: 14, marginBottom: 40, flexWrap: 'wrap' }}>
             <button
               onClick={() => setShowModal(true)}
               className="bb-liv-btn bb-liv-glow"
               style={{ background: '#F97316', color: 'white', padding: '14px 28px', borderRadius: 50, fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer', boxShadow: '0 10px 30px rgba(249,115,22,0.22)' }}
-              onMouseDown={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(0.98) translateY(1px)')}
-              onMouseUp={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(1) translateY(0px)')}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(1) translateY(0px)')}
             >Essayer gratuitement</button>
             <button
               onClick={() => scrollTo(tarifRef)}
               className="bb-liv-btn"
-              style={{ background: 'white', color: '#1a1a1a', border: '1.5px solid #e5e0d8', padding: '13px 24px', borderRadius: 50, fontSize: 15, cursor: 'pointer', fontWeight: 600, position: 'relative' }}
-              onMouseDown={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(0.98) translateY(1px)')}
-              onMouseUp={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(1) translateY(0px)')}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(1) translateY(0px)')}
+              style={{ background: 'white', color: '#1a1a1a', border: '1.5px solid #e5e0d8', padding: '13px 24px', borderRadius: 50, fontSize: 15, cursor: 'pointer', fontWeight: 600 }}
             >Voir les tarifs →</button>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
             <div style={{ display: 'flex' }}>
               {['A', 'M', 'F', 'S', 'N'].map((l, i) => (
                 <div key={i} style={{ width: 36, height: 36, borderRadius: '50%', border: '2.5px solid white', marginLeft: i === 0 ? 0 : -10, background: ['#F4A261', '#E76F51', '#2A9D8F', '#E9C46A', '#264653'][i], color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 600 }}>{l}</div>
@@ -462,7 +525,7 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Dashboard mock */}
+        {/* Dashboard mock — caché sur mobile via CSS */}
         <div className="cp-dashboard-float" style={{ position: 'relative' }}>
           <div style={{ position: 'absolute', top: -20, right: -20, background: 'white', borderRadius: 14, padding: '14px 18px', boxShadow: '0 8px 32px rgba(0,0,0,0.1)', border: '1px solid #f0ede8', zIndex: 10 }}>
             <div style={{ fontSize: 11, color: '#888' }}>Recettes ce mois</div>
@@ -475,30 +538,19 @@ export default function LandingPage() {
               <span style={{ fontSize: 13, fontWeight: 600, marginLeft: 4 }}>✂ Couture Pro — Tableau de bord</span>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10, marginBottom: 14 }}>
-              {/* Stat Clientes */}
               <div style={{ background: '#FAFAF8', borderRadius: 12, padding: 14, border: '1px solid #f0ede8' }}>
                 <div style={{ fontSize: 11, color: '#888', marginBottom: 4 }}>Clientes</div>
-                <div style={{ fontSize: 20, fontWeight: 700 }}>
-                  <span ref={refClientes as any}>{vClientes}</span>
-                </div>
+                <div style={{ fontSize: 20, fontWeight: 700 }}><span ref={refClientes as any}>{vClientes}</span></div>
                 <div style={{ fontSize: 10, color: '#22c55e', marginTop: 2 }}>↑ +5 ce mois</div>
               </div>
-
-              {/* Stat En cours */}
               <div style={{ background: '#FAFAF8', borderRadius: 12, padding: 14, border: '1px solid #f0ede8' }}>
                 <div style={{ fontSize: 11, color: '#888', marginBottom: 4 }}>En cours</div>
-                <div style={{ fontSize: 20, fontWeight: 700 }}>
-                  <span ref={refEnCours as any}>{vEnCours}</span>
-                </div>
+                <div style={{ fontSize: 20, fontWeight: 700 }}><span ref={refEnCours as any}>{vEnCours}</span></div>
                 <div style={{ fontSize: 10, color: '#22c55e', marginTop: 2 }}>3 à livrer</div>
               </div>
-
-              {/* Stat Impayés */}
               <div style={{ background: '#FAFAF8', borderRadius: 12, padding: 14, border: '1px solid #f0ede8' }}>
                 <div style={{ fontSize: 11, color: '#888', marginBottom: 4 }}>Impayés</div>
-                <div style={{ fontSize: 20, fontWeight: 700 }}>
-                  <span ref={refImpayes as any}>{vImpayes}</span>
-                </div>
+                <div style={{ fontSize: 20, fontWeight: 700 }}><span ref={refImpayes as any}>{vImpayes}</span></div>
                 <div style={{ fontSize: 10, color: '#ef4444', marginTop: 2 }}>↓ 45 000 FCFA</div>
               </div>
             </div>
@@ -521,21 +573,19 @@ export default function LandingPage() {
           </div>
           <div style={{ position: 'absolute', bottom: -20, left: -20, background: 'white', borderRadius: 14, padding: '14px 18px', boxShadow: '0 8px 32px rgba(0,0,0,0.1)', border: '1px solid #f0ede8' }}>
             <div style={{ fontSize: 11, color: '#888' }}>Commandes livrées</div>
-            <div style={{ fontSize: 22, fontWeight: 700 }}>
-              <span ref={refLivrees as any}>{vLivrees}</span>
-            </div>
+            <div style={{ fontSize: 22, fontWeight: 700 }}><span ref={refLivrees as any}>{vLivrees}</span></div>
             <div style={{ fontSize: 11, color: '#22c55e' }}>Ce trimestre</div>
           </div>
         </div>
       </section>
 
       {/* ─── FONCTIONNALITÉS ─────────────────────────────────── */}
-      <section ref={featRef} className="cp-reveal" style={{ padding: '90px 48px 80px', background: 'white', scrollMarginTop: 70 }}>
+      <section ref={featRef} className="cp-reveal cp-features-section" style={{ padding: '90px 48px 80px', background: 'white', scrollMarginTop: 70 }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <div style={{ display: 'inline-block', background: '#FFF4ED', color: '#F97316', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #FED7AA' }}>Fonctionnalités</div>
           <h2 style={{ fontSize: 38, fontWeight: 800, marginBottom: 12 }}>Tout ce dont vous avez besoin,<br />dans votre poche</h2>
           <p style={{ color: '#666', fontSize: 16, maxWidth: 520, lineHeight: 1.7, marginBottom: 48 }}>Une plateforme pensée pour les ateliers de couture d'Afrique francophone.</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24 }}>
+          <div className="cp-features-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24 }}>
             {[
               { icon: '👥', title: 'Gestion des clientes', desc: "Enregistrez nom, téléphone, ville, style préféré, budget et notes. Retrouvez n'importe quelle cliente en 2 secondes.", bg: '#FFF4ED' },
               { icon: '📏', title: 'Carnet de mesures', desc: 'Toutes les mesures sauvegardées : poitrine, taille, hanche, longueur, manches... Accessible partout, même hors ligne.', bg: '#EFF6FF' },
@@ -567,18 +617,7 @@ export default function LandingPage() {
                   el.style.boxShadow = 'none'
                 }}
               >
-                <div
-                  aria-hidden
-                  style={{
-                    position: 'absolute',
-                    inset: -60,
-                    background: 'radial-gradient(circle at 30% 20%, rgba(249,115,22,0.18), rgba(249,115,22,0) 58%)',
-                    filter: 'blur(3px)',
-                    pointerEvents: 'none',
-                    opacity: 0.9,
-                    transform: 'translateZ(0)',
-                  }}
-                />
+                <div aria-hidden style={{ position: 'absolute', inset: -60, background: 'radial-gradient(circle at 30% 20%, rgba(249,115,22,0.18), rgba(249,115,22,0) 58%)', filter: 'blur(3px)', pointerEvents: 'none', opacity: 0.9, transform: 'translateZ(0)' }} />
                 <div style={{ position: 'relative' }}>
                   <div style={{ width: 48, height: 48, borderRadius: 14, background: f.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, marginBottom: 18 }}>{f.icon}</div>
                   <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>{f.title}</div>
@@ -591,7 +630,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── TARIFS ──────────────────────────────────────────── */}
-      <section ref={tarifRef} className="cp-reveal" style={{ padding: '90px 48px 80px', background: '#FAFAF8', scrollMarginTop: 70 }}>
+      <section ref={tarifRef} className="cp-reveal cp-tarifs-section" style={{ padding: '90px 48px 80px', background: '#FAFAF8', scrollMarginTop: 70 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
             <div style={{ display: 'inline-block', background: '#FFF4ED', color: '#F97316', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #FED7AA' }}>Tarifs</div>
@@ -599,7 +638,7 @@ export default function LandingPage() {
             <p style={{ color: '#666', fontSize: 16, maxWidth: 480, margin: '0 auto' }}>Commencez gratuitement pendant 7 jours. Choisissez ensuite le forfait qui vous convient.</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, alignItems: 'stretch' }}>
+          <div className="cp-tarifs-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, alignItems: 'stretch' }}>
             {[
               {
                 nom: 'Starter', prix_m: 2500, prix_a: 25000, couleur: '#F97316',
@@ -628,7 +667,7 @@ export default function LandingPage() {
               return (
                 <div
                   key={p.nom}
-                  className={`bb-tarif-card${p.bg === '#1a1a1a' ? ' cp-pro-pulse' : ''}`}
+                  className={`bb-tarif-card cp-tarif-card${p.bg === '#1a1a1a' ? ' cp-pro-pulse' : ''}`}
                   style={{
                     background: p.bg, border: `2px solid ${p.border}`, borderRadius: 24,
                     padding: '32px 28px', display: 'flex', flexDirection: 'column',
@@ -668,23 +707,12 @@ export default function LandingPage() {
                     onClick={() => setShowModal(true)}
                     className={`${p.nom === 'Pro' ? 'bb-liv-btn bb-liv-glow' : 'bb-liv-btn'} bb-tarif-cta`}
                     style={{
-                      marginTop: 28,
-                      background: p.btnBg,
-                      color: p.btnColor,
-                      border: 'none',
-                      padding: '13px',
-                      borderRadius: 50,
-                      fontSize: 14,
-                      fontWeight: 800,
-                      cursor: 'pointer',
-                      width: '100%',
+                      marginTop: 28, background: p.btnBg, color: p.btnColor,
+                      border: 'none', padding: '13px', borderRadius: 50,
+                      fontSize: 14, fontWeight: 800, cursor: 'pointer', width: '100%',
                       transition: 'opacity 0.2s',
                       boxShadow: p.nom === 'Pro' ? '0 18px 50px rgba(249,115,22,0.18)' : undefined,
-                      position: 'relative',
                     }}
-                    onMouseDown={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(0.98) translateY(1px)')}
-                    onMouseUp={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(1) translateY(0px)')}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(1) translateY(0px)')}
                   >
                     Commencer avec {p.nom}
                   </button>
@@ -693,7 +721,7 @@ export default function LandingPage() {
             })}
           </div>
 
-          <div style={{ textAlign: 'center', marginTop: 36, padding: '18px 24px', background: 'white', borderRadius: 14, border: '1px solid #f0ede8', display: 'inline-block', width: '100%', boxSizing: 'border-box' }}>
+          <div style={{ textAlign: 'center', marginTop: 36, padding: '18px 24px', background: 'white', borderRadius: 14, border: '1px solid #f0ede8', boxSizing: 'border-box' }}>
             <span style={{ fontSize: 14, color: '#555' }}>
               🔒 <strong>Abonnement sécurisé</strong> · Résiliation à tout moment · Support WhatsApp inclus · Données privées et protégées
             </span>
@@ -702,14 +730,13 @@ export default function LandingPage() {
       </section>
 
       {/* ─── TÉMOIGNAGES ─────────────────────────────────────── */}
-      <section ref={temoRef} className="cp-reveal" style={{ padding: '90px 48px 80px', background: 'white', scrollMarginTop: 70 }}>
+      <section ref={temoRef} className="cp-reveal cp-temo-section" style={{ padding: '90px 48px 80px', background: 'white', scrollMarginTop: 70 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 52 }}>
             <div style={{ display: 'inline-block', background: '#FFF4ED', color: '#F97316', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #FED7AA' }}>Témoignages</div>
             <h2 style={{ fontSize: 38, fontWeight: 800, marginBottom: 12 }}>Ce que disent nos couturières</h2>
             <p style={{ color: '#666', fontSize: 16 }}>Plus de 1000 ateliers font confiance à Couture Pro chaque jour.</p>
           </div>
-          {/* Témoignages : carrousel horizontal vivant */}
           {(() => {
             const temoins = [
               { quote: "Maintenant je sais exactement combien j'ai gagné ce mois, qui me doit quoi, et mes clientes reçoivent leurs factures sur WhatsApp. Fini le cahier !", nom: 'Mariam K.', atelier: 'Atelier Lumière · Abidjan', avatar: 'M', color: '#E76F51', note: 5 },
@@ -718,7 +745,6 @@ export default function LandingPage() {
             ]
             const prefersReducedMotion = typeof window !== 'undefined' ? window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches : false
 
-            // Auto-scroll simple (pas d'API externe)
             return (
               <div style={{ position: 'relative' }}>
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'space-between', alignItems: 'center', marginBottom: 18, flexWrap: 'wrap' }}>
@@ -732,71 +758,31 @@ export default function LandingPage() {
                     aria-label="Témoignages précédent"
                     onClick={(e) => {
                       const wrap = (e.currentTarget.parentElement?.querySelector('[data-temo-wrap="1"]') as HTMLDivElement | null)
-                      wrap?.scrollBy({ left: -520, behavior: prefersReducedMotion ? 'auto' : 'smooth' })
+                      wrap?.scrollBy({ left: -320, behavior: prefersReducedMotion ? 'auto' : 'smooth' })
                     }}
-                    style={{
-                      position: 'absolute', left: -6, top: '50%', transform: 'translateY(-50%)',
-                      zIndex: 5,
-                      width: 38, height: 38,
-                      borderRadius: 12,
-                      border: '1px solid #f0ede8',
-                      background: 'white',
-                      cursor: 'pointer',
-                      fontSize: 16,
-                      boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
-                    }}
+                    style={{ position: 'absolute', left: -6, top: '50%', transform: 'translateY(-50%)', zIndex: 5, width: 38, height: 38, borderRadius: 12, border: '1px solid #f0ede8', background: 'white', cursor: 'pointer', fontSize: 16, boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}
                     className="bb-liv-glow"
-                  >
-                    ‹
-                  </button>
+                  >‹</button>
 
                   <button
                     type="button"
                     aria-label="Témoignages suivant"
                     onClick={(e) => {
                       const wrap = (e.currentTarget.parentElement?.querySelector('[data-temo-wrap="1"]') as HTMLDivElement | null)
-                      wrap?.scrollBy({ left: 520, behavior: prefersReducedMotion ? 'auto' : 'smooth' })
+                      wrap?.scrollBy({ left: 320, behavior: prefersReducedMotion ? 'auto' : 'smooth' })
                     }}
-                    style={{
-                      position: 'absolute', right: -6, top: '50%', transform: 'translateY(-50%)',
-                      zIndex: 5,
-                      width: 38, height: 38,
-                      borderRadius: 12,
-                      border: '1px solid #f0ede8',
-                      background: 'white',
-                      cursor: 'pointer',
-                      fontSize: 16,
-                      boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
-                    }}
+                    style={{ position: 'absolute', right: -6, top: '50%', transform: 'translateY(-50%)', zIndex: 5, width: 38, height: 38, borderRadius: 12, border: '1px solid #f0ede8', background: 'white', cursor: 'pointer', fontSize: 16, boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}
                     className="bb-liv-glow"
-                  >
-                    ›
-                  </button>
+                  >›</button>
 
-          <div
+                  <div
                     data-temo-wrap="1"
-                    style={{
-                      display: 'flex',
-                      gap: 24,
-                      overflowX: 'auto',
-                      scrollSnapType: 'x mandatory',
-                      padding: '4px 38px',
-                      WebkitOverflowScrolling: 'touch',
-                      scrollbarWidth: 'none',
-                    }}
-                    onWheel={(e) => {
-                      // Convertit wheel vertical -> horizontal sur mobile/desktop
-                      const wrap = e.currentTarget as HTMLDivElement
-                      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-                        wrap.scrollLeft += e.deltaY
-                        e.preventDefault()
-                      }
-                    }}
+                    style={{ display: 'flex', gap: 24, overflowX: 'auto', scrollSnapType: 'x mandatory', padding: '4px 38px', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}
                   >
-
                     {temoins.map((t, idx) => (
                       <div
                         key={idx}
+                        className="cp-temo-card"
                         style={{
                           flex: '0 0 320px',
                           scrollSnapAlign: 'start',
@@ -808,34 +794,15 @@ export default function LandingPage() {
                           overflow: 'hidden',
                           transition: 'transform 0.18s ease',
                         }}
-                        onMouseEnter={(e) => {
-                          if (prefersReducedMotion) return
-                          ;(e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px) scale(1.02)'
-                        }}
-                        onMouseLeave={(e) => {
-                          ;(e.currentTarget as HTMLDivElement).style.transform = 'translateY(0px) scale(1)'
-                        }}
+                        onMouseEnter={(e) => { if (!prefersReducedMotion) (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px) scale(1.02)' }}
+                        onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0px) scale(1)' }}
                       >
-                        <div
-                          aria-hidden
-                          style={{
-                            position: 'absolute',
-                            inset: -80,
-                            background: 'radial-gradient(circle at 30% 20%, rgba(249,115,22,0.18), rgba(249,115,22,0) 58%)',
-                            filter: 'blur(2px)',
-                            pointerEvents: 'none',
-                          }}
-                        />
-
+                        <div aria-hidden style={{ position: 'absolute', inset: -80, background: 'radial-gradient(circle at 30% 20%, rgba(249,115,22,0.18), rgba(249,115,22,0) 58%)', filter: 'blur(2px)', pointerEvents: 'none' }} />
                         <div style={{ position: 'relative' }}>
                           <div style={{ color: '#F97316', fontSize: 18, marginBottom: 14 }}>{'★'.repeat(t.note)}</div>
-                          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#333', fontStyle: 'italic', marginBottom: 20 }}>
-                            “{t.quote}”
-                          </p>
+                          <p style={{ fontSize: 15, lineHeight: 1.7, color: '#333', fontStyle: 'italic', marginBottom: 20 }}>"{t.quote}"</p>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                            <div style={{ width: 40, height: 40, borderRadius: '50%', background: t.color, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700 }}>
-                              {t.avatar}
-                            </div>
+                            <div style={{ width: 40, height: 40, borderRadius: '50%', background: t.color, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700, flexShrink: 0 }}>{t.avatar}</div>
                             <div>
                               <div style={{ fontSize: 14, fontWeight: 700 }}>{t.nom}</div>
                               <div style={{ fontSize: 12, color: '#888' }}>{t.atelier}</div>
@@ -849,36 +816,30 @@ export default function LandingPage() {
               </div>
             )
           })()}
-
         </div>
       </section>
 
       {/* ─── CTA FINAL ───────────────────────────────────────── */}
-      <section className="cp-reveal" style={{ padding: '80px 48px', background: 'linear-gradient(135deg,#1a1a1a 0%,#2d1a0a 100%)', textAlign: 'center' }}>
+      <section className="cp-reveal cp-cta-section" style={{ padding: '80px 48px', background: 'linear-gradient(135deg,#1a1a1a 0%,#2d1a0a 100%)', textAlign: 'center' }}>
         <h2 style={{ fontSize: 42, fontWeight: 800, color: 'white', marginBottom: 14 }}>Rejoignez +1000 couturières qui ont digitalisé leur atelier</h2>
-        <p style={{ color: '#999', fontSize: 16, marginBottom: 36 }}>Rejoignez +1000 couturières qui ont digitalisé leur atelier</p>
-        <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <p style={{ color: '#999', fontSize: 16, marginBottom: 36 }}>Commencez gratuitement · Sans carte bancaire · 7 jours offerts</p>
+        <div className="cp-cta-btns" style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
           <button
             onClick={() => setShowModal(true)}
             className="bb-liv-btn bb-liv-glow"
             style={{ background: '#F97316', color: 'white', padding: '14px 32px', borderRadius: 50, fontSize: 15, fontWeight: 800, border: 'none', cursor: 'pointer', boxShadow: '0 18px 50px rgba(249,115,22,0.2)' }}
-            onMouseDown={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(0.98) translateY(1px)')}
-            onMouseUp={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(1) translateY(0px)')}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(1) translateY(0px)')}
           >Démarrer gratuitement — 7 jours offerts</button>
           <button
             onClick={() => scrollTo(tarifRef)}
             className="bb-liv-btn"
-            style={{ background: 'transparent', color: 'white', border: '1.5px solid rgba(255,255,255,0.25)', padding: '14px 28px', borderRadius: 50, fontSize: 15, cursor: 'pointer', fontWeight: 700, position: 'relative' }}
-            onMouseDown={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(0.98) translateY(1px)')}
-            onMouseUp={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(1) translateY(0px)')}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = 'scale(1) translateY(0px)')}
+            style={{ background: 'transparent', color: 'white', border: '1.5px solid rgba(255,255,255,0.25)', padding: '14px 28px', borderRadius: 50, fontSize: 15, cursor: 'pointer', fontWeight: 700 }}
           >Voir les tarifs</button>
         </div>
       </section>
 
       {/* ─── FOOTER ──────────────────────────────────────────── */}
       <footer
+        className="cp-footer bb-footer-breathe"
         style={{
           padding: '32px 48px',
           background: '#111',
@@ -890,40 +851,15 @@ export default function LandingPage() {
           position: 'relative',
           overflow: 'hidden',
         }}
-        className="bb-footer-breathe"
       >
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute',
-            inset: -140,
-            background: 'radial-gradient(circle at 30% 20%, rgba(249,115,22,0.22), rgba(249,115,22,0) 58%)',
-            filter: 'blur(10px)',
-            pointerEvents: 'none',
-            opacity: 0.9,
-          }}
-        />
+        <div aria-hidden style={{ position: 'absolute', inset: -140, background: 'radial-gradient(circle at 30% 20%, rgba(249,115,22,0.22), rgba(249,115,22,0) 58%)', filter: 'blur(10px)', pointerEvents: 'none', opacity: 0.9 }} />
         <span style={{ fontSize: 18, color: 'white', fontWeight: 700, position: 'relative' }}>✂ Couture Pro</span>
         <span style={{ fontSize: 13, color: '#777', position: 'relative' }}>© 2026 Couture Pro · Fait avec ❤ pour l'Afrique</span>
         <Link
           to="/login"
           className="bb-liv-btn"
-          style={{
-            fontSize: 13,
-            color: '#F97316',
-            textDecoration: 'none',
-            fontWeight: 800,
-            position: 'relative',
-            padding: '6px 10px',
-            borderRadius: 12,
-            border: '1px solid rgba(249,115,22,0.25)',
-          }}
-          onMouseDown={(e) => ((e.currentTarget as HTMLAnchorElement).style.transform = 'scale(0.98) translateY(1px)')}
-          onMouseUp={(e) => ((e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1) translateY(0px)')}
-          onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1) translateY(0px)')}
-        >
-          Connexion
-        </Link>
+          style={{ fontSize: 13, color: '#F97316', textDecoration: 'none', fontWeight: 800, position: 'relative', padding: '6px 10px', borderRadius: 12, border: '1px solid rgba(249,115,22,0.25)' }}
+        >Connexion</Link>
       </footer>
 
       {/* ─── MODAL ───────────────────────────────────────────── */}
