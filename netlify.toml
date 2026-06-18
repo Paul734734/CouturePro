@@ -1,4 +1,4 @@
 [build]
   base = "src/couture-pro"
   command = "npm run build"
-  publish = "src/couture-pro/dist"
+  publish = "dist"
