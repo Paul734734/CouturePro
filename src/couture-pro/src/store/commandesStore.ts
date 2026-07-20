@@ -1,74 +1,67 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { api } from "@/lib/api";
 import type { Commande, FormulaireCommande, StatutCommande } from "@/types";
-import { genererIdUnique, calculReste } from "@/lib/utils";
 
 interface CommandesState {
   commandes: Commande[];
-  ajouterCommande: (data: FormulaireCommande, userId: string) => void;
-  modifierCommande: (id: string, data: Partial<Commande>) => void;
-  changerStatut: (id: string, statut: StatutCommande) => void;
-  supprimerCommande: (id: string) => void;
+  isLoading: boolean;
+  error: string | null;
+
+  fetchCommandes: (params?: { statut?: StatutCommande; clienteId?: string }) => Promise<void>;
+  ajouterCommande: (data: FormulaireCommande) => Promise<Commande>;
+  modifierCommande: (id: string, data: Partial<FormulaireCommande>) => Promise<Commande>;
+  changerStatut: (id: string, statut: StatutCommande) => Promise<Commande>;
+  supprimerCommande: (id: string) => Promise<void>;
+
   getCommandeById: (id: string) => Commande | undefined;
-  getCommandesByUser: (userId: string) => Commande[];
   getCommandesByCliente: (clienteId: string) => Commande[];
 }
 
-export const useCommandesStore = create<CommandesState>()(
-  persist(
-    (set, get) => ({
-      commandes: [],
+export const useCommandesStore = create<CommandesState>()((set, get) => ({
+  commandes: [],
+  isLoading: false,
+  error: null,
 
-      ajouterCommande: (data, userId) => {
-        const nouvelle: Commande = {
-          ...data,
-          id: genererIdUnique(),
-          userId,
-          dateCommande: new Date().toISOString(),
-          resteAPayer: calculReste(data.prixTotal, data.avancePaye),
-        };
-        set((state) => ({ commandes: [...state.commandes, nouvelle] }));
-      },
-
-      modifierCommande: (id, data) => {
-        set((state) => ({
-          commandes: state.commandes.map((c) => {
-            if (c.id !== id) return c;
-            const updated = { ...c, ...data };
-            const prixTotal = updated.prixTotal ?? c.prixTotal;
-            const avancePaye = updated.avancePaye ?? c.avancePaye;
-            updated.resteAPayer = calculReste(prixTotal, avancePaye);
-            return updated;
-          }),
-        }));
-      },
-
-      changerStatut: (id, statut) => {
-        set((state) => ({
-          commandes: state.commandes.map((c) => (c.id === id ? { ...c, statut } : c)),
-        }));
-      },
-
-      supprimerCommande: (id) => {
-        set((state) => ({
-          commandes: state.commandes.filter((c) => c.id !== id),
-        }));
-      },
-
-      getCommandeById: (id) => {
-        return get().commandes.find((c) => c.id === id);
-      },
-
-      getCommandesByUser: (userId) => {
-        return get().commandes.filter((c) => c.userId === userId);
-      },
-
-      getCommandesByCliente: (clienteId) => {
-        return get().commandes.filter((c) => c.clienteId === clienteId);
-      },
-    }),
-    {
-      name: "couture-pro-commandes",
+  fetchCommandes: async (params) => {
+    set({ isLoading: true, error: null });
+    try {
+      const { data } = await api.get<Commande[]>("/api/commandes", { params });
+      set({ commandes: data, isLoading: false });
+    } catch (err: any) {
+      set({
+        isLoading: false,
+        error: err.response?.data?.detail || "Erreur lors du chargement des commandes.",
+      });
     }
-  )
-);
+  },
+
+  ajouterCommande: async (data) => {
+    const { data: created } = await api.post<Commande>("/api/commandes", data);
+    set((state) => ({ commandes: [created, ...state.commandes] }));
+    return created;
+  },
+
+  modifierCommande: async (id, data) => {
+    const { data: updated } = await api.put<Commande>(`/api/commandes/${id}`, data);
+    set((state) => ({
+      commandes: state.commandes.map((c) => (c.id === id ? updated : c)),
+    }));
+    return updated;
+  },
+
+  changerStatut: async (id, statut) => {
+    const { data: updated } = await api.patch<Commande>(`/api/commandes/${id}/statut`, { statut });
+    set((state) => ({
+      commandes: state.commandes.map((c) => (c.id === id ? updated : c)),
+    }));
+    return updated;
+  },
+
+  supprimerCommande: async (id) => {
+    await api.delete(`/api/commandes/${id}`);
+    set((state) => ({ commandes: state.commandes.filter((c) => c.id !== id) }));
+  },
+
+  getCommandeById: (id) => get().commandes.find((c) => c.id === id),
+  getCommandesByCliente: (clienteId) => get().commandes.filter((c) => c.clienteId === clienteId),
+}));

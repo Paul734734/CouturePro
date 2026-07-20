@@ -1,126 +1,92 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { api } from "@/lib/api";
 import type { Paiement } from "@/types";
-import type { Commande } from "@/types";
-
-
-
-import { genererIdUnique, calculReste } from "@/lib/utils";
 import { useCommandesStore } from "./commandesStore";
 
-type SuiviPaiement = {
-  commandeId?: string
-  clienteNom?: string
-  commandeLabel?: string
-  prixTotal?: number
-  totalPaye: number
-  resteAPayer: number
-  statut: 'solde' | 'impaye' | 'partiel'
-  paiements: Paiement[]
+export interface FormulairePaiement {
+  commandeId: string;
+  montant: number;
+  type: "avance" | "solde" | "partiel";
+  notes?: string;
+}
+
+export interface SuiviPaiement {
+  commandeId: string;
+  clienteNom: string;
+  commandeLabel: string;
+  prixTotal: number;
+  totalPaye: number;
+  resteAPayer: number;
+  statut: "solde" | "impaye" | "partiel";
+}
+
+export interface TotauxPaiements {
+  totalEncaisse: number;
+  totalReste: number;
 }
 
 interface PaiementsState {
-  paiements: Paiement[];
+  parCommande: Record<string, Paiement[]>;
+  suivi: SuiviPaiement[];
+  totaux: TotauxPaiements;
+  isLoading: boolean;
+  error: string | null;
 
-  ajouterPaiement: (
-    data: {
-      commandeId: string
-      montant: number
-      type: 'avance' | 'solde' | 'partiel'
-      date: string
-      notes?: string
-    },
+  fetchPaiementsCommande: (commandeId: string) => Promise<void>;
+  ajouterPaiement: (data: FormulairePaiement) => Promise<Paiement>;
+  fetchSuivi: () => Promise<void>;
+  fetchTotaux: () => Promise<void>;
 
-    userId: string,
-    clienteNom: string,
-    commandeLabel: string
-  ) => void;
-  getPaiementsByUser: (userId: string) => Paiement[];
   getPaiementsByCommande: (commandeId: string) => Paiement[];
-  getSuiviByUser: (userId: string) => SuiviPaiement[];
-  getTotalEncaisseByUser: (userId: string) => number;
-  getTotalResteByUser: (userId: string) => number;
 }
 
-export const usePaiementsStore = create<PaiementsState>()(
-  persist(
-    (set, get) => ({
-      paiements: [],
+export const usePaiementsStore = create<PaiementsState>()((set, get) => ({
+  parCommande: {},
+  suivi: [],
+  totaux: { totalEncaisse: 0, totalReste: 0 },
+  isLoading: false,
+  error: null,
 
-      ajouterPaiement: (data, userId, clienteNom, commandeLabel) => {
-        const nouveau: Paiement = {
-          ...data,
-          id: genererIdUnique(),
-          userId,
-          clienteNom,
-          commandeLabel,
-          date: new Date().toISOString(),
-        };
-
-        set((state) => ({ paiements: [...state.paiements, nouveau] }));
-
-        const commandes = useCommandesStore.getState();
-        const commande = commandes.getCommandeById(data.commandeId);
-        if (commande) {
-          const nouveauTotal = commande.avancePaye + data.montant;
-          commandes.modifierCommande(data.commandeId, {
-            avancePaye: nouveauTotal,
-            resteAPayer: calculReste(commande.prixTotal, nouveauTotal),
-          });
-        }
-      },
-
-      getPaiementsByUser: (userId) => {
-        return get().paiements.filter((p) => p.userId === userId);
-      },
-
-      getPaiementsByCommande: (commandeId) => {
-        return get().paiements.filter((p) => p.commandeId === commandeId);
-      },
-
-      getSuiviByUser: (userId) => {
-        const commandes = useCommandesStore.getState().commandes.filter((c) => c.userId === userId)
-
-        return commandes.map((cmd) => {
-          const paiementsCmd = get().getPaiementsByCommande(cmd.id)
-          const totalPaye = paiementsCmd.reduce((s, p) => s + p.montant, 0)
-          const reste = calculReste(cmd.prixTotal, totalPaye)
-
-          return {
-            commandeId: cmd.id,
-            // Certaines données de commande peuvent ne pas porter directement clienteNom.
-            clienteNom: (cmd as any).clienteNom ?? '',
-            commandeLabel: cmd.typeVetement,
-            prixTotal: cmd.prixTotal,
-            totalPaye: Math.max(0, cmd.avancePaye ?? totalPaye),
-            resteAPayer: Math.max(0, reste),
-            statut:
-              Math.max(0, reste) === 0
-                ? 'solde'
-                : Math.max(0, totalPaye) === 0
-                  ? 'impaye'
-                  : 'partiel',
-            paiements: paiementsCmd,
-          } satisfies SuiviPaiement
-        })
-      },
-
-
-      getTotalEncaisseByUser: (userId) => {
-        const commandes = useCommandesStore.getState().commandes.filter((c) => c.userId === userId);
-        return commandes.reduce((s, c) => s + Math.max(0, c.avancePaye ?? 0), 0);
-      },
-
-      getTotalResteByUser: (userId) => {
-        const commandes = useCommandesStore.getState().commandes.filter((c) => c.userId === userId);
-        return commandes
-          .filter((c) => c.statut !== 'annule' && c.statut !== 'livre')
-          .reduce((s, c) => s + Math.max(0, c.resteAPayer ?? 0), 0);
-      },
-
-    }),
-    {
-      name: "couture-pro-paiements",
+  fetchPaiementsCommande: async (commandeId) => {
+    set({ isLoading: true, error: null });
+    try {
+      const { data } = await api.get<Paiement[]>(`/api/paiements/commande/${commandeId}`);
+      set((state) => ({
+        parCommande: { ...state.parCommande, [commandeId]: data },
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({
+        isLoading: false,
+        error: err.response?.data?.detail || "Erreur lors du chargement des paiements.",
+      });
     }
-  )
-);
+  },
+
+  ajouterPaiement: async (data) => {
+    const { data: created } = await api.post<Paiement>("/api/paiements", data);
+    set((state) => ({
+      parCommande: {
+        ...state.parCommande,
+        [data.commandeId]: [created, ...(state.parCommande[data.commandeId] || [])],
+      },
+    }));
+    // la commande liee a ete mise a jour cote serveur (avancePaye/resteAPayer) -> resynchroniser
+    await useCommandesStore.getState().fetchCommandes();
+    await get().fetchSuivi();
+    await get().fetchTotaux();
+    return created;
+  },
+
+  fetchSuivi: async () => {
+    const { data } = await api.get<SuiviPaiement[]>("/api/paiements/suivi");
+    set({ suivi: data });
+  },
+
+  fetchTotaux: async () => {
+    const { data } = await api.get<TotauxPaiements>("/api/paiements/totaux");
+    set({ totaux: data });
+  },
+
+  getPaiementsByCommande: (commandeId) => get().parCommande[commandeId] || [],
+}));

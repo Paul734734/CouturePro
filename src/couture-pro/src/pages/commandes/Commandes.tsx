@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties } from 'react'
+import { useMemo, useState, useEffect, type CSSProperties } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AppLayout from '../../components/layout/AppLayout'
 import { formatDate, formatMontant, getStatutLabel, getStatutColor } from '../../lib/utils'
@@ -12,7 +12,7 @@ const statutOptions = ['tous', 'en_attente', 'en_cours', 'essayage', 'pret', 'li
 export default function Commandes() {
   const navigate = useNavigate()
   const { user } = useAuthStore()
-  const { getCommandesByUser, ajouterCommande, modifierCommande, changerStatut } = useCommandesStore()
+  const { commandes, fetchCommandes, ajouterCommande, modifierCommande, changerStatut } = useCommandesStore()
 
   // UI state (sinon => ReferenceError: selected is not defined)
   const [showForm, setShowForm] = useState(false)
@@ -63,7 +63,6 @@ export default function Commandes() {
         clienteNom: String(form.clienteNom).trim(),
         typeVetement: String(form.typeVetement).trim(),
         description: String(form.description || '').trim(),
-        photoModele: '',
         prixTotal,
         avancePaye,
         dateCommande: new Date().toISOString(),
@@ -99,7 +98,7 @@ export default function Commandes() {
   const [filtre, setFiltre] = useState<(typeof statutOptions)[number]>('tous')
 
 
-  const commandes = useMemo(() => (user ? getCommandesByUser(user.id) : []), [user, getCommandesByUser])
+  useEffect(() => { if (user) fetchCommandes() }, [user, fetchCommandes])
   const filtered = useMemo(() => {
     if (filtre === 'tous') return commandes
     return commandes.filter((c) => c.statut === filtre)

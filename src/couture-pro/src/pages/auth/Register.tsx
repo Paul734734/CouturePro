@@ -43,7 +43,7 @@ const FORFAITS = [
     bg: '#F8FAFC',
     border: '#CBD5E1',
     desc: 'Multi-atelier',
-    features: ['Tout Pro inclus', 'Multi-atelier (3)', 'Export comptabilité', 'Logo PDF personnalisé', 'Support WhatsApp prioritaire'],
+    features: ['Tout Pro inclus', 'Multi-atelier (3)', 'Export comptabilité', 'Logo PDF personnalisé'],
     exclues: [],
   },
 ]

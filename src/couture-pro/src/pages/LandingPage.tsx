@@ -122,8 +122,8 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
     {
       id: 'starter',
       nom: 'Starter',
-      prix_mensuel: 2500,
-      prix_annuel: 25000,
+      prix_mensuel: 1000,
+      prix_annuel: 10000,
       couleur: '#F97316',
       bg: '#FFF4ED',
       border: '#FED7AA',
@@ -133,8 +133,8 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
     {
       id: 'pro',
       nom: 'Pro',
-      prix_mensuel: 5000,
-      prix_annuel: 50000,
+      prix_mensuel: 1600,
+      prix_annuel: 16000,
       couleur: '#7C3AED',
       bg: '#F5F3FF',
       border: '#DDD6FE',
@@ -145,12 +145,12 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
     {
       id: 'elite',
       nom: 'Elite',
-      prix_mensuel: 9000,
-      prix_annuel: 90000,
+      prix_mensuel: 3000,
+      prix_annuel: 30000,
       couleur: '#0F172A',
       bg: '#F8FAFC',
       border: '#CBD5E1',
-      features: ['Tout Pro inclus', 'Multi-atelier (3 espaces)', 'Export comptabilité', 'Support prioritaire WhatsApp', 'Personnalisation logo PDF'],
+      features: ['Tout Pro inclus', 'Multi-atelier (3 espaces)', 'Export comptabilité', 'Personnalisation logo PDF'],
       exclues: [],
     },
   ] as const
@@ -415,6 +415,10 @@ export default function LandingPage() {
     <div style={{ fontFamily: 'Inter,sans-serif', background: '#FAFAF8', color: '#1a1a1a' }}>
 
       {/* Injection des styles responsive */}
+      {/* ─── BANNIÈRE PRÊT ────────────────────────────────────── */}
+      <div style={{ background: '#1a1a1a', color: '#D4AF37', textAlign: 'center', padding: '10px 16px', fontSize: 13, fontWeight: 500 }}>
+        À partir d'1 an d'ancienneté, demandez un prêt de 250 000 FCFA pour financer votre prochaine collection.
+      </div>
       <style>{mobileStyles}</style>
 
       {/* ─── NAV ─────────────────────────────────────────────── */}
@@ -438,7 +442,7 @@ export default function LandingPage() {
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
           <div style={{ width: 38, height: 38, background: '#F97316', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 18, fontWeight: 700 }}>✂</div>
-          <span style={{ fontSize: 20, fontWeight: 700 }}>Couture Pro</span>
+          <span style={{ fontSize: 20, fontWeight: 700, color: '#D4AF37' }}>Couture Pro</span>
         </div>
         <div className="cp-nav-links" style={{ display: 'flex', gap: 32 }}>
           {[
@@ -641,14 +645,14 @@ export default function LandingPage() {
           <div className="cp-tarifs-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, alignItems: 'stretch' }}>
             {[
               {
-                nom: 'Starter', prix_m: 2500, prix_a: 25000, couleur: '#F97316',
+                nom: 'Starter', prix_m: 1000, prix_a: 10000, couleur: '#F97316',
                 bg: 'white', border: '#f0ede8', btnBg: '#FFF4ED', btnColor: '#F97316',
                 features: ["Jusqu'à 30 clientes", 'Carnet de mesures', 'Gestion commandes', 'Tableau de bord de base'],
                 exclues: ['Factures PDF', 'Suivi paiements avancé', 'Support prioritaire'],
                 desc: 'Idéal pour démarrer',
               },
               {
-                nom: 'Pro', prix_m: 5000, prix_a: 50000, couleur: '#7C3AED',
+                nom: 'Pro', prix_m: 1600, prix_a: 16000, couleur: '#7C3AED',
                 bg: '#1a1a1a', border: '#1a1a1a', btnBg: '#F97316', btnColor: 'white',
                 badge: '⭐ Le plus populaire',
                 features: ['Clientes illimitées', 'Carnet de mesures complet', 'Gestion commandes + photos', 'Factures & reçus PDF', 'Suivi paiements & dettes', 'Tableau de bord avancé'],
@@ -656,9 +660,9 @@ export default function LandingPage() {
                 desc: "Pour l'atelier qui grandit",
               },
               {
-                nom: 'Elite', prix_m: 9000, prix_a: 90000, couleur: '#0F172A',
+                nom: 'Elite', prix_m: 3000, prix_a: 30000, couleur: '#0F172A',
                 bg: 'white', border: '#f0ede8', btnBg: '#1a1a1a', btnColor: 'white',
-                features: ['Tout Pro inclus', 'Multi-atelier (3 espaces)', 'Export comptabilité', 'Logo personnalisé sur PDFs', 'Support prioritaire WhatsApp'],
+                features: ['Tout Pro inclus', 'Multi-atelier (3 espaces)', 'Export comptabilité', 'Logo personnalisé sur PDFs'],
                 exclues: [],
                 desc: 'Pour les ateliers confirmés',
               },

@@ -1,218 +1,151 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { User } from "@/types";
+import { api, setToken, clearToken } from "@/lib/api";
 
-// ─── Définition des accès par forfait ────────────────────────────────────────
 export type Forfait = "starter" | "pro" | "elite";
 export type Billing = "mensuel" | "annuel";
+
+export const FORFAIT_PRIX: Record<Forfait, { mensuel: number; annuel: number }> = {
+  starter: { mensuel: 1000, annuel: 10000 },
+  pro:     { mensuel: 1600, annuel: 16000 },
+  elite:   { mensuel: 3000, annuel: 30000 },
+}
 
 export interface ForfaitAcces {
   clientes: boolean;
   mesures: boolean;
   commandes: boolean;
-  factures: boolean;       // PDF — bloqué sur Starter
-  paiements: boolean;      // Suivi avancé — bloqué sur Starter
-  multiAtelier: boolean;   // Elite uniquement
-  exportCompta: boolean;   // Elite uniquement
-  maxClientes: number | null; // null = illimité
+  factures: boolean;
+  paiements: boolean;
+  multiAtelier: boolean;
+  exportCompta: boolean;
+  maxClientes: number | null;
 }
 
-export const FORFAIT_ACCES: Record<Forfait, ForfaitAcces> = {
-  starter: {
-    clientes: true,
-    mesures: true,
-    commandes: true,
-    factures: false,
-    paiements: false,
-    multiAtelier: false,
-    exportCompta: false,
-    maxClientes: 30,
-  },
-  pro: {
-    clientes: true,
-    mesures: true,
-    commandes: true,
-    factures: true,
-    paiements: true,
-    multiAtelier: false,
-    exportCompta: false,
-    maxClientes: null,
-  },
-  elite: {
-    clientes: true,
-    mesures: true,
-    commandes: true,
-    factures: true,
-    paiements: true,
-    multiAtelier: true,
-    exportCompta: true,
-    maxClientes: null,
-  },
-};
-
-export const FORFAIT_PRIX = {
-  starter: { mensuel: 2500, annuel: 25000 },
-  pro:     { mensuel: 5000, annuel: 50000 },
-  elite:   { mensuel: 9000, annuel: 90000 },
-};
-
-// ─── Store ────────────────────────────────────────────────────────────────────
-interface AuthState {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-
-  login: (email: string, password: string) => Promise<void>;
-  register: (data: Partial<User> & { password: string; forfait?: Forfait; billing?: Billing }) => Promise<void>;
-  logout: () => void;
-  updateProfil: (data: Partial<User>) => void;
-
-  // Helper : renvoie les accès du user connecté
-  getAcces: () => ForfaitAcces;
-  // Helper : vrai si la feature est accessible
-  peutAcceder: (feature: keyof ForfaitAcces) => boolean;
-}
-
-const ESSAI_ACCES: ForfaitAcces = {
+// gardes en dur uniquement pour l'etat initial avant le premier appel API ;
+// la vraie source de verite est desormais la reponse du backend (champ "acces")
+const ACCES_PAR_DEFAUT: ForfaitAcces = {
   clientes: true,
-  mesures: true,
-  commandes: true,
-  factures: true,    // essai = tout débloquer 7j
-  paiements: true,
+  mesures: false,
+  commandes: false,
+  factures: false,
+  paiements: false,
   multiAtelier: false,
   exportCompta: false,
-  maxClientes: null,
+  maxClientes: 0,
 };
+
+interface AuthState {
+  user: User | null;
+  acces: ForfaitAcces;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string | null;
+
+  login: (email: string, password: string) => Promise<void>;
+  register: (data: {
+    nom: string;
+    email: string;
+    password: string;
+    nomAtelier?: string;
+    ville?: string;
+    telephone?: string;
+    forfait?: Forfait;
+    billing?: Billing;
+  }) => Promise<void>;
+  logout: () => void;
+  refreshMe: () => Promise<void>;
+  updateProfil: (data: Partial<User>) => Promise<void>;
+
+  peutAcceder: (feature: keyof ForfaitAcces) => boolean;
+}
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       user: null,
+      acces: ACCES_PAR_DEFAUT,
       isAuthenticated: false,
       isLoading: false,
+      error: null,
 
-      // ── Login ──────────────────────────────────────────────────────────────
       login: async (email, password) => {
-        set({ isLoading: true });
-        await new Promise((resolve) => setTimeout(resolve, 800));
-
-        // Admin
-        if (email === "admin@couturepro.app" && password === "change-moi-avec-un-mot-de-passe-fort-et-unique") {
+        set({ isLoading: true, error: null });
+        try {
+          const { data } = await api.post("/api/auth/login", { email, password });
+          setToken(data.token);
           set({
             isLoading: false,
             isAuthenticated: true,
-            user: {
-              id: "admin-001",
-              nom: "Administrateur",
-              email,
-              nomAtelier: "Couture Pro Admin",
-              ville: "",
-              telephone: "",
-              role: "admin",
-              statut: "actif",
-              forfait: "elite",
-              billing: "annuel",
-              dateInscription: "2026-01-01",
-              dateExpiration: "2027-01-01",
-              joursRestants: 365,
-            },
+            user: data.user,
+            acces: data.acces,
           });
-          return;
+        } catch (err: any) {
+          set({ isLoading: false });
+          const message = err.response?.data?.detail || "Erreur de connexion.";
+          set({ error: message });
+          throw new Error(message);
         }
-
-        // Couturière (mock — en prod : appel API)
-        set({
-          isLoading: false,
-          isAuthenticated: true,
-          user: {
-            id: "user-001",
-            nom: "Mon Atelier",
-            email,
-            nomAtelier: "Mon Atelier Couture",
-            ville: "Yaoundé",
-            telephone: "",
-            role: "couturiere",
-            statut: "actif",
-            forfait: "pro",          // ← valeur mock ; en prod : lire depuis DB
-            billing: "mensuel",
-            dateInscription: "2026-01-01",
-            dateExpiration: "2026-09-15",
-            joursRestants: 96,
-          },
-        });
       },
 
-      // ── Register ───────────────────────────────────────────────────────────
-      register: async (data) => {
-        set({ isLoading: true });
-        await new Promise((resolve) => setTimeout(resolve, 800));
-
-        const forfait: Forfait = data.forfait ?? "starter";
-        const billing: Billing = data.billing ?? "mensuel";
-
-        // Essai 7 jours
-        const dateExpiration = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
-
-        set({
-          isLoading: false,
-          isAuthenticated: true,
-          user: {
-            id: "user-" + Date.now(),
-            nom: data.nom ?? "",
-            email: data.email ?? "",
-            nomAtelier: data.nomAtelier ?? "",
-            ville: data.ville ?? "",
-            telephone: data.telephone ?? "",
-            role: "couturiere",
-            statut: "essai",
-            forfait,
-            billing,
-            dateInscription: new Date().toISOString(),
-            dateExpiration,
-            joursRestants: 7,
-          },
-        });
+      register: async (payload) => {
+        set({ isLoading: true, error: null });
+        try {
+          const { data } = await api.post("/api/auth/register", payload);
+          setToken(data.token);
+          set({
+            isLoading: false,
+            isAuthenticated: true,
+            user: data.user,
+            acces: data.acces,
+          });
+        } catch (err: any) {
+          set({ isLoading: false });
+          const message = err.response?.data?.detail || "Erreur lors de l'inscription.";
+          set({ error: message });
+          throw new Error(message);
+        }
       },
 
-      // ── Logout ─────────────────────────────────────────────────────────────
       logout: () => {
-        set({ user: null, isAuthenticated: false });
+        clearToken();
+        set({ user: null, isAuthenticated: false, acces: ACCES_PAR_DEFAUT });
       },
 
-      // ── Profil ─────────────────────────────────────────────────────────────
-      updateProfil: (data) => {
-        set((state) => ({
-          user: state.user ? { ...state.user, ...data } : null,
-        }));
-      },
-
-      // ── Helpers accès ──────────────────────────────────────────────────────
-      getAcces: () => {
-        const user = get().user;
-        if (!user) return ESSAI_ACCES;
-        if (user.statut === "essai") return ESSAI_ACCES;
-        if (user.statut !== "actif") {
-          // Compte suspendu / expiré : accès lecture seule minimal
-          return {
-            clientes: true,
-            mesures: false,
-            commandes: false,
-            factures: false,
-            paiements: false,
-            multiAtelier: false,
-            exportCompta: false,
-            maxClientes: 0,
-          };
+      // recharge le user + acces depuis le backend (ex: apres un refresh de page,
+      // ou apres qu'un admin ait change le forfait de l'utilisatrice)
+      refreshMe: async () => {
+        try {
+          const { data } = await api.get("/api/auth/me");
+          set({
+            isAuthenticated: true,
+            user: data.user,
+            acces: data.acces,
+          });
+        } catch {
+          clearToken();
+          set({ user: null, isAuthenticated: false, acces: ACCES_PAR_DEFAUT });
         }
-        return FORFAIT_ACCES[user.forfait ?? "starter"];
+      },
+
+      updateProfil: async (payload) => {
+        const { data } = await api.put("/api/auth/me", payload);
+        set((state) => ({ user: state.user ? { ...state.user, ...data } : data }));
       },
 
       peutAcceder: (feature) => {
-        return get().getAcces()[feature] as boolean;
+        return Boolean(get().acces[feature]);
       },
     }),
     {
       name: "couture-pro-auth",
+      // on ne persiste pas isLoading/error, seulement l'etat utile entre sessions
+      partialize: (state) => ({
+        user: state.user,
+        acces: state.acces,
+        isAuthenticated: state.isAuthenticated,
+      }),
     }
   )
 );

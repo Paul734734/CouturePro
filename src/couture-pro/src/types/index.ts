@@ -36,10 +36,15 @@ export interface Cliente {
   dateAnniversaire?: string
   stylePreference?: string
   budgetHabituel?: number
+  tailleVetement?: string   // S/M/L/XL... — distinct de Mesure.taille (tour de taille en cm)
+  hauteur?: number          // en metres, ex: 1.72
   notes?: string
   dateAjout: string
   userId: string
 }
+
+// Donnees du formulaire, avant que le backend n'assigne id/userId/dateAjout
+export type FormulaireCliente = Omit<Cliente, 'id' | 'userId' | 'dateAjout'>
 
 export interface Mesure {
   id: string
@@ -67,7 +72,6 @@ export interface Commande {
   userId: string
   typeVetement: string
   description?: string
-  photoModele?: string
   prixTotal: number
   avancePaye: number
   resteAPayer: number

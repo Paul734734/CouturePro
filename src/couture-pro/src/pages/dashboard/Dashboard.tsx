@@ -187,15 +187,21 @@ export default function Dashboard() {
 
   const userId = user?.id
 
-  const { getCommandesByUser } = useCommandesStore()
-  const { getClientesByUser } = useClientesStore()
-  const { getTotalEncaisseByUser, getSuiviByUser } = usePaiementsStore()
+  const { commandes: commandesStore, fetchCommandes } = useCommandesStore()
+  const { clientes: clientesStore, fetchClientes } = useClientesStore()
+  const { totaux, suivi, fetchTotaux, fetchSuivi } = usePaiementsStore()
 
   const forfait = user?.forfait ?? 'starter'
   const forfaitLabel = forfait.charAt(0).toUpperCase() + forfait.slice(1)
 
-  const commandes = userId ? getCommandesByUser(userId) : []
-  const clientes = userId ? getClientesByUser(userId) : []
+  const commandes = commandesStore
+  const clientes = clientesStore
+  useEffect(() => {
+    fetchCommandes()
+    fetchClientes()
+    fetchTotaux()
+    fetchSuivi()
+  }, [fetchCommandes, fetchClientes, fetchTotaux, fetchSuivi])
 
   const commandesUi = commandes as unknown as CommandeUi[]
 
@@ -213,8 +219,8 @@ export default function Dashboard() {
   const commandesNonSoldnees = commandesUiNormalized.filter((c) => (c.resteAPayer ?? 0) > 0 && c.statut !== 'annule')
   const commandesEnCours = commandesUiNormalized.filter((c) => ['en_cours', 'essayage', 'en_attente'].includes(c.statut))
 
-  const totalEncaisse = userId ? getTotalEncaisseByUser(userId) : 0
-  const restesAEncaisser = userId ? getSuiviByUser(userId).reduce((s, x) => s + (x.resteAPayer ?? 0), 0) : 0
+  const totalEncaisse = totaux.totalEncaisse
+  const restesAEncaisser = suivi.reduce((s, x) => s + (x.resteAPayer ?? 0), 0)
 
   const commandesLivrerCetteSemaine = commandesUiNormalized.filter((c) => ['pret', 'essayage'].includes(c.statut)).slice(0, 4)
 
