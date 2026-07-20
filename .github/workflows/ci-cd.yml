@@ -1,0 +1,65 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: src/couture-pro
+
+    - name: Run frontend tests
+      run: npm run test
+      working-directory: src/couture-pro
+
+    - name: Build frontend
+      run: npm run build
+      working-directory: src/couture-pro
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install backend dependencies
+      run: pip install -r requirements.txt
+      working-directory: couturepro-v2
+
+    - name: Run backend tests
+      run: pytest
+      working-directory: couturepro-v2
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Deploy to VPS
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_KEY }}
+        script: |
+          cd ~/CouturePro
+          git pull origin main
+          cd src/couture-pro && npm run build
+          sudo systemctl restart nginx
+          cd ~/CouturePro/couturepro-v2 && source venv/bin/activate && pytest
+          sudo systemctl restart couturepro
