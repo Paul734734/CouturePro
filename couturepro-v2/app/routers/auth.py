@@ -125,6 +125,8 @@ def _to_user_out(user: User) -> UserOut:
         nom_atelier=user.nom_atelier,
         ville=user.ville,
         telephone=user.telephone,
+        description=user.description,
+        logo_url=user.logo_url,
         role=user.role,
         statut=user.statut_effectif,
         forfait=user.forfait,

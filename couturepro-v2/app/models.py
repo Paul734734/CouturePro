@@ -40,6 +40,8 @@ class User(Base):
     nom_atelier = Column(String(150), nullable=True)
     ville = Column(String(100), nullable=True)
     telephone = Column(String(30), nullable=True)
+    description = Column(Text, nullable=True)
+    logo_url = Column(String(255), nullable=True)
     role = Column(Enum(Role), default=Role.COUTURIERE, nullable=False)
 
     # ── Abonnement ──────────────────────────────────────────────
@@ -134,7 +136,6 @@ class StatutCommande(str, enum.Enum):
 
 
 class Commande(Base):
-   temps_conception = Column(Float, nullable=True)
     __tablename__ = "commandes"
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
@@ -154,6 +155,7 @@ class Commande(Base):
 
     statut = Column(Enum(StatutCommande), default=StatutCommande.EN_ATTENTE)
     notes = Column(Text, nullable=True)
+    temps_conception = Column(Float, nullable=True)
 
 
 class TypePaiement(str, enum.Enum):

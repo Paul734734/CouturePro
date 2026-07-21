@@ -52,6 +52,8 @@ class UserOut(CamelModel):
     nom_atelier: Optional[str] = None
     ville: Optional[str] = None
     telephone: Optional[str] = None
+    description: Optional[str] = None
+    logo_url: Optional[str] = None
     role: Role
     statut: StatutUser
     forfait: Optional[Forfait] = None
@@ -77,6 +79,8 @@ class UpdateProfilRequest(CamelModel):
     nom_atelier: Optional[str] = None
     ville: Optional[str] = None
     telephone: Optional[str] = None
+    description: Optional[str] = None
+    logo_url: Optional[str] = None
 
 
 # ---------- CLIENTES ----------
@@ -182,7 +186,6 @@ class MesureOut(CamelModel):
 
 
 class CommandeCreate(CamelModel):
-   temps_conception: Optional[float] = None
     cliente_id: str
     type_vetement: str
     description: Optional[str] = None
@@ -192,10 +195,10 @@ class CommandeCreate(CamelModel):
     date_livraison: Optional[datetime] = None
     statut: StatutCommande = StatutCommande.EN_ATTENTE
     notes: Optional[str] = None
+    temps_conception: Optional[float] = None
 
 
 class CommandeUpdate(CamelModel):
-   temps_conception: Optional[float] = None
     type_vetement: Optional[str] = None
     description: Optional[str] = None
     prix_total: Optional[float] = None
@@ -211,7 +214,6 @@ class CommandeStatutUpdate(CamelModel):
 
 
 class CommandeOut(CamelModel):
-   temps_conception: Optional[float] = None
     id: str
     user_id: str
     cliente_id: str
@@ -343,7 +345,6 @@ class AdminDashboardStats(CamelModel):
     revenus_estimes_mensuel: float
 from datetime import datetime
 from typing import Optional
-from app.utils.camel_model import CamelModel
 
 class PaiementOutEnrichi(CamelModel):
     id: str
@@ -354,62 +355,3 @@ class PaiementOutEnrichi(CamelModel):
     notes: Optional[str] = None
     clienteNom: Optional[str] = None
     commandeLabel: Optional[str] = None
-from datetime import datetime
-from typing import Optional
-from app.utils.camel_model import CamelModel
-
-class FactureBase(CamelModel):
-    commandeId: str
-    montant: float
-    date: datetime
-    notes: Optional[str] = None
-
-class FactureCreate(FactureBase):
-    pass
-
-class FactureOut(FactureBase):
-    id: str
-class StockBase(CamelModel):
-    nom: str
-    quantite: int
-    categorie: str
-
-class StockCreate(StockBase):
-    pass
-
-class StockOut(StockBase):
-    id: str
-class CatalogueBase(CamelModel):
-    nom: str
-    description: str
-    imageUrl: str
-
-class CatalogueCreate(CatalogueBase):
-    pass
-
-class CatalogueOut(CatalogueBase):
-    id: str
-class ProfilBase(CamelModel):
-    nomAtelier: str
-    description: str
-    contact: str
-    localisation: str
-    logoUrl: str
-
-class ProfilUpdate(ProfilBase):
-    pass
-
-class ProfilOut(ProfilBase):
-    id: str
-class ProfilBase(CamelModel):
-    nomAtelier: str
-    description: str
-    contact: str
-    localisation: str
-    logoUrl: str
-
-class ProfilUpdate(ProfilBase):
-    pass
-
-class ProfilOut(ProfilBase):
-    id: str

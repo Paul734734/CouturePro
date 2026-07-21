@@ -11,7 +11,8 @@ export default function Profil() {
     email: user?.email || '',
     telephone: user?.telephone || '',
     ville: user?.ville || '',
-    description: '',
+    description: user?.description || '',
+    logoUrl: user?.logoUrl || '',
   })
   const [saved, setSaved] = useState(false)
   const [activeSection, setActiveSection] = useState<'profil' | 'securite' | 'abonnement'>('profil')
@@ -24,7 +25,8 @@ export default function Profil() {
         email: user.email,
         telephone: user.telephone || '',
         ville: user.ville || '',
-        description: '',
+        description: user.description || '',
+        logoUrl: user.logoUrl || '',
       })
     }
   }, [user])
@@ -38,6 +40,8 @@ export default function Profil() {
       email: form.email,
       telephone: form.telephone,
       ville: form.ville,
+      description: form.description,
+      logoUrl: form.logoUrl,
     })
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
@@ -144,6 +148,21 @@ export default function Profil() {
                     />
                   </div>
                 ))}
+                <div>
+                  <label style={{ fontSize: 13, fontWeight: 600, color: '#444', display: 'block', marginBottom: 6 }}>
+                    URL du logo
+                  </label>
+                  <input
+                    value={form.logoUrl}
+                    onChange={(e) => set('logoUrl', e.target.value)}
+                    placeholder="https://exemple.com/logo.png"
+                    style={{
+                      width: '100%', padding: '11px 14px', borderRadius: 10, fontSize: 14,
+                      border: '1.5px solid #e5e5e5', outline: 'none', background: '#FAFAF8',
+                      boxSizing: 'border-box', color: '#1a1a1a',
+                    }}
+                  />
+                </div>
                 <div>
                   <label style={{ fontSize: 13, fontWeight: 600, color: '#444', display: 'block', marginBottom: 6 }}>
                     Description de l'atelier

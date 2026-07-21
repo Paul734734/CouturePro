@@ -8,6 +8,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from app.database import Base
+from app import models  # noqa: F401 — enregistre les tables sur Base.metadata
 target_metadata = Base.metadata
 
 # Alembic Config object

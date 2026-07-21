@@ -12,6 +12,8 @@ export interface User {
   nomAtelier?: string
   ville?: string
   telephone?: string
+  description?: string
+  logoUrl?: string
   role: 'couturiere' | 'admin'
 
   // ── Abonnement ────────────────────────────────────
