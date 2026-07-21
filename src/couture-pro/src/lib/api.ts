@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://couturepro.app/api",
+  baseURL: import.meta.env.VITE_API_URL || "https://couturepro.app/api",
 });
 
 const TOKEN_KEY = "couture-pro-token";

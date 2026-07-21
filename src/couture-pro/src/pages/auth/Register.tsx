@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore, type Forfait, type Billing, FORFAIT_PRIX } from '@/store/authStore'
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const PHONE_REGEX = /^(\+?\d{1,4}[\s.-]?)?\d{6,10}$/
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface FormData {
   prenom: string
@@ -57,6 +60,7 @@ export default function Register() {
   const [forfait, setForfait] = useState<Forfait>('pro')
   const [billing, setBilling] = useState<Billing>('mensuel')
   const [error, setError] = useState('')
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof FormData, string>>>({})
 
   const [form, setForm] = useState<FormData>({
     prenom: '', nom: '', nomAtelier: '',
@@ -67,6 +71,7 @@ export default function Register() {
   const update = (key: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm(p => ({ ...p, [key]: e.target.value }))
     setError('')
+    setFieldErrors(p => ({ ...p, [key]: undefined }))
   }
 
   const getPrix = (f: Forfait) =>
@@ -77,26 +82,51 @@ export default function Register() {
   const getEco = (f: Forfait) =>
     Math.round(((FORFAIT_PRIX[f].mensuel * 12 - FORFAIT_PRIX[f].annuel) / (FORFAIT_PRIX[f].mensuel * 12)) * 100)
 
+const validate = (): boolean => {
+  const errs: Partial<Record<keyof FormData, string>> = {}
+
+  if (!form.prenom.trim()) errs.prenom = 'Le prénom est requis.'
+  if (!form.nom.trim()) errs.nom = 'Le nom est requis.'
+
+  if (!form.email.trim()) {
+    errs.email = "L'email est requis."
+  } else if (!EMAIL_REGEX.test(form.email.trim())) {
+    errs.email = 'Format email invalide (ex : nom@exemple.com).'
+  }
+
+  if (form.telephone.trim() && !PHONE_REGEX.test(form.telephone.trim())) {
+    errs.telephone = 'Numéro invalide (ex : +237 6XX XXX XXX).'
+  }
+
+  if (!form.password) {
+    errs.password = 'Le mot de passe est requis.'
+  } else if (form.password.length < 6) {
+    errs.password = 'Minimum 6 caractères.'
+  }
+
+  if (!form.confirm) {
+    errs.confirm = 'Veuillez confirmer le mot de passe.'
+  } else if (form.password !== form.confirm) {
+    errs.confirm = 'Les mots de passe ne correspondent pas.'
+  }
+
+  setFieldErrors(errs)
+  return Object.keys(errs).length === 0
+}
+
 const handleSubmit = async () => {
-  if (!form.prenom || !form.nom || !form.email || !form.password) {
-    setError('Veuillez remplir tous les champs obligatoires (*).')
-    return
-  }
-  if (form.password !== form.confirm) {
-    setError('Les mots de passe ne correspondent pas.')
-    return
-  }
-  if (form.password.length < 6) {
-    setError('Le mot de passe doit contenir au moins 6 caractères.')
+  setError('')
+  if (!validate()) {
+    setError('Veuillez corriger les champs en rouge ci-dessous.')
     return
   }
 
   await register({
-    nom: `${form.prenom} ${form.nom}`.trim(),
-    email: form.email,
-    nomAtelier: form.nomAtelier || `Atelier de ${form.prenom}`,
-    ville: form.ville,
-    telephone: form.telephone,
+    nom: `${form.prenom.trim()} ${form.nom.trim()}`.trim(),
+    email: form.email.trim().toLowerCase(),
+    nomAtelier: form.nomAtelier.trim() || `Atelier de ${form.prenom.trim()}`,
+    ville: form.ville.trim(),
+    telephone: form.telephone.trim(),
     password: form.password,
     forfait,
     billing,
@@ -322,8 +352,8 @@ const handleSubmit = async () => {
                 { key: 'prenom' as keyof FormData, label: 'Prénom *', placeholder: 'Aminata', type: 'text' },
                 { key: 'nom' as keyof FormData, label: 'Nom *', placeholder: 'Koné', type: 'text' },
                 { key: 'nomAtelier' as keyof FormData, label: "Nom de l'atelier", placeholder: 'Atelier Lumière', type: 'text', full: true },
-                { key: 'telephone' as keyof FormData, label: 'Téléphone / WhatsApp', placeholder: '+225 07 00 00 00', type: 'tel' },
-                { key: 'ville' as keyof FormData, label: 'Ville', placeholder: 'Abidjan', type: 'text' },
+                { key: 'telephone' as keyof FormData, label: 'Téléphone / WhatsApp', placeholder: '+237 6XX XXX XXX', type: 'tel' },
+                { key: 'ville' as keyof FormData, label: 'Ville', placeholder: 'Yaoundé', type: 'text' },
                 { key: 'email' as keyof FormData, label: 'Email *', placeholder: 'votre@email.com', type: 'email', full: true },
                 { key: 'password' as keyof FormData, label: 'Mot de passe * (min. 6 car.)', placeholder: '••••••••', type: 'password' },
                 { key: 'confirm' as keyof FormData, label: 'Confirmer le mot de passe *', placeholder: '••••••••', type: 'password' },
@@ -335,10 +365,19 @@ const handleSubmit = async () => {
                     value={form[f.key]}
                     onChange={update(f.key)}
                     placeholder={f.placeholder}
-                    style={inp}
-                    onFocus={e => (e.target.style.borderColor = '#F97316')}
-                    onBlur={e => (e.target.style.borderColor = '#E5E7EB')}
+                    style={{
+                      ...inp,
+                      borderColor: fieldErrors[f.key] ? '#DC2626' : '#E5E7EB',
+                      background: fieldErrors[f.key] ? '#FEF2F2' : '#FAFAFA',
+                    }}
+                    onFocus={e => (e.target.style.borderColor = fieldErrors[f.key] ? '#DC2626' : '#F97316')}
+                    onBlur={e => (e.target.style.borderColor = fieldErrors[f.key] ? '#DC2626' : '#E5E7EB')}
                   />
+                  {fieldErrors[f.key] && (
+                    <span style={{ fontSize: 11, color: '#DC2626', marginTop: 4, display: 'block' }}>
+                      {fieldErrors[f.key]}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
