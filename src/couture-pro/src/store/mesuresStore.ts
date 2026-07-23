@@ -1,27 +1,8 @@
 import { create } from "zustand";
 import { api } from "@/lib/api";
+import type { Mesure } from "@/types";
 
-export interface Mesure {
-  id: string;
-  userId: string;
-  clienteId: string;
-  poitrine?: number;
-  taille?: number;
-  hanche?: number;
-  longueurRobe?: number;
-  manches?: number;
-  epaules?: number;
-  bras?: number;
-  sousPoitrine?: number;
-  hauteurPoitrine?: number;
-  ecartPoitrine?: number;
-  longueurJupe?: number;
-  pantalon?: number;
-  notesMorphologie?: string;
-  updatedAt: string;
-}
-
-export type FormulaireMesure = Omit<Mesure, "id" | "userId" | "updatedAt">;
+export type FormulaireMesure = Omit<Mesure, "id" | "userId" | "dateModification">;
 
 interface MesuresState {
   // historique complet, indexe par clienteId pour un acces rapide
@@ -35,6 +16,7 @@ interface MesuresState {
   supprimerMesure: (id: string, clienteId: string) => Promise<void>;
 
   getHistoriqueCliente: (clienteId: string) => Mesure[];
+  getMesuresByCliente: (clienteId: string) => Mesure[];
   getDerniereMesure: (clienteId: string) => Mesure | undefined;
 }
 
@@ -93,6 +75,7 @@ export const useMesuresStore = create<MesuresState>()((set, get) => ({
   },
 
   getHistoriqueCliente: (clienteId) => get().parCliente[clienteId] || [],
+  getMesuresByCliente: (clienteId) => get().parCliente[clienteId] || [],
 
   // pratique pour un affichage type "carte resume" -> la plus recente du tableau
   getDerniereMesure: (clienteId) => (get().parCliente[clienteId] || [])[0],

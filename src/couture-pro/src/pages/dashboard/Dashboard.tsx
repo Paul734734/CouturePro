@@ -333,14 +333,15 @@ export default function Dashboard() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 16, marginBottom: 32 }}>
             {stats.map((s) => (
-              <AnimatedStatCard
-                key={s.label}
-                title={s.label}
-                icon={s.icon}
-                value={s.value}
-                change={s.change}
-                ok={s.ok}
-              />
+              <div key={s.label}>
+                <AnimatedStatCard
+                  title={s.label}
+                  icon={s.icon}
+                  value={s.value}
+                  change={s.change}
+                  ok={s.ok}
+                />
+              </div>
             ))}
           </div>
 

@@ -6,7 +6,7 @@
 //   if (!peutAcceder('factures')) return <FeatureGate feature="factures" />
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { useAuthStore, type ForfaitAcces, FORFAIT_ACCES } from '@/store/authStore'
+import { useAuthStore, type ForfaitAcces } from '@/store/authStore'
 import { Link } from 'react-router-dom'
 
 export function useAcces() {

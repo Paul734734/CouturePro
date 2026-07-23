@@ -25,13 +25,25 @@ export interface TotauxPaiements {
   totalReste: number;
 }
 
+export interface PaiementEnrichi {
+  id: string;
+  clienteNom: string;
+  commandeLabel: string;
+  montant: number;
+  type: "avance" | "solde" | "partiel";
+  date: string;
+  notes?: string;
+}
+
 interface PaiementsState {
+  paiements: PaiementEnrichi[];
   parCommande: Record<string, Paiement[]>;
   suivi: SuiviPaiement[];
   totaux: TotauxPaiements;
   isLoading: boolean;
   error: string | null;
 
+  fetchPaiements: () => Promise<void>;
   fetchPaiementsCommande: (commandeId: string) => Promise<void>;
   ajouterPaiement: (data: FormulairePaiement) => Promise<Paiement>;
   fetchSuivi: () => Promise<void>;
@@ -41,11 +53,25 @@ interface PaiementsState {
 }
 
 export const usePaiementsStore = create<PaiementsState>()((set, get) => ({
+  paiements: [],
   parCommande: {},
   suivi: [],
   totaux: { totalEncaisse: 0, totalReste: 0 },
   isLoading: false,
   error: null,
+
+  fetchPaiements: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const { data } = await api.get<PaiementEnrichi[]>("/api/paiements");
+      set({ paiements: data, isLoading: false });
+    } catch (err: any) {
+      set({
+        isLoading: false,
+        error: err.response?.data?.detail || "Erreur lors du chargement des paiements.",
+      });
+    }
+  },
 
   fetchPaiementsCommande: async (commandeId) => {
     set({ isLoading: true, error: null });

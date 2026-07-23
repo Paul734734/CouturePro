@@ -7,6 +7,7 @@ import { useMesuresStore } from '../../store/mesuresStore'
 import { useFacturesStore } from '../../store/facturesStore'
 import { useAuthStore } from '../../store/authStore'
 import { formatDate } from '../../lib/utils'
+import type * as React from 'react'
 
 const ONGLETS = ['Infos', 'Mesures', 'Commandes', 'Factures'] as const
 type Onglet = typeof ONGLETS[number]
@@ -338,11 +339,11 @@ export default function ClienteDetail() {
 
         {onglet === 'Mesures' && (
           <div>
-            {mesures ? (
+            {mesures && mesures.length > 0 ? (
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                   <p style={{ color: '#888', fontSize: 13, margin: 0 }}>
-                    Dernière mise à jour : {formatDate(mesures.dateMiseAJour ?? mesures.dateMesure)}
+                    Dernière mise à jour : {formatDate(mesures[0].dateModification)}
                   </p>
                   <Link
                     to={`/mesures/${cliente.id}`}
@@ -362,18 +363,18 @@ export default function ClienteDetail() {
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 16 }}>
                   {[
-                    { label: 'Poitrine', val: mesures.poitrine },
-                    { label: 'Taille', val: mesures.taille },
-                    { label: 'Hanche', val: mesures.hanche },
-                    { label: 'Longueur robe', val: mesures.longueurRobe },
-                    { label: 'Manches', val: mesures.manches },
-                    { label: 'Épaules', val: mesures.epaules },
-                    { label: 'Bras', val: mesures.bras },
-                    { label: 'Sous-poitrine', val: mesures.sousPoitrine },
-                    { label: 'Hauteur poitrine', val: mesures.hauteurPoitrine },
-                    { label: 'Écart poitrine', val: mesures.ecartPoitrine },
-                    { label: 'Longueur jupe', val: mesures.longueurJupe },
-                    { label: 'Pantalon', val: mesures.pantalon },
+                    { label: 'Poitrine', val: mesures[0].poitrine },
+                    { label: 'Taille', val: mesures[0].taille },
+                    { label: 'Hanche', val: mesures[0].hanche },
+                    { label: 'Longueur robe', val: mesures[0].longueurRobe },
+                    { label: 'Manches', val: mesures[0].manches },
+                    { label: 'Épaules', val: mesures[0].epaules },
+                    { label: 'Bras', val: mesures[0].bras },
+                    { label: 'Sous-poitrine', val: mesures[0].sousPoitrine },
+                    { label: 'Hauteur poitrine', val: mesures[0].hauteurPoitrine },
+                    { label: 'Écart poitrine', val: mesures[0].ecartPoitrine },
+                    { label: 'Longueur jupe', val: mesures[0].longueurJupe },
+                    { label: 'Pantalon', val: mesures[0].pantalon },
                   ].map((m) => (
                     <div
                       key={m.label}
@@ -395,9 +396,9 @@ export default function ClienteDetail() {
                   ))}
                 </div>
 
-                {mesures.notesMorphologie && (
+                {mesures[0].notesMorphologie && (
                   <InfoCard titre="📝 Notes morphologie">
-                    <p style={{ color: '#555', fontSize: 14, lineHeight: 1.6, margin: 0 }}>{mesures.notesMorphologie}</p>
+                    <p style={{ color: '#555', fontSize: 14, lineHeight: 1.6, margin: 0 }}>{mesures[0].notesMorphologie}</p>
                   </InfoCard>
                 )}
               </div>
@@ -545,11 +546,11 @@ export default function ClienteDetail() {
                           <div style={{ fontWeight: 600, color: '#1a1a1a', fontSize: 14, marginBottom: 2 }}>
                             {fac.numero}
                           </div>
-                          <div style={{ color: '#888', fontSize: 13 }}>{fac.commandeLabel || fac.commandeDescription || 'Facture'}</div>
+                          <div style={{ color: '#888', fontSize: 13 }}>{fac.commandeDescription || 'Facture'}</div>
                         </div>
                         <div style={{ textAlign: 'right' }}>
                           <div style={{ fontWeight: 700, color: '#1a1a1a', fontSize: 15 }}>
-                            {Number(fac.prixTotal).toLocaleString()} FCFA
+                            {Number(fac.montantTotal).toLocaleString()} FCFA
                           </div>
                           <span
                             style={{
@@ -557,22 +558,22 @@ export default function ClienteDetail() {
                               fontWeight: 600,
                               borderRadius: 20,
                               padding: '2px 10px',
-                              background: fac.statut === 'solde' ? '#dcfce7' : fac.statut === 'partiel' ? '#fff7ed' : '#fef2f2',
-                              color: fac.statut === 'solde' ? '#16a34a' : fac.statut === 'partiel' ? '#F97316' : '#ef4444',
+                              background: fac.statut === 'payee' ? '#dcfce7' : fac.statut === 'partielle' ? '#fff7ed' : '#fef2f2',
+                              color: fac.statut === 'payee' ? '#16a34a' : fac.statut === 'partielle' ? '#F97316' : '#ef4444',
                             }}
                           >
-                            {fac.statut === 'solde' ? 'Soldé' : fac.statut === 'partiel' ? 'Partielle' : 'Impayée'}
+                            {fac.statut === 'payee' ? 'Payée' : fac.statut === 'partielle' ? 'Partielle' : 'Impayée'}
                           </span>
                         </div>
                       </div>
-                      {fac.resteAPayer > 0 && (
+                      {fac.montantReste > 0 && (
                         <div style={{ fontSize: 13, color: '#F97316', marginTop: 8, fontWeight: 600 }}>
-                          Reste : {Number(fac.resteAPayer).toLocaleString()} FCFA
+                          Reste : {Number(fac.montantReste).toLocaleString()} FCFA
                         </div>
                       )}
                       <div style={{ fontSize: 12, color: '#bbb', marginTop: 6 }}>
                         {new Date(fac.dateEmission).toLocaleDateString('fr-FR')} ·{' '}
-                        {fac.typeDocument === 'facture' ? 'Facture' : fac.typeDocument === 'recu' ? 'Reçu' : 'Devis'}
+                        {fac.type === 'facture' ? 'Facture' : fac.type === 'recu' ? 'Reçu' : 'Devis'}
                       </div>
                     </div>
                   </Link>

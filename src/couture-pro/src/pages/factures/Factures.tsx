@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useFacturesStore } from "@/store/facturesStore";
-import AppLayout from "@/components/AppLayout";
+import AppLayout from "@/components/layout/AppLayout";
 
 function Factures() {
   const { factures, fetchFactures, supprimerFacture, isLoading, error } = useFacturesStore();
@@ -23,9 +23,9 @@ function Factures() {
       <ul>
         {factures.map((f) => (
           <li key={f.id} style={{margin:"10px 0"}}>
-            <strong>Commande {f.commandeId}</strong> — {f.montant} FCFA
+            <strong>{f.numero}</strong> — {f.montantTotal} FCFA
             <br />
-            Date : {new Date(f.date).toLocaleDateString()}
+            Date : {new Date(f.dateEmission).toLocaleDateString()}
             <br />
             Notes : {f.notes || ""}
             <br />

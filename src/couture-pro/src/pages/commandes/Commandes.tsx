@@ -72,7 +72,6 @@ export default function Commandes() {
         notes: '',
         resteAPayer: Math.max(0, prixTotal - avancePaye),
       } as any,
-      user.id,
     )
 
     setShowForm(false)

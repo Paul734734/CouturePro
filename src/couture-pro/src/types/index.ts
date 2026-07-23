@@ -4,6 +4,9 @@
 export type Forfait = 'starter' | 'pro' | 'elite'
 export type Billing = 'mensuel' | 'annuel'
 export type StatutUser = 'essai' | 'actif' | 'suspendu' | 'expire'
+export type StatutPaiement = 'solde' | 'partiel' | 'impaye'
+export type TypeDocument = 'facture' | 'devis' | 'recu'
+export type StatutCompte = 'actif' | 'suspendu' | 'essai' | 'grace'
 
 export interface User {
   id: string
@@ -68,6 +71,8 @@ export interface Mesure {
   dateModification: string
 }
 
+export type FormulaireCommande = Omit<Commande, 'id' | 'userId' | 'resteAPayer'>
+
 export interface Commande {
   id: string
   clienteId: string
@@ -95,16 +100,24 @@ export interface Paiement {
   notes?: string
 }
 
+export type StatutFacture = 'payee' | 'partielle' | 'impayee'
+
 export interface Facture {
   id: string
-  numero: string
-  commandeId: string
-  clienteId: string
   userId: string
+  clienteId: string
+  commandeId?: string
+  clienteNom: string
+  commandeDescription?: string
+  numero: string
   type: 'facture' | 'devis' | 'recu'
+  statut: StatutFacture
   montantTotal: number
-  avance: number
-  reste: number
+  montantPaye: number
+  montantReste: number
   dateEmission: string
-  statut: 'payee' | 'impayee' | 'partielle'
+  dateEcheance?: string
+  logoAtelier?: string
+  nomAtelier?: string
+  notes?: string
 }

@@ -26,11 +26,11 @@ export default function AjouterCommande() {
   const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
   const { ajouterCommande, modifierCommande, getCommandeById } = useCommandesStore()
-  const { getClientesByUser } = useClientesStore()
+  const { clientes, fetchClientes } = useClientesStore()
 
   const isEdit = Boolean(id)
   const existing = isEdit ? getCommandeById(id!) : null
-  const clientes = user ? getClientesByUser(user.id) : []
+  // clientes vient directement du store, deja filtre par le backend via le token
   const preselectedClienteId = searchParams.get('clienteId') || ''
 
   const [form, setForm] = useState({
@@ -38,8 +38,6 @@ export default function AjouterCommande() {
     typeVetement: '',
     description: '',
     prixTotal: '',
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
     avancePaye: '',
     dateCommande: new Date().toISOString().split('T')[0],
     dateEssayage: '',
@@ -53,14 +51,16 @@ export default function AjouterCommande() {
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    fetchClientes()
+  }, [])
+
+  useEffect(() => {
     if (existing) {
       setForm({
         clienteId: existing.clienteId || '',
         typeVetement: existing.typeVetement || '',
         description: existing.description || '',
         prixTotal: existing.prixTotal?.toString() || '',
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
         avancePaye: existing.avancePaye?.toString() || '',
         dateCommande: existing.dateCommande || new Date().toISOString().split('T')[0],
         dateEssayage: existing.dateEssayage || '',
@@ -92,11 +92,7 @@ export default function AjouterCommande() {
     if (!form.clienteId) e.clienteId = 'Choisissez une cliente'
     if (!form.typeVetement) e.typeVetement = 'Le type de vêtement est requis'
     if (!form.prixTotal || Number(form.prixTotal) <= 0) e.prixTotal = 'Le prix total est requis'
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
     if (Number(form.avancePaye) > Number(form.prixTotal)) e.avancePaye = "L'avance ne peut dépasser le prix total"
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
     return e
   }
 
@@ -108,21 +104,14 @@ export default function AjouterCommande() {
     await new Promise((r) => setTimeout(r, 300))
 
     const prixTotal = Number(form.prixTotal)
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
     const avancePaye = Number(form.avancePaye) || 0
     const resteAPayer = prixTotal - avancePaye
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
-    const clienteNom = clienteSelectionnee?.nom || existing?.clienteNom || ''
+    const clienteNom = clienteSelectionnee?.nom || ''
     const payload = {
       clienteId: form.clienteId,
-      clienteNom,
       typeVetement: form.typeVetement,
       description: form.description,
       prixTotal,
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
       avancePaye,
       dateCommande: form.dateCommande,
       dateEssayage: form.dateEssayage,
@@ -135,7 +124,7 @@ export default function AjouterCommande() {
     if (isEdit) {
       modifierCommande(id!, payload)
     } else {
-      ajouterCommande(payload, user.id)
+      ajouterCommande(payload)
     }
 
     setLoading(false)
@@ -143,8 +132,6 @@ export default function AjouterCommande() {
   }
 
   const reste = Number(form.prixTotal || 0) - Number(form.avancePaye || 0)
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
   const clienteSelectionnee = clientes.find((c) => c.id === form.clienteId)
 
   return (
@@ -255,20 +242,12 @@ export default function AjouterCommande() {
 
         <Section titre="💰 Prix & Paiement">
           <Champ label="Prix total (FCFA) *" erreur={erreurs.prixTotal}>
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
             <input
               type="number"
               value={form.prixTotal}
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
               onChange={(e) => set('prixTotal', e.target.value)}
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
               placeholder="Ex: 50000"
               style={inputStyle(!!erreurs.prixTotal)}
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
             />
           </Champ>
           <Champ label="Avance payée (FCFA)" erreur={erreurs.avancePaye}>
@@ -281,8 +260,6 @@ export default function AjouterCommande() {
             />
           </Champ>
           {Number(form.prixTotal) > 0 && (
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
             <div style={{
               background: reste > 0 ? '#FFF7ED' : '#f0fdf4',
               border: `1px solid ${reste > 0 ? '#fed7aa' : '#bbf7d0'}`,
@@ -291,8 +268,6 @@ export default function AjouterCommande() {
             }}>
               {[
                 { label: 'Total', val: `${Number(form.prixTotal).toLocaleString()}`, color: '#1a1a1a' },
-        <label>Temps de conception (heures)</label>
-        <input type="number" value={commande.tempsConception || ""} onChange={e => setCommande({...commande, tempsConception: parseFloat(e.target.value)})} />
                 { label: 'Avance', val: `${Number(form.avancePaye || 0).toLocaleString()}`, color: '#16a34a' },
                 { label: 'Reste', val: `${reste.toLocaleString()}`, color: reste > 0 ? '#F97316' : '#16a34a' },
               ].map((s) => (

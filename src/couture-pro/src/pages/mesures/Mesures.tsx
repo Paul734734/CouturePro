@@ -56,7 +56,7 @@ export default function Mesures() {
   }
 
   return (
-    <AppLayout>
+    <AppLayout titre="Mesures">
       <div style={{ maxWidth: 1100, display: 'grid', gridTemplateColumns: '280px 1fr', gap: 20 }}>
 
         {/* LISTE CLIENTES */}

@@ -61,6 +61,24 @@ interface AuthState {
   peutAcceder: (feature: keyof ForfaitAcces) => boolean;
 }
 
+// Extrait un message lisible depuis une erreur axios/FastAPI.
+// FastAPI renvoie soit une string (detail: "..."), soit un tableau
+// d'erreurs de validation Pydantic (detail: [{loc, msg, type}, ...]).
+function extractErrorMessage(err: any, fallback: string): string {
+  const detail = err?.response?.data?.detail;
+  if (!detail) return fallback;
+  if (typeof detail === "string") return detail;
+  if (Array.isArray(detail)) {
+    return detail
+      .map((e: any) => {
+        const field = Array.isArray(e?.loc) ? e.loc[e.loc.length - 1] : "champ";
+        return `${field} : ${e?.msg || "invalide"}`;
+      })
+      .join(" \u00b7 ");
+  }
+  return fallback;
+}
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
@@ -83,7 +101,7 @@ export const useAuthStore = create<AuthState>()(
           });
         } catch (err: any) {
           set({ isLoading: false });
-          const message = err.response?.data?.detail || "Erreur de connexion.";
+          const message = extractErrorMessage(err, "Erreur de connexion.");
           set({ error: message });
           throw new Error(message);
         }
@@ -102,7 +120,7 @@ export const useAuthStore = create<AuthState>()(
           });
         } catch (err: any) {
           set({ isLoading: false });
-          const message = err.response?.data?.detail || "Erreur lors de l'inscription.";
+          const message = extractErrorMessage(err, "Erreur lors de l'inscription.");
           set({ error: message });
           throw new Error(message);
         }

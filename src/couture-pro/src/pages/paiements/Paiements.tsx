@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { usePaiementsStore } from "@/store/paiementsStore";
-import AppLayout from "@/components/AppLayout";
+import AppLayout from "@/components/layout/AppLayout";
 
 function Paiements() {
   const { paiements, fetchPaiements, isLoading, error } = usePaiementsStore();
@@ -42,8 +42,8 @@ function Paiements() {
         <tbody>
           {paiements.map((p) => (
             <tr key={p.id} style={{ borderBottom: "1px solid #eee" }}>
-              <td>{p.cliente_nom}</td>
-              <td>{p.commande_label}</td>
+              <td>{p.clienteNom}</td>
+              <td>{p.commandeLabel}</td>
               <td>{p.montant} FCFA</td>
               <td>{p.type}</td>
               <td>{new Date(p.date).toLocaleDateString()}</td>

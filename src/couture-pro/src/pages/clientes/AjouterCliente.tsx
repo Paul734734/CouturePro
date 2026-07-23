@@ -4,6 +4,7 @@ import AppLayout from '../../components/layout/AppLayout'
 import { useClientesStore } from '../../store/clientesStore'
 import { useAuthStore } from '../../store/authStore'
 import type { Cliente } from '@/types'
+import type * as React from 'react'
 
 const STYLES = ['Africain moderne', 'Classique élégant', 'Traditionnel', 'Soirée', 'Casual chic', 'Boubou luxe', 'Tailleur', 'Décontracté']
 const TAILLES = ['XS', 'S', 'M', 'L', 'XL', 'XXL']

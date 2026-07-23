@@ -1,16 +1,8 @@
 import { create } from "zustand";
 import { api } from "@/lib/api";
+import type { Facture } from "@/types";
 
-export interface Facture {
-  id: string;
-  userId: string;
-  commandeId: string;
-  montant: number;
-  date: string;
-  notes?: string;
-}
-
-export type FormulaireFacture = Omit<Facture, "id" | "userId" | "date">;
+export type FormulaireFacture = { clienteId: string; commandeId?: string; type?: "facture" | "devis" | "recu"; montantTotal: number; montantPaye: number; dateEcheance?: string; notes?: string };
 
 interface FacturesState {
   factures: Facture[];
@@ -20,9 +12,11 @@ interface FacturesState {
   fetchFactures: () => Promise<void>;
   ajouterFacture: (data: FormulaireFacture) => Promise<Facture>;
   supprimerFacture: (id: string) => Promise<void>;
+  getFacturesByCliente: (clienteId: string) => Facture[];
+  getFactureById: (id: string) => Facture | undefined;
 }
 
-export const useFacturesStore = create<FacturesState>()((set) => ({
+export const useFacturesStore = create<FacturesState>()((set, get) => ({
   factures: [],
   isLoading: false,
   error: null,
@@ -49,4 +43,7 @@ export const useFacturesStore = create<FacturesState>()((set) => ({
       factures: state.factures.filter((f) => f.id !== id),
     }));
   },
+
+  getFacturesByCliente: (clienteId) => get().factures.filter((f) => f.clienteId === clienteId),
+  getFactureById: (id) => get().factures.find((f) => f.id === id),
 }));

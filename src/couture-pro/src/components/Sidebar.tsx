@@ -3,7 +3,7 @@
 
 import { Link, useLocation } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
-import { useAcces } from '@/hooks/useAcces'
+import { useAcces } from '@/components/hooks/useAcces'
 
 const NAV_ITEMS = [
   { path: '/dashboard',  label: 'Tableau de bord', icon: '📊', feature: null },

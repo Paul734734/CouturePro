@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore, type Forfait, type Billing, FORFAIT_PRIX } from '@/store/authStore'
+import type * as React from 'react'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const PHONE_REGEX = /^(\+?\d{1,4}[\s.-]?)?\d{6,10}$/
