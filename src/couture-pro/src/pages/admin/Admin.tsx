@@ -127,11 +127,9 @@ export default function Admin() {
       {/* Sidebar admin */}
       <aside className="hidden md:flex flex-col w-64 bg-gray-900 fixed h-full z-10">
         <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-800">
-          <div className="w-9 h-9 bg-orange-500 rounded-xl flex items-center justify-center">
-            <span className="text-white font-bold text-lg">✂</span>
-          </div>
+          <img src="/eureka-logo.png" alt="Eureka" className="w-9 h-9 rounded-xl object-contain" />
           <div>
-            <span className="font-bold text-white text-base">Couture Pro</span>
+            <span className="font-bold text-white text-base">Eureka</span>
             <p className="text-xs text-gray-400">Administration</p>
           </div>
         </div>

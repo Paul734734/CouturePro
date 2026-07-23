@@ -169,8 +169,8 @@ const handleSubmit = async () => {
     }}>
       {/* Logo */}
       <div style={{ textAlign: 'center', marginBottom: 28 }}>
-        <div style={{ width: 52, height: 52, background: '#F97316', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, margin: '0 auto 10px' }}>✂</div>
-        <div style={{ fontSize: 20, fontWeight: 800 }}>Couture Pro</div>
+        <img src="/eureka-logo.png" alt="Eureka" style={{ width: 52, height: 52, borderRadius: 14, objectFit: 'contain', margin: '0 auto 10px' }} />
+        <div style={{ fontSize: 20, fontWeight: 800 }}>Eureka</div>
         <div style={{ fontSize: 12, color: '#888', marginTop: 3 }}>Créez votre espace atelier gratuitement</div>
       </div>
 
@@ -453,7 +453,7 @@ const handleSubmit = async () => {
       </div>
 
       <p style={{ marginTop: 16, fontSize: 11, color: '#bbb', textAlign: 'center' }}>
-        © 2026 Couture Pro · Fait avec ❤ pour l'Afrique
+        © 2026 Eureka · Fait avec ❤ pour l'Afrique
       </p>
     </div>
   )

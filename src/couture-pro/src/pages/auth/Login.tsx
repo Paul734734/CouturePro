@@ -65,12 +65,10 @@ export default function Login() {
     }}>
       {/* LOGO */}
       <div style={{ textAlign: 'center', marginBottom: 32 }}>
-        <div style={{
-          width: 56, height: 56, background: '#F97316',
-          borderRadius: 16, display: 'flex', alignItems: 'center',
-          justifyContent: 'center', fontSize: 26, margin: '0 auto 12px'
-        }}>✂</div>
-        <div style={{ fontSize: 22, fontWeight: 800, color: '#1a1a1a' }}>Couture Pro</div>
+        <img src="/eureka-logo.png" alt="Eureka" style={{
+          width: 56, height: 56, borderRadius: 16, objectFit: 'contain', margin: '0 auto 12px'
+        }} />
+        <div style={{ fontSize: 22, fontWeight: 800, color: '#1a1a1a' }}>Eureka</div>
         <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>Gérez votre atelier, simplement</div>
       </div>
 
@@ -154,7 +152,7 @@ export default function Login() {
         </p>
       </div>
 
-      <p style={{ marginTop: 24, fontSize: 12, color: '#aaa' }}>© 2026 Couture Pro · Données sécurisées 🔒</p>
+      <p style={{ marginTop: 24, fontSize: 12, color: '#aaa' }}>© 2026 Eureka · Données sécurisées 🔒</p>
     </div>
   )
 }

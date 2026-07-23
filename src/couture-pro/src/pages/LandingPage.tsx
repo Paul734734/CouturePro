@@ -442,8 +442,8 @@ export default function LandingPage() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-          <div style={{ width: 38, height: 38, background: '#F97316', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 18, fontWeight: 700 }}>✂</div>
-          <span style={{ fontSize: 20, fontWeight: 700, color: '#D4AF37' }}>Couture Pro</span>
+          <img src="/eureka-logo.png" alt="Eureka" style={{ width: 38, height: 38, borderRadius: 10, objectFit: 'contain' }} />
+          <span style={{ fontSize: 20, fontWeight: 700, color: '#D4AF37' }}>Eureka</span>
         </div>
         <div className="cp-nav-links" style={{ display: 'flex', gap: 32 }}>
           {[
@@ -502,7 +502,7 @@ export default function LandingPage() {
             pour votre atelier
           </h1>
           <p style={{ fontSize: 16, color: '#666', lineHeight: 1.7, marginBottom: 36, maxWidth: 460 }}>
-            Gérez vos clientes, mesures, commandes et factures depuis votre téléphone. Simple, élégant, taillé pour les couturières africaines.
+            Gérez vos clientes, mesures, commandes et factures depuis votre téléphone. Simple, élégant, taillé pour les couturières-stylistes africaines.
           </p>
           <div className="cp-hero-btns" style={{ display: 'flex', gap: 14, marginBottom: 40, flexWrap: 'wrap' }}>
             <button
@@ -540,7 +540,7 @@ export default function LandingPage() {
           <div style={{ background: 'white', borderRadius: 20, border: '1px solid #e8e3dc', padding: 20, boxShadow: '0 20px 60px rgba(0,0,0,0.08)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16, paddingBottom: 12, borderBottom: '1px solid #f0ede8' }}>
               {['#ff5f57', '#ffbd2e', '#28ca41'].map(c => <div key={c} style={{ width: 10, height: 10, borderRadius: '50%', background: c }} />)}
-              <span style={{ fontSize: 13, fontWeight: 600, marginLeft: 4 }}>✂ Couture Pro — Tableau de bord</span>
+              <span style={{ fontSize: 13, fontWeight: 600, marginLeft: 4 }}>✂ Eureka — Tableau de bord</span>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10, marginBottom: 14 }}>
               <div style={{ background: '#FAFAF8', borderRadius: 12, padding: 14, border: '1px solid #f0ede8' }}>
@@ -649,7 +649,7 @@ export default function LandingPage() {
                 nom: 'Starter', prix_m: 1000, prix_a: 10000, couleur: '#F97316',
                 bg: 'white', border: '#f0ede8', btnBg: '#FFF4ED', btnColor: '#F97316',
                 features: ["Jusqu'à 30 clientes", 'Carnet de mesures', 'Gestion commandes', 'Tableau de bord de base'],
-                exclues: ['Factures PDF', 'Suivi paiements avancé', 'Support prioritaire'],
+                exclues: ['Factures PDF', 'Suivi paiements avancé'],
                 desc: 'Idéal pour démarrer',
               },
               {
@@ -740,7 +740,7 @@ export default function LandingPage() {
           <div style={{ textAlign: 'center', marginBottom: 52 }}>
             <div style={{ display: 'inline-block', background: '#FFF4ED', color: '#F97316', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #FED7AA' }}>Témoignages</div>
             <h2 style={{ fontSize: 38, fontWeight: 800, marginBottom: 12 }}>Ce que disent nos couturières</h2>
-            <p style={{ color: '#666', fontSize: 16 }}>Plus de 1000 ateliers font confiance à Couture Pro chaque jour.</p>
+            <p style={{ color: '#666', fontSize: 16 }}>Plus de 1000 ateliers font confiance à Eureka chaque jour.</p>
           </div>
           {(() => {
             const temoins = [
@@ -858,8 +858,8 @@ export default function LandingPage() {
         }}
       >
         <div aria-hidden style={{ position: 'absolute', inset: -140, background: 'radial-gradient(circle at 30% 20%, rgba(249,115,22,0.22), rgba(249,115,22,0) 58%)', filter: 'blur(10px)', pointerEvents: 'none', opacity: 0.9 }} />
-        <span style={{ fontSize: 18, color: 'white', fontWeight: 700, position: 'relative' }}>✂ Couture Pro</span>
-        <span style={{ fontSize: 13, color: '#777', position: 'relative' }}>© 2026 Couture Pro · Fait avec ❤ pour l'Afrique</span>
+        <span style={{ fontSize: 18, color: 'white', fontWeight: 700, position: 'relative' }}>✂ Eureka</span>
+        <span style={{ fontSize: 13, color: '#777', position: 'relative' }}>© 2026 Eureka · Fait avec ❤ pour l'Afrique</span>
         <Link
           to="/login"
           className="bb-liv-btn"

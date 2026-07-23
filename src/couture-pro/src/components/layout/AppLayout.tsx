@@ -47,9 +47,9 @@ export default function AppLayout({
       {showSidebar && (
         <aside className="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 fixed h-full z-10">
           <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-100">
-            <div className="w-11 h-11 bg-orange-500 rounded-2xl flex items-center justify-center text-white text-lg font-bold">✂</div>
+            <img src="/eureka-logo.png" alt="Eureka" className="w-11 h-11 rounded-2xl object-contain" />
             <div>
-              <p className="font-bold text-gray-900">Couture Pro</p>
+              <p className="font-bold text-gray-900">Eureka</p>
               <p className="text-xs text-gray-400">Gestion atelier</p>
             </div>
           </div>

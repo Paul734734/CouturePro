@@ -38,9 +38,9 @@ export default function Sidebar() {
       {/* Logo */}
       <div style={{ padding: '20px 20px 16px', borderBottom: '1px solid #f0ede8' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 38, height: 38, background: '#F97316', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 18, fontWeight: 700, flexShrink: 0 }}>✂</div>
+          <img src="/eureka-logo.png" alt="Eureka" style={{ width: 38, height: 38, borderRadius: 10, objectFit: 'contain', flexShrink: 0 }} />
           <div>
-            <div style={{ fontSize: 16, fontWeight: 800 }}>Couture Pro</div>
+            <div style={{ fontSize: 16, fontWeight: 800 }}>Eureka</div>
             <div style={{ fontSize: 11, color: '#888' }}>Gestion atelier</div>
           </div>
         </div>
