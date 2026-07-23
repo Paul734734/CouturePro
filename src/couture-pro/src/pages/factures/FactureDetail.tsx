@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
 import AppLayout from '../../components/layout/AppLayout'
 import { useFacturesStore } from '../../store/facturesStore'
 import { useAuthStore } from '../../store/authStore'
@@ -35,25 +37,50 @@ export default function FactureDetail() {
 
   const handleImprimer = () => window.print()
 
-  const handleTelecharger = () => {
-    const contenu = printRef.current?.innerHTML
-    if (!contenu) return
-    const html = `
-      <!DOCTYPE html><html><head>
-      <meta charset="UTF-8">
-      <title>${facture.numero}</title>
-      <style>
-        body { font-family: Inter, sans-serif; padding: 40px; color: #1a1a1a; }
-        * { box-sizing: border-box; }
-      </style>
-      </head><body>${contenu}</body></html>`
-    const blob = new Blob([html], { type: 'text/html' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${facture.numero}.html`
-    a.click()
-    URL.revokeObjectURL(url)
+  const [isGenerating, setIsGenerating] = useState(false)
+
+  const handleTelecharger = async () => {
+    if (!printRef.current) return
+    setIsGenerating(true)
+    try {
+      const canvas = await html2canvas(printRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+      })
+      const imgData = canvas.toDataURL('image/png')
+
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+      })
+
+      const pageWidth = pdf.internal.pageSize.getWidth()
+      const pageHeight = pdf.internal.pageSize.getHeight()
+      const imgWidth = pageWidth
+      const imgHeight = (canvas.height * imgWidth) / canvas.width
+
+      let heightLeft = imgHeight
+      let position = 0
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+      heightLeft -= pageHeight
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight
+        pdf.addPage()
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+        heightLeft -= pageHeight
+      }
+
+      pdf.save(`${facture.numero}.pdf`)
+    } catch (err) {
+      console.error('Erreur génération PDF', err)
+      alert('Erreur lors de la génération du PDF.')
+    } finally {
+      setIsGenerating(false)
+    }
   }
 
   const handlePartager = async () => {
