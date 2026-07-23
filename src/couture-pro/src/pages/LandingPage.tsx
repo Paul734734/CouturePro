@@ -386,6 +386,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
 
 // ─── Landing Page ─────────────────────────────────────────────────────────────
 export default function LandingPage() {
+  const navigate = useNavigate()
   const [showModal, setShowModal] = useState(false)
   const featRef = useRef<HTMLElement>(null)
   const tarifRef = useRef<HTMLElement>(null)
@@ -461,7 +462,7 @@ export default function LandingPage() {
         <div className="cp-nav-actions" style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           <Link to="/login" style={{ fontSize: 14, color: '#F97316', textDecoration: 'none', fontWeight: 500 }}>Connexion</Link>
           <button
-            onClick={() => setShowModal(true)}
+            onClick={() => navigate('/register')}
             style={{ background: '#F97316', color: 'white', border: 'none', padding: '10px 22px', borderRadius: 50, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
           >Inscription</button>
         </div>
@@ -505,7 +506,7 @@ export default function LandingPage() {
           </p>
           <div className="cp-hero-btns" style={{ display: 'flex', gap: 14, marginBottom: 40, flexWrap: 'wrap' }}>
             <button
-              onClick={() => setShowModal(true)}
+              onClick={() => navigate('/register')}
               className="bb-liv-btn bb-liv-glow"
               style={{ background: '#F97316', color: 'white', padding: '14px 28px', borderRadius: 50, fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer', boxShadow: '0 10px 30px rgba(249,115,22,0.22)' }}
             >Essayer gratuitement</button>
@@ -708,7 +709,7 @@ export default function LandingPage() {
                     ))}
                   </ul>
                   <button
-                    onClick={() => setShowModal(true)}
+                    onClick={() => navigate('/register')}
                     className={`${p.nom === 'Pro' ? 'bb-liv-btn bb-liv-glow' : 'bb-liv-btn'} bb-tarif-cta`}
                     style={{
                       marginTop: 28, background: p.btnBg, color: p.btnColor,
@@ -829,7 +830,7 @@ export default function LandingPage() {
         <p style={{ color: '#999', fontSize: 16, marginBottom: 36 }}>Commencez gratuitement · Sans carte bancaire · 7 jours offerts</p>
         <div className="cp-cta-btns" style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
           <button
-            onClick={() => setShowModal(true)}
+            onClick={() => navigate('/register')}
             className="bb-liv-btn bb-liv-glow"
             style={{ background: '#F97316', color: 'white', padding: '14px 32px', borderRadius: 50, fontSize: 15, fontWeight: 800, border: 'none', cursor: 'pointer', boxShadow: '0 18px 50px rgba(249,115,22,0.2)' }}
           >Démarrer gratuitement — 7 jours offerts</button>
@@ -867,7 +868,6 @@ export default function LandingPage() {
       </footer>
 
       {/* ─── MODAL ───────────────────────────────────────────── */}
-      {showModal && <ModalInscription onClose={() => setShowModal(false)} />}
     </div>
   )
 }

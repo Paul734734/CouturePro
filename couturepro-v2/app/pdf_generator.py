@@ -10,8 +10,8 @@ def _libelle_type(type_document: str) -> str:
     return {"facture": "FACTURE", "recu": "RECU", "devis": "DEVIS"}.get(type_document, "FACTURE")
 
 
-def generer_pdf_facture(facture: Facture) -> str:
-    """Genere le PDF sur disque et renvoie le chemin relatif (a servir via /uploads)."""
+def generer_pdf_facture(facture: Facture) -> bytes:
+    """Genere le PDF et renvoie directement les octets du fichier."""
     pdf = FPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=20)
@@ -73,9 +73,4 @@ def generer_pdf_facture(facture: Facture) -> str:
         pdf.set_font("Helvetica", "I", 10)
         pdf.multi_cell(0, 6, f"Notes : {facture.notes}")
 
-    filename = f"{facture.user_id}_{facture.numero.replace('/', '-')}.pdf"
-    os.makedirs(UPLOAD_DIR, exist_ok=True)
-    filepath = os.path.join(UPLOAD_DIR, filename)
-    pdf.output(filepath)
-
-    return f"/uploads/{filename}"
+    return bytes(pdf.output())

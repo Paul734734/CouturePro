@@ -79,7 +79,7 @@ export default function Clientes() {
 
         {showForm && (
           <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
-            <div style={{ background: '#fff', borderRadius: 16, padding: 24, width: '100%', maxWidth: 480 }}>
+            <div style={{ background: '#fff', borderRadius: 16, padding: 24, width: '100%', maxWidth: 480, maxHeight: '90vh', overflowY: 'auto' }}>
               <h3 style={{ marginTop: 0 }}>Nouvelle cliente</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <div>

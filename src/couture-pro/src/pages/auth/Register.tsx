@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore, type Forfait, type Billing, FORFAIT_PRIX } from '@/store/authStore'
 import type * as React from 'react'
+import { AFRICAN_COUNTRY_CODES, DEFAULT_COUNTRY_DIAL } from '@/lib/countryCodes'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const PHONE_REGEX = /^(\+?\d{1,4}[\s.-]?)?\d{6,10}$/
@@ -62,6 +63,7 @@ export default function Register() {
   const [billing, setBilling] = useState<Billing>('mensuel')
   const [error, setError] = useState('')
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof FormData, string>>>({})
+  const [indicatif, setIndicatif] = useState<string>(DEFAULT_COUNTRY_DIAL)
 
   const [form, setForm] = useState<FormData>({
     prenom: '', nom: '', nomAtelier: '',
@@ -127,7 +129,7 @@ const handleSubmit = async () => {
     email: form.email.trim().toLowerCase(),
     nomAtelier: form.nomAtelier.trim() || `Atelier de ${form.prenom.trim()}`,
     ville: form.ville.trim(),
-    telephone: form.telephone.trim(),
+    telephone: form.telephone.trim() ? `${indicatif} ${form.telephone.trim()}` : '',
     password: form.password,
     forfait,
     billing,
@@ -349,11 +351,52 @@ const handleSubmit = async () => {
             )}
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div>
+                <label style={lbl}>Téléphone / WhatsApp</label>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <select
+                    value={indicatif}
+                    onChange={(e) => setIndicatif(e.target.value)}
+                    style={{
+                      ...inp,
+                      width: 110,
+                      flexShrink: 0,
+                      cursor: 'pointer',
+                      borderColor: fieldErrors.telephone ? '#DC2626' : '#E5E7EB',
+                      background: fieldErrors.telephone ? '#FEF2F2' : '#FAFAFA',
+                    }}
+                  >
+                    {AFRICAN_COUNTRY_CODES.map((c) => (
+                      <option key={c.code} value={c.dial}>
+                        {c.flag} {c.dial}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="tel"
+                    value={form.telephone}
+                    onChange={update('telephone')}
+                    placeholder="6XX XXX XXX"
+                    style={{
+                      ...inp,
+                      flex: 1,
+                      borderColor: fieldErrors.telephone ? '#DC2626' : '#E5E7EB',
+                      background: fieldErrors.telephone ? '#FEF2F2' : '#FAFAFA',
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = fieldErrors.telephone ? '#DC2626' : '#F97316')}
+                    onBlur={(e) => (e.target.style.borderColor = fieldErrors.telephone ? '#DC2626' : '#E5E7EB')}
+                  />
+                </div>
+                {fieldErrors.telephone && (
+                  <span style={{ fontSize: 11, color: '#DC2626', marginTop: 4, display: 'block' }}>
+                    {fieldErrors.telephone}
+                  </span>
+                )}
+              </div>
               {[
                 { key: 'prenom' as keyof FormData, label: 'Prénom *', placeholder: 'Aminata', type: 'text' },
                 { key: 'nom' as keyof FormData, label: 'Nom *', placeholder: 'Koné', type: 'text' },
                 { key: 'nomAtelier' as keyof FormData, label: "Nom de l'atelier", placeholder: 'Atelier Lumière', type: 'text', full: true },
-                { key: 'telephone' as keyof FormData, label: 'Téléphone / WhatsApp', placeholder: '+237 6XX XXX XXX', type: 'tel' },
                 { key: 'ville' as keyof FormData, label: 'Ville', placeholder: 'Yaoundé', type: 'text' },
                 { key: 'email' as keyof FormData, label: 'Email *', placeholder: 'votre@email.com', type: 'email', full: true },
                 { key: 'password' as keyof FormData, label: 'Mot de passe * (min. 6 car.)', placeholder: '••••••••', type: 'password' },
