@@ -1,0 +1,23 @@
+# Environnements
+.env
+venv/
+__pycache__/
+*.pyc
+
+# Base de données
+data/*.db
+*.db
+
+# Uploads (données clients — ne doit jamais être commité)
+uploads/*
+!uploads/.gitkeep
+
+# Tests / cache
+.pytest_cache/
+htmlcov/
+.coverage
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
