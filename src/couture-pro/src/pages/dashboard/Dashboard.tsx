@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import AppLayout from '../../components/layout/AppLayout'
 import { formatMontant, formatDate } from '../../lib/utils'
 
@@ -349,9 +350,9 @@ export default function Dashboard() {
           <div style={{ marginBottom: 24 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <h3 style={{ fontSize: 16, fontWeight: 700 }}>Commandes récentes</h3>
-              <a href="#" style={{ fontSize: 13, color: '#F97316', textDecoration: 'none' }}>
+              <Link to="/commandes" style={{ fontSize: 13, color: '#F97316', textDecoration: 'none' }}>
                 Voir tout →
-              </a>
+              </Link>
             </div>
 
             <div style={{ background: 'white', borderRadius: 16, border: '1px solid #f0ede8', overflow: 'hidden' }}>

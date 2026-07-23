@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -99,8 +100,12 @@ def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db
         user.reset_token_expire = datetime.utcnow() + timedelta(hours=1)
         db.commit()
         # TODO en prod : envoyer le lien par email/SMS.
-        # En dev, on renvoie le token directement pour pouvoir tester sans service mail.
-        return {"message": "Si ce compte existe, un lien a été envoyé.", "devToken": token}
+        # devToken n'est renvoyé QUE si ENVIRONMENT=development, jamais en prod
+        # (sinon n'importe qui connaissant un email pourrait reinitialiser son mot de passe)
+        response = {"message": "Si ce compte existe, un lien a été envoyé."}
+        if os.getenv("ENVIRONMENT", "development") == "development":
+            response["devToken"] = token
+        return response
     return {"message": "Si ce compte existe, un lien a été envoyé."}
 
 
