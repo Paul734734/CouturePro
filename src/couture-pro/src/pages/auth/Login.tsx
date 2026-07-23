@@ -1,39 +1,45 @@
 import { useState } from 'react'
+import type * as React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuthStore } from '@/store/authStore'
 
 export default function Login() {
   const navigate = useNavigate()
+  const login = useAuthStore((s) => s.login)
+  const isLoading = useAuthStore((s) => s.isLoading)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPass, setShowPass] = useState(false)
   const [error, setError] = useState('')
 
-const handleLogin = () => {
-  if (!email || !password) {
-    setError('Veuillez remplir tous les champs.')
-    return
-  }
-
-  // ✅ Cas admin
-  if (email === 'admin@couturepro.app') {
-    if (password === 'change-moi-avec-un-mot-de-passe-fort-et-unique') {
-      navigate('/admin')
-    } else {
-      setError('Mot de passe admin incorrect.')
+  const handleLogin = async () => {
+    if (!email || !password) {
+      setError('Veuillez remplir tous les champs.')
+      return
     }
-    return
+
+    try {
+      await login(email, password)
+      // on relit le user fraîchement posé dans le store après un login réussi
+      const user = useAuthStore.getState().user
+      if (user?.role === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/dashboard')
+      }
+    } catch (err: any) {
+      // err.message vient de authStore (message backend, ex: "Email ou mot de passe incorrect.")
+      // en cas de backend injoignable, axios ne renvoie pas de err.response -> message générique
+      const message = err?.message || 'Impossible de se connecter. Vérifiez votre connexion internet.'
+      setError(message)
+    }
   }
 
-  // ✅ Cas couturière (tout autre email)
-  if (password.length >= 4) {
-    navigate('/dashboard')
-    return
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !isLoading) {
+      handleLogin()
+    }
   }
-
-  // ✅ Erreur si rien ne correspond
-  setError('Email ou mot de passe incorrect.')
-}
-
 
   const inp = {
     width: '100%',
@@ -91,7 +97,15 @@ const handleLogin = () => {
           <label style={{ fontSize: 13, fontWeight: 600, color: '#374151', display: 'block', marginBottom: 6 }}>Adresse email</label>
           <div style={{ position: 'relative' }}>
             <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: 16 }}>📧</span>
-            <input type="email" value={email} onChange={e => { setEmail(e.target.value); setError('') }} placeholder="votre@email.com" style={inp} />
+            <input
+              type="email"
+              value={email}
+              onChange={e => { setEmail(e.target.value); setError('') }}
+              onKeyDown={handleKeyDown}
+              placeholder="votre@email.com"
+              style={inp}
+              disabled={isLoading}
+            />
           </div>
         </div>
 
@@ -100,7 +114,15 @@ const handleLogin = () => {
           <label style={{ fontSize: 13, fontWeight: 600, color: '#374151', display: 'block', marginBottom: 6 }}>Mot de passe</label>
           <div style={{ position: 'relative' }}>
             <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: 16 }}>🔒</span>
-            <input type={showPass ? 'text' : 'password'} value={password} onChange={e => { setPassword(e.target.value); setError('') }} placeholder="••••••••" style={inp} />
+            <input
+              type={showPass ? 'text' : 'password'}
+              value={password}
+              onChange={e => { setPassword(e.target.value); setError('') }}
+              onKeyDown={handleKeyDown}
+              placeholder="••••••••"
+              style={inp}
+              disabled={isLoading}
+            />
             <button onClick={() => setShowPass(!showPass)} style={{
               position: 'absolute', right: 14, top: '50%',
               transform: 'translateY(-50%)', background: 'none',
@@ -112,30 +134,18 @@ const handleLogin = () => {
         </div>
 
         <div style={{ textAlign: 'right', marginBottom: 24 }}>
-          <a href="#" style={{ fontSize: 13, color: '#F97316', textDecoration: 'none', fontWeight: 500 }}>Mot de passe oublié ?</a>
+          <Link to="/forgot-password" style={{ fontSize: 13, color: '#F97316', textDecoration: 'none', fontWeight: 500 }}>Mot de passe oublié ?</Link>
         </div>
 
-        <button onClick={handleLogin} style={{
-          width: '100%', background: '#F97316', color: 'white',
-          border: 'none', padding: '14px', borderRadius: 12,
-          fontSize: 15, fontWeight: 700, cursor: 'pointer', marginBottom: 16
-        }}>
-          Se connecter
-        </button>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-          <div style={{ flex: 1, height: 1, background: '#e5e0d8' }} />
-          <span style={{ fontSize: 12, color: '#aaa' }}>ou</span>
-          <div style={{ flex: 1, height: 1, background: '#e5e0d8' }} />
-        </div>
-
-        <button style={{
-          width: '100%', background: 'white', border: '1.5px solid #e5e0d8',
-          padding: '13px', borderRadius: 12, fontSize: 14, fontWeight: 500,
-          cursor: 'pointer', display: 'flex', alignItems: 'center',
-          justifyContent: 'center', gap: 10, marginBottom: 24
-        }}>
-          <span style={{ fontSize: 18 }}>🖥️</span> Continuer avec Google
+        <button
+          onClick={handleLogin}
+          disabled={isLoading}
+          style={{
+            width: '100%', background: isLoading ? '#fbbf80' : '#F97316', color: 'white',
+            border: 'none', padding: '14px', borderRadius: 12,
+            fontSize: 15, fontWeight: 700, cursor: isLoading ? 'default' : 'pointer', marginBottom: 16
+          }}>
+          {isLoading ? 'Connexion...' : 'Se connecter'}
         </button>
 
         <p style={{ textAlign: 'center', fontSize: 14, color: '#888', margin: 0 }}>

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 // Auth
 import Login from './pages/auth/Login'
+import ForgotPassword from './pages/auth/ForgotPassword'
 import Register from './pages/auth/Register'
 
 // Landing
@@ -37,6 +38,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* App (Couturière) */}
         <Route path="/dashboard" element={<Dashboard />} />

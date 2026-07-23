@@ -1,16 +1,15 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import AppLayout from '../../components/layout/AppLayout'
-
-const MOCK_STATS = {
-  totalUtilisatrices: 24,
-  actives: 18,
-  suspendues: 3,
-  expirees: 3,
-  revenusTotal: 432000,
-  revenuesMois: 75000,
-}
+import { useAdminStore } from '@/store/adminStore'
 
 export default function AdminDashboard() {
+  const { stats, fetchDashboard, isLoading, error } = useAdminStore()
+
+  useEffect(() => {
+    fetchDashboard()
+  }, [fetchDashboard])
+
   return (
    <AppLayout titre="Panneau d'administration" sousTitre="Vue globale de la plateforme" showSidebar={false}>
 
@@ -22,25 +21,44 @@ export default function AdminDashboard() {
           <p style={{ color: '#888', fontSize: 14, margin: 0 }}>Vue globale de la plateforme</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 20 }}>
-          {[
-            { label: 'Total utilisatrices', val: MOCK_STATS.totalUtilisatrices, color: '#1a1a1a', icon: '👩' },
-            { label: 'Comptes actifs', val: MOCK_STATS.actives, color: '#16a34a', icon: '✅' },
-            { label: 'Suspendus/Expirés', val: MOCK_STATS.suspendues + MOCK_STATS.expirees, color: '#ef4444', icon: '⛔' },
-            { label: 'Revenus total', val: `${MOCK_STATS.revenusTotal.toLocaleString()} FCFA`, color: '#1a1a1a', icon: '💰' },
-            { label: 'Ce mois', val: `${MOCK_STATS.revenuesMois.toLocaleString()} FCFA`, color: '#F97316', icon: '📅' },
-            { label: 'Taux actif', val: `${Math.round((MOCK_STATS.actives / MOCK_STATS.totalUtilisatrices) * 100)}%`, color: '#16a34a', icon: '📊' },
-          ].map((s) => (
-            <div key={s.label} style={{
-              background: '#fff', border: '1px solid #f0f0f0', borderRadius: 12,
-              padding: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', textAlign: 'center',
-            }}>
-              <div style={{ fontSize: 22, marginBottom: 6 }}>{s.icon}</div>
-              <div style={{ fontSize: 18, fontWeight: 700, color: s.color }}>{s.val}</div>
-              <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>{s.label}</div>
-            </div>
-          ))}
-        </div>
+        {error && (
+          <div style={{ background: '#FEF2F2', border: '1px solid #FCA5A5', borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#dc2626', marginBottom: 16 }}>
+            ⚠️ {error}
+          </div>
+        )}
+
+        {isLoading && !stats && (
+          <div style={{ textAlign: 'center', padding: 40, color: '#888', fontSize: 13 }}>Chargement...</div>
+        )}
+
+        {stats && (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 20 }}>
+            {[
+              { label: 'Total utilisatrices', val: stats.nbUtilisatricesTotal, color: '#1a1a1a', icon: '👩' },
+              { label: 'Comptes actifs', val: stats.nbUtilisatricesActives, color: '#16a34a', icon: '✅' },
+              { label: 'En essai', val: stats.nbUtilisatricesEssai, color: '#2563eb', icon: '🕐' },
+              { label: 'Suspendus/Expirés', val: stats.nbUtilisatricesSuspendues + stats.nbUtilisatricesExpirees, color: '#ef4444', icon: '⛔' },
+              { label: 'Revenus estimés / mois', val: `${stats.revenusEstimesMensuel.toLocaleString()} FCFA`, color: '#F97316', icon: '💰' },
+              {
+                label: 'Taux actif',
+                val: stats.nbUtilisatricesTotal > 0
+                  ? `${Math.round((stats.nbUtilisatricesActives / stats.nbUtilisatricesTotal) * 100)}%`
+                  : '—',
+                color: '#16a34a',
+                icon: '📊',
+              },
+            ].map((s) => (
+              <div key={s.label} style={{
+                background: '#fff', border: '1px solid #f0f0f0', borderRadius: 12,
+                padding: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', textAlign: 'center',
+              }}>
+                <div style={{ fontSize: 22, marginBottom: 6 }}>{s.icon}</div>
+                <div style={{ fontSize: 18, fontWeight: 700, color: s.color }}>{s.val}</div>
+                <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           {[
