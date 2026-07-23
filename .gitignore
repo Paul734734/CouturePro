@@ -1,11 +1,28 @@
-# Python
-venv/
-__pycache__/
+# Environnements
+**/.env
+**/.env.local
+**/venv/
+**/__pycache__/
 *.pyc
 
 # Node
-node_modules/
-dist/
+**/node_modules/
+**/dist/
 
-# Env
-.env
+# Base de données
+**/data/*.db
+*.db
+
+# Uploads (données clients)
+**/uploads/*
+!**/uploads/.gitkeep
+
+# Tests / cache
+**/.pytest_cache/
+**/htmlcov/
+**/.coverage
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store

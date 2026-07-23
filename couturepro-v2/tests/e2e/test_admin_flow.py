@@ -20,7 +20,10 @@ def promouvoir_admin(client, db_session=None):
 
 
 def login_admin(client):
-    r = client.post("/api/auth/login", json={"email": "admin@couturepro.app", "password": "change-moi-avec-un-mot-de-passe-fort-et-unique"})
+    import os
+    email = os.getenv("ADMIN_EMAIL", "admin@couturepro.app")
+    password = os.getenv("ADMIN_PASSWORD", "change-moi-avec-un-mot-de-passe-fort-et-unique")
+    r = client.post("/api/auth/login", json={"email": email, "password": password})
     assert r.status_code == 200, "le compte admin bootstrap doit exister au demarrage de l'app"
     return r.json()["token"]
 

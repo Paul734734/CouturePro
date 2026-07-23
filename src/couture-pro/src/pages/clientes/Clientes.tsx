@@ -9,7 +9,7 @@ export default function Clientes() {
   const [search, setSearch] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [selected, setSelected] = useState<Cliente | null>(null)
-  const [form, setForm] = useState({ nom: '', telephone: '', ville: '', quartier: '', profession: '', stylePreference: '', budgetHabituel: '', notes: '' })
+  const [form, setForm] = useState({ nom: '', telephone: '', ville: '', quartier: '', adresse: '', profession: '', dateAnniversaire: '', tailleVetement: '', hauteur: '', stylePreference: '', budgetHabituel: '', notes: '' })
 
   useEffect(() => {
     fetchClientes()
@@ -27,13 +27,17 @@ export default function Clientes() {
       telephone: form.telephone,
       ville: form.ville,
       quartier: form.quartier,
+      adresse: form.adresse,
       profession: form.profession,
+      dateAnniversaire: form.dateAnniversaire || undefined,
+      tailleVetement: form.tailleVetement,
+      hauteur: form.hauteur ? Number(form.hauteur) : undefined,
       stylePreference: form.stylePreference,
       budgetHabituel: Number(form.budgetHabituel) || 0,
       notes: form.notes,
     }
     await ajouterCliente(payload)
-    setForm({ nom: '', telephone: '', ville: '', quartier: '', profession: '', stylePreference: '', budgetHabituel: '', notes: '' })
+    setForm({ nom: '', telephone: '', ville: '', quartier: '', adresse: '', profession: '', dateAnniversaire: '', tailleVetement: '', hauteur: '', stylePreference: '', budgetHabituel: '', notes: '' })
     setShowForm(false)
   }
 
@@ -89,6 +93,46 @@ export default function Clientes() {
                 <div>
                   <label style={labelStyle}>Ville</label>
                   <input style={inputStyle} value={form.ville} onChange={(e) => setForm({ ...form, ville: e.target.value })} />
+                </div>
+                <div>
+                  <label style={labelStyle}>Quartier</label>
+                  <input style={inputStyle} value={form.quartier} onChange={(e) => setForm({ ...form, quartier: e.target.value })} />
+                </div>
+                <div>
+                  <label style={labelStyle}>Adresse</label>
+                  <input style={inputStyle} value={form.adresse} onChange={(e) => setForm({ ...form, adresse: e.target.value })} />
+                </div>
+                <div>
+                  <label style={labelStyle}>Profession</label>
+                  <input style={inputStyle} value={form.profession} onChange={(e) => setForm({ ...form, profession: e.target.value })} />
+                </div>
+                <div style={{ display: 'flex', gap: 12 }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={labelStyle}>Date d'anniversaire</label>
+                    <input type="date" style={inputStyle} value={form.dateAnniversaire} onChange={(e) => setForm({ ...form, dateAnniversaire: e.target.value })} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={labelStyle}>Taille vêtement</label>
+                    <input placeholder="S / M / L / XL" style={inputStyle} value={form.tailleVetement} onChange={(e) => setForm({ ...form, tailleVetement: e.target.value })} />
+                  </div>
+                </div>
+                <div style={{ display: 'flex', gap: 12 }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={labelStyle}>Hauteur (m)</label>
+                    <input type="number" step="0.01" placeholder="1.72" style={inputStyle} value={form.hauteur} onChange={(e) => setForm({ ...form, hauteur: e.target.value })} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={labelStyle}>Style préféré</label>
+                    <input style={inputStyle} value={form.stylePreference} onChange={(e) => setForm({ ...form, stylePreference: e.target.value })} />
+                  </div>
+                </div>
+                <div>
+                  <label style={labelStyle}>Budget habituel</label>
+                  <input type="number" style={inputStyle} value={form.budgetHabituel} onChange={(e) => setForm({ ...form, budgetHabituel: e.target.value })} />
+                </div>
+                <div>
+                  <label style={labelStyle}>Notes</label>
+                  <textarea style={{ ...inputStyle, minHeight: 70, resize: 'vertical' as const }} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
                 </div>
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>

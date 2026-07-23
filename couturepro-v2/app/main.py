@@ -21,9 +21,14 @@ app = FastAPI(
 )
 
 # ⚠️ En prod, restreins allow_origins à ton vrai domaine (ex: Netlify).
+ALLOWED_ORIGINS = os.getenv(
+    "ALLOWED_ORIGINS",
+    "http://localhost:5173"
+).split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
