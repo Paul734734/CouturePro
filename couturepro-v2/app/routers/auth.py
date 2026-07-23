@@ -103,7 +103,7 @@ def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db
         # devToken n'est renvoyé QUE si ENVIRONMENT=development, jamais en prod
         # (sinon n'importe qui connaissant un email pourrait reinitialiser son mot de passe)
         response = {"message": "Si ce compte existe, un lien a été envoyé."}
-        if os.getenv("ENVIRONMENT", "development") == "development":
+        if os.getenv("ENVIRONMENT", "production") == "development":
             response["devToken"] = token
         return response
     return {"message": "Si ce compte existe, un lien a été envoyé."}
