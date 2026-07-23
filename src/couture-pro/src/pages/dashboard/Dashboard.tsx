@@ -176,8 +176,7 @@ function AnimatedStatCard({
 }
 
 export default function Dashboard() {
-  const { user, getAcces } = useAuthStore()
-  const acces = getAcces()
+  const { user, acces } = useAuthStore()
 
   const [periodKey, setPeriodKey] = useState<'7' | '4' | '12'>('4')
 

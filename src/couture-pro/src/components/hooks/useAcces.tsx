@@ -10,8 +10,7 @@ import { useAuthStore, type ForfaitAcces, FORFAIT_ACCES } from '@/store/authStor
 import { Link } from 'react-router-dom'
 
 export function useAcces() {
-  const { user, getAcces, peutAcceder } = useAuthStore()
-  const acces = getAcces()
+  const { user, acces, peutAcceder } = useAuthStore()
   const forfait = user?.forfait ?? 'starter'
   const statut = user?.statut ?? 'actif'
   const joursRestants = user?.joursRestants ?? 0
