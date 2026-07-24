@@ -275,6 +275,11 @@ export default function ClienteDetail() {
                 label="Budget habituel"
                 valeur={cliente.budgetHabituel ? `${Number(cliente.budgetHabituel).toLocaleString()} FCFA` : '—'}
               />
+              <InfoLigne label="Taille vêtement" valeur={cliente.tailleVetement || '—'} />
+              <InfoLigne
+                label="Hauteur"
+                valeur={cliente.hauteur ? `${cliente.hauteur.toFixed(2).replace('.', ',')} m` : '—'}
+              />
             </InfoCard>
 
             {cliente.notes && (
