@@ -1,7 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useRef, useState } from 'react'
-import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas'
 import AppLayout from '../../components/layout/AppLayout'
 import { useFacturesStore } from '../../store/facturesStore'
 import { useAuthStore } from '../../store/authStore'
@@ -43,6 +41,13 @@ export default function FactureDetail() {
     if (!printRef.current) return
     setIsGenerating(true)
     try {
+      // Chargées à la demande : ~570 Ko à elles deux, inutile de les charger
+      // tant que la personne ne clique pas vraiment sur "Télécharger".
+      const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([
+        import('jspdf'),
+        import('html2canvas'),
+      ])
+
       const canvas = await html2canvas(printRef.current, {
         scale: 2,
         useCORS: true,
