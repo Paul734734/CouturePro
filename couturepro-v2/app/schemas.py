@@ -26,6 +26,7 @@ class RegisterRequest(CamelModel):
     password: str
     nom_atelier: Optional[str] = None
     ville: Optional[str] = None
+    quartier: Optional[str] = None
     telephone: Optional[str] = None
     forfait: Forfait = Forfait.STARTER
     billing: Billing = Billing.MENSUEL
@@ -51,6 +52,7 @@ class UserOut(CamelModel):
     email: EmailStr
     nom_atelier: Optional[str] = None
     ville: Optional[str] = None
+    quartier: Optional[str] = None
     telephone: Optional[str] = None
     description: Optional[str] = None
     logo_url: Optional[str] = None
@@ -78,6 +80,7 @@ class UpdateProfilRequest(CamelModel):
     nom: Optional[str] = None
     nom_atelier: Optional[str] = None
     ville: Optional[str] = None
+    quartier: Optional[str] = None
     telephone: Optional[str] = None
     description: Optional[str] = None
     logo_url: Optional[str] = None

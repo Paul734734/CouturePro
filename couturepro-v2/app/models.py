@@ -39,6 +39,7 @@ class User(Base):
     password_hash = Column(String(255), nullable=False)
     nom_atelier = Column(String(150), nullable=True)
     ville = Column(String(100), nullable=True)
+    quartier = Column(String(100), nullable=True)
     telephone = Column(String(30), nullable=True)
     description = Column(Text, nullable=True)
     logo_url = Column(String(255), nullable=True)

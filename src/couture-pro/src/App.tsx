@@ -17,6 +17,7 @@ import Paiements from './pages/paiements/Paiements'
 import Factures from './pages/factures/Factures'
 import CommandeDetail from './pages/commandes/CommandeDetail'
 import FactureDetail from './pages/factures/FactureDetail'
+import Profil from './pages/profil/Profil'
 
 
 // Admin
@@ -49,6 +50,7 @@ function App() {
         <Route path="/paiements" element={<Paiements />} />
         <Route path="/factures" element={<Factures />} />
         <Route path="/factures/:id" element={<FactureDetail />} />
+        <Route path="/profil" element={<Profil />} />
 
 
         {/* Admin */}

@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import AppLayout from '../../components/layout/AppLayout'
 import { useAuthStore } from '../../store/authStore'
 
 export default function Profil() {
   const user = useAuthStore((s) => s.user)
   const updateProfil = useAuthStore((s) => s.updateProfil)
+  const logout = useAuthStore((s) => s.logout)
+  const navigate = useNavigate()
   const [form, setForm] = useState({
     nom: user?.nom || '',
     atelier: user?.nomAtelier || '',
     email: user?.email || '',
     telephone: user?.telephone || '',
     ville: user?.ville || '',
+    quartier: user?.quartier || '',
     description: user?.description || '',
     logoUrl: user?.logoUrl || '',
   })
@@ -25,6 +29,7 @@ export default function Profil() {
         email: user.email,
         telephone: user.telephone || '',
         ville: user.ville || '',
+        quartier: user.quartier || '',
         description: user.description || '',
         logoUrl: user.logoUrl || '',
       })
@@ -40,6 +45,7 @@ export default function Profil() {
       email: form.email,
       telephone: form.telephone,
       ville: form.ville,
+      quartier: form.quartier,
       description: form.description,
       logoUrl: form.logoUrl,
     })
@@ -131,6 +137,7 @@ export default function Profil() {
                   { key: 'atelier', label: "Nom de l'atelier", placeholder: 'Ex: Couture Pro' },
                   { key: 'telephone', label: 'Téléphone', placeholder: '+221 77 000 00 00' },
                   { key: 'ville', label: 'Ville', placeholder: 'Ex: Douala' },
+                  { key: 'quartier', label: 'Quartier', placeholder: 'Ex: Bonapriso' },
                 ].map((f) => (
                   <div key={f.key}>
                     <label style={{ fontSize: 13, fontWeight: 600, color: '#444', display: 'block', marginBottom: 6 }}>

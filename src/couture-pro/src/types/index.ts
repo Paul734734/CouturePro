@@ -14,6 +14,7 @@ export interface User {
   email: string
   nomAtelier?: string
   ville?: string
+  quartier?: string
   telephone?: string
   description?: string
   logoUrl?: string

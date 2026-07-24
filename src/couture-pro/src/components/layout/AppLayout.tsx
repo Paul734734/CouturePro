@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuthStore } from '../../store/authStore'
 
 
 const navItems = [
@@ -10,6 +11,7 @@ const navItems = [
   { href: '/commandes', icon: '📋', label: 'Commandes' },
   { href: '/paiements', icon: '💰', label: 'Paiements' },
   { href: '/factures', icon: '🧾', label: 'Factures' },
+  { href: '/profil', icon: '⚙️', label: 'Mon profil' },
 ]
 
 const bottomNavItems = [
@@ -40,6 +42,16 @@ export default function AppLayout({
 }: AppLayoutProps) {
   const location = useLocation()
   const navigate = useNavigate()
+  const user = useAuthStore((s) => s.user)
+  const logout = useAuthStore((s) => s.logout)
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
+
+  const nomAffiche = user?.nomAtelier || user?.nom || 'Mon Atelier'
+  const initiale = nomAffiche.trim().charAt(0).toUpperCase() || 'M'
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -75,14 +87,14 @@ export default function AppLayout({
 
           <div className="px-4 py-4 border-t border-gray-100">
             <div className="flex items-center gap-3 px-3 py-2">
-              <div className="w-9 h-9 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold text-sm">M</div>
+              <div className="w-9 h-9 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold text-sm">{initiale}</div>
               <div>
-                <p className="text-sm font-semibold text-gray-800">Mon Atelier</p>
+                <p className="text-sm font-semibold text-gray-800">{nomAffiche}</p>
                 <p className="text-xs text-gray-400">Couturière</p>
               </div>
             </div>
             <button
-              onClick={() => navigate('/login')}
+              onClick={handleLogout}
               className="mt-3 w-full text-sm text-gray-600 border border-gray-200 rounded-xl px-3 py-2 hover:bg-gray-50 transition-colors"
             >
               🚪 Se déconnecter
