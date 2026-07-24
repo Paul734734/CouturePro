@@ -7,12 +7,18 @@ import os
 # Ajouter le chemin du projet pour que Alembic trouve app/
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-from app.database import Base
+from app.database import Base, DATABASE_URL
 from app import models  # noqa: F401 — enregistre les tables sur Base.metadata
 target_metadata = Base.metadata
 
 # Alembic Config object
 config = context.config
+
+# alembic.ini contient une URL Postgres locale de développement en dur.
+# On la remplace systématiquement par la vraie DATABASE_URL (variable
+# d'environnement), pour qu'Alembic cible toujours la même base que
+# l'application elle-même (ex: la base Postgres de Render en prod).
+config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 # Logging
 if config.config_file_name is not None:
