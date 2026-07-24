@@ -187,7 +187,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
         {/* Header modal */}
         <div className="cp-modal-header" style={{ padding: '28px 32px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <div style={{ fontSize: 11, color: '#F97316', fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 4 }}>
+            <div style={{ fontSize: 11, color: '#C9962C', fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 4 }}>
               {step === 1 ? 'Étape 1 / 2' : 'Étape 2 / 2'}
             </div>
             <h2 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>
@@ -310,7 +310,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
                       {getPrix(p).toLocaleString('fr-FR')} FCFA/mois
                     </span>
                   </div>
-                  <button onClick={() => setStep(1)} style={{ fontSize: 12, color: '#F97316', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Changer</button>
+                  <button onClick={() => setStep(1)} style={{ fontSize: 12, color: '#C9962C', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Changer</button>
                 </div>
               )
             })()}
@@ -375,7 +375,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
 
             <div style={{ textAlign: 'center', marginTop: 14, fontSize: 13, color: '#888' }}>
               Déjà un compte ?{' '}
-              <Link to="/login" onClick={onClose} style={{ color: '#F97316', fontWeight: 600 }}>Se connecter</Link>
+              <Link to="/login" onClick={onClose} style={{ color: '#C9962C', fontWeight: 600 }}>Se connecter</Link>
             </div>
           </div>
         )}
@@ -460,7 +460,7 @@ export default function LandingPage() {
           ))}
         </div>
         <div className="cp-nav-actions" style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <Link to="/login" style={{ fontSize: 14, color: '#F97316', textDecoration: 'none', fontWeight: 500 }}>Connexion</Link>
+          <Link to="/login" style={{ fontSize: 14, color: '#C9962C', textDecoration: 'none', fontWeight: 500 }}>Connexion</Link>
           <button
             onClick={() => navigate('/register')}
             style={{ background: '#F97316', color: 'white', border: 'none', padding: '10px 22px', borderRadius: 50, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
@@ -481,7 +481,7 @@ export default function LandingPage() {
         }}
       >
         <div>
-          <div className="cp-badge-glow" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#FFF4ED', color: '#F97316', padding: '6px 14px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 24, border: '1px solid #FED7AA' }}>
+          <div className="cp-badge-glow" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#FFF4ED', color: '#C9962C', padding: '6px 14px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 24, border: '1px solid #FED7AA' }}>
             ✨ Plateforme #1 pour les ateliers africains
           </div>
 
@@ -524,7 +524,7 @@ export default function LandingPage() {
               <div style={{ width: 36, height: 36, borderRadius: '50%', border: '2.5px solid white', marginLeft: -10, background: '#F97316', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>1k+</div>
             </div>
             <div>
-              <div><strong>9,5/10</strong> <span style={{ color: '#F97316' }}>★★★★★</span></div>
+              <div><strong>9,5/10</strong> <span style={{ color: '#C9962C' }}>★★★★★</span></div>
               <div style={{ fontSize: 13, color: '#555' }}>+1000 couturières satisfaites</div>
             </div>
           </div>
@@ -599,7 +599,7 @@ export default function LandingPage() {
       {/* ─── FONCTIONNALITÉS ─────────────────────────────────── */}
       <section ref={featRef} className="cp-reveal cp-features-section" style={{ padding: '90px 48px 80px', background: 'white', scrollMarginTop: 70 }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ display: 'inline-block', background: '#FFF4ED', color: '#F97316', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #FED7AA' }}>Fonctionnalités</div>
+          <div style={{ display: 'inline-block', background: '#FFF4ED', color: '#C9962C', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #FED7AA' }}>Fonctionnalités</div>
           <h2 style={{ fontSize: 38, fontWeight: 800, marginBottom: 12 }}>Tout ce dont vous avez besoin,<br />dans votre poche</h2>
           <p style={{ color: '#666', fontSize: 16, maxWidth: 520, lineHeight: 1.7, marginBottom: 48 }}>Une plateforme pensée pour les ateliers de couture d'Afrique francophone.</p>
           <div className="cp-features-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24 }}>
@@ -650,7 +650,7 @@ export default function LandingPage() {
       <section ref={tarifRef} className="cp-reveal cp-tarifs-section" style={{ padding: '90px 48px 80px', background: '#FAFAF8', scrollMarginTop: 70 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div style={{ display: 'inline-block', background: '#FFF4ED', color: '#F97316', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #FED7AA' }}>Tarifs</div>
+            <div style={{ display: 'inline-block', background: '#FFF4ED', color: '#C9962C', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #FED7AA' }}>Tarifs</div>
             <h2 style={{ fontSize: 38, fontWeight: 800, marginBottom: 12 }}>Des prix adaptés à votre atelier</h2>
             <p style={{ color: '#666', fontSize: 16, maxWidth: 480, margin: '0 auto' }}>Commencez gratuitement pendant 7 jours. Choisissez ensuite le forfait qui vous convient.</p>
           </div>
@@ -750,7 +750,7 @@ export default function LandingPage() {
       <section ref={temoRef} className="cp-reveal cp-temo-section" style={{ padding: '90px 48px 80px', background: 'white', scrollMarginTop: 70 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 52 }}>
-            <div style={{ display: 'inline-block', background: '#FFF4ED', color: '#F97316', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #FED7AA' }}>Témoignages</div>
+            <div style={{ display: 'inline-block', background: '#FFF4ED', color: '#C9962C', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #FED7AA' }}>Témoignages</div>
             <h2 style={{ fontSize: 38, fontWeight: 800, marginBottom: 12 }}>Ce que disent nos couturières</h2>
             <p style={{ color: '#666', fontSize: 16 }}>Plus de 1000 ateliers font confiance à Eureka chaque jour.</p>
           </div>
@@ -765,7 +765,7 @@ export default function LandingPage() {
             return (
               <div style={{ position: 'relative' }}>
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'space-between', alignItems: 'center', marginBottom: 18, flexWrap: 'wrap' }}>
-                  <div style={{ fontSize: 13, color: '#F97316', fontWeight: 800 }}>🎤 Témoignages défilants</div>
+                  <div style={{ fontSize: 13, color: '#C9962C', fontWeight: 800 }}>🎤 Témoignages défilants</div>
                   <div style={{ fontSize: 12, color: '#888', fontWeight: 600 }}>Glisse / Scroll / Hover</div>
                 </div>
 
@@ -816,7 +816,7 @@ export default function LandingPage() {
                       >
                         <div aria-hidden style={{ position: 'absolute', inset: -80, background: 'radial-gradient(circle at 30% 20%, rgba(249,115,22,0.18), rgba(249,115,22,0) 58%)', filter: 'blur(2px)', pointerEvents: 'none' }} />
                         <div style={{ position: 'relative' }}>
-                          <div style={{ color: '#F97316', fontSize: 18, marginBottom: 14 }}>{'★'.repeat(t.note)}</div>
+                          <div style={{ color: '#C9962C', fontSize: 18, marginBottom: 14 }}>{'★'.repeat(t.note)}</div>
                           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#333', fontStyle: 'italic', marginBottom: 20 }}>"{t.quote}"</p>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                             <div style={{ width: 40, height: 40, borderRadius: '50%', background: t.color, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700, flexShrink: 0 }}>{t.avatar}</div>
@@ -875,7 +875,7 @@ export default function LandingPage() {
         <Link
           to="/login"
           className="bb-liv-btn"
-          style={{ fontSize: 13, color: '#F97316', textDecoration: 'none', fontWeight: 800, position: 'relative', padding: '6px 10px', borderRadius: 12, border: '1px solid rgba(249,115,22,0.25)' }}
+          style={{ fontSize: 13, color: '#C9962C', textDecoration: 'none', fontWeight: 800, position: 'relative', padding: '6px 10px', borderRadius: 12, border: '1px solid rgba(249,115,22,0.25)' }}
         >Connexion</Link>
       </footer>
 
