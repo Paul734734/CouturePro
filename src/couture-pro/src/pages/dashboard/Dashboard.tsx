@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/authStore'
 import { useCommandesStore } from '@/store/commandesStore'
 import { useClientesStore } from '@/store/clientesStore'
 import { usePaiementsStore } from '@/store/paiementsStore'
+import { calculerSemaines, variationPct } from '@/lib/weeklyStats'
 import { useEffect, useMemo, useState } from 'react'
 
 import {
@@ -179,7 +180,7 @@ function AnimatedStatCard({
 export default function Dashboard() {
   const { user, acces } = useAuthStore()
 
-  const [periodKey, setPeriodKey] = useState<'7' | '4' | '12'>('4')
+  const [periodKey, setPeriodKey] = useState<'4' | '8' | '12'>('4')
 
 
 
@@ -189,7 +190,7 @@ export default function Dashboard() {
 
   const { commandes: commandesStore, fetchCommandes } = useCommandesStore()
   const { clientes: clientesStore, fetchClientes } = useClientesStore()
-  const { totaux, suivi, fetchTotaux, fetchSuivi } = usePaiementsStore()
+  const { totaux, suivi, paiements: paiementsListe, fetchTotaux, fetchSuivi, fetchPaiements } = usePaiementsStore()
 
   const forfait = user?.forfait ?? 'starter'
   const forfaitLabel = forfait.charAt(0).toUpperCase() + forfait.slice(1)
@@ -201,7 +202,8 @@ export default function Dashboard() {
     fetchClientes()
     fetchTotaux()
     fetchSuivi()
-  }, [fetchCommandes, fetchClientes, fetchTotaux, fetchSuivi])
+    fetchPaiements()
+  }, [fetchCommandes, fetchClientes, fetchTotaux, fetchSuivi, fetchPaiements])
 
   const commandesUi = commandes as unknown as CommandeUi[]
 
@@ -256,7 +258,7 @@ export default function Dashboard() {
     {
       label: 'À livrer cette semaine',
       value: String(commandesLivrerCetteSemaine.length),
-      change: 'Focus livraison (données fictives)',
+      change: 'Prêtes ou en essayage',
       ok: true,
       icon: '📦',
     },
@@ -434,8 +436,8 @@ export default function Dashboard() {
             {/* Toggle période */}
             <div style={{ display: 'flex', gap: 10, marginBottom: 18, flexWrap: 'wrap' }}>
               {([
-                { key: '7', label: '7 jours' },
                 { key: '4', label: '4 semaines' },
+                { key: '8', label: '8 semaines' },
                 { key: '12', label: '12 semaines' },
               ] as const).map((t) => {
                 const active = periodKey === t.key
@@ -461,87 +463,35 @@ export default function Dashboard() {
               })}
             </div>
 
-            {/* Données fictives par semaine */}
+            {/* Analyse calculée à partir des vraies commandes et vrais paiements.
+                Tant qu'aucune donnée n'a été saisie, tout reste à 0. */}
             {(() => {
-              type Week = {
-                idx: number
-                label: string
-                dateLabel: string
-                recettes: number
-                reste: number
-                commandes: number
-                livrees: number
-                enCours: number
-                enRetard: number
-                tauxRecouvrement: number
-              }
+              const nbSemaines = periodKey === '8' ? 8 : periodKey === '12' ? 12 : 4
 
-              const base: Array<Pick<Week, 'recettes' | 'reste' | 'commandes'>> = [
-                { recettes: 185000, reste: 32000, commandes: 6 },
-                { recettes: 210000, reste: 41000, commandes: 8 },
-                { recettes: 175000, reste: 28000, commandes: 5 },
-                { recettes: 230000, reste: 52000, commandes: 9 },
-                { recettes: 195000, reste: 35000, commandes: 7 },
-                { recettes: 255000, reste: 48000, commandes: 10 },
-                { recettes: 240000, reste: 43000, commandes: 9 },
-                { recettes: 280000, reste: 55000, commandes: 11 },
-                { recettes: 260000, reste: 38000, commandes: 9 },
-                { recettes: 310000, reste: 62000, commandes: 13 },
-                { recettes: 290000, reste: 47000, commandes: 11 },
-                { recettes: 340000, reste: 58000, commandes: 14 },
-              ]
+              const weeksAll = calculerSemaines(
+                commandesUiNormalized.map((c) => ({
+                  dateCommande: c.dateCommande,
+                  statut: c.statut,
+                  resteAPayer: c.resteAPayer,
+                })),
+                paiementsListe.map((p) => ({ date: p.date, montant: p.montant })),
+                nbSemaines
+              )
 
-
-              const weekDates = [
-                '06 jan',
-                '13 jan',
-                '20 jan',
-                '27 jan',
-                '03 fév',
-                '10 fév',
-                '17 fév',
-                '24 fév',
-                '03 mar',
-                '10 mar',
-                '17 mar',
-                '24 mar',
-              ]
-
-              const weeksAll: Week[] = base.map((w, i) => {
-                const livrees = Math.max(0, Math.round(w.commandes * (0.55 + (i % 3) * 0.03)))
-                const enCours = Math.max(0, Math.round(w.commandes * (0.30 + (i % 2) * 0.02)))
-                const enRetard = Math.max(0, w.commandes - livrees - enCours)
-                const taux = Math.round((w.recettes / Math.max(1, w.recettes + w.reste)) * 100)
-                const idx = i + 1
-                const label = `S${idx} ${weekDates[i].split(' ')[0].padStart(2, '0')}/${weekDates[i].split(' ')[1]}`
-                const dateLabel = `Semaine du ${weekDates[i]}`
-                return { idx, label, dateLabel, ...w, livrees, enCours, enRetard, tauxRecouvrement: taux }
-              })
-
-              const weeksForPeriod =
-                periodKey === '7'
-                  ? weeksAll.slice(-7)
-                  : periodKey === '12'
-                    ? weeksAll.slice(-12)
-                    : weeksAll.slice(-4)
+              const weeksForPeriod = weeksAll
 
               const avgRecettes = weeksForPeriod.reduce((s, x) => s + x.recettes, 0) / Math.max(1, weeksForPeriod.length)
-              const avgRecouvrement = weeksForPeriod.reduce((s, x) => s + x.tauxRecouvrement, 0) / Math.max(1, weeksForPeriod.length)
 
               const prev = weeksForPeriod.length >= 2 ? weeksForPeriod[weeksForPeriod.length - 2] : null
               const curr = weeksForPeriod[weeksForPeriod.length - 1]
 
-              const changePct = (a: number, b: number) => (b === 0 ? 0 : Math.round(((b - a) / a) * 100))
+              const changePct = variationPct
 
               const lastRecouv = prev ? changePct(prev.tauxRecouvrement, curr.tauxRecouvrement) : 0
               const lastRecetteChange = prev ? changePct(prev.recettes, curr.recettes) : 0
               const lastCmdChange = prev ? changePct(prev.commandes, curr.commandes) : 0
 
-              const spark7 = [...weeksAll.slice(-7).map((w) => w.recettes)]
-
               const makeSpark = (arr: number[]) => arr.map((v) => ({ v }))
-
-              const sparkRecouv7 = makeSpark(spark7.map((_, i) => 60 + (i * 3) % 30))
 
               const kpiA = {
                 value: `${curr.tauxRecouvrement}%`,
@@ -553,7 +503,7 @@ export default function Dashboard() {
 
               const kpiB = {
                 value: `${Math.round(weeksForPeriod.reduce((s, x) => s + x.recettes, 0) / Math.max(1, weeksForPeriod.length)).toLocaleString('fr-FR')} FCFA`,
-                subtitle: 'moyenne des 4 dernières semaines',
+                subtitle: `moyenne des ${nbSemaines} dernières semaines`,
                 badgeUp: lastRecetteChange >= 0,
                 badgeText: `${lastRecetteChange >= 0 ? '↑' : '↓'} ${Math.abs(lastRecetteChange)}%`,
                 spark: makeSpark(weeksAll.slice(-4).map((w) => w.recettes)),
@@ -561,7 +511,7 @@ export default function Dashboard() {
 
               const kpiC = {
                 value: `${curr.commandes} commandes`,
-                subtitle: `dont ${weeksForPeriod.filter((w) => w.idx >= weeksForPeriod[Math.max(0, weeksForPeriod.length - 1)].idx - 2).slice(0, 3).length ? Math.max(1, Math.round(curr.livrees)) : Math.round(curr.livrees)} à livrer cette semaine`,
+                subtitle: `dont ${curr.livrees} livrée(s) cette semaine`,
                 badgeUp: lastCmdChange >= 0,
                 badgeText: `${lastCmdChange >= 0 ? '↑' : '↓'} ${Math.abs(lastCmdChange)}%`,
                 spark: makeSpark(weeksAll.slice(-4).map((w) => w.commandes)),
@@ -709,9 +659,11 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div style={{ fontSize: 12, color: '#9CA3AF', fontStyle: 'italic' }}>
-                    Données fictives — connectées à vos vraies données bientôt
-                  </div>
+                  {weeksForPeriod.every((w) => w.commandes === 0 && w.recettes === 0) && (
+                    <div style={{ fontSize: 12, color: '#9CA3AF', fontStyle: 'italic' }}>
+                      Pas encore de données sur cette période — ajoutez des commandes et des paiements pour voir vos statistiques évoluer.
+                    </div>
+                  )}
                 </>
               )
             })()}
