@@ -8,8 +8,8 @@ export type Billing = "mensuel" | "annuel";
 
 export const FORFAIT_PRIX: Record<Forfait, { mensuel: number; annuel: number }> = {
   starter: { mensuel: 1000, annuel: 10000 },
-  pro:     { mensuel: 1600, annuel: 16000 },
-  elite:   { mensuel: 3000, annuel: 30000 },
+  pro:     { mensuel: 2300, annuel: 23000 },
+  elite:   { mensuel: 4800, annuel: 48000 },
 }
 
 export interface ForfaitAcces {

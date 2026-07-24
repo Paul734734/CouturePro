@@ -87,7 +87,7 @@ def dashboard_admin(
     nb_expirees = sum(1 for u in users if u.statut_effectif == StatutUser.EXPIRE)
     nb_suspendues = sum(1 for u in users if u.statut_effectif == StatutUser.SUSPENDU)
 
-    prix_mensuel = {Forfait.STARTER: 1000, Forfait.PRO: 1600, Forfait.ELITE: 3000}
+    prix_mensuel = {Forfait.STARTER: 1000, Forfait.PRO: 2300, Forfait.ELITE: 4800}
     revenus_estimes = sum(
         prix_mensuel.get(u.forfait, 0) for u in users if u.statut_effectif == StatutUser.ACTIF
     )

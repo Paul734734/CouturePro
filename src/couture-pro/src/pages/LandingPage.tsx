@@ -133,8 +133,8 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
     {
       id: 'pro',
       nom: 'Pro',
-      prix_mensuel: 1600,
-      prix_annuel: 16000,
+      prix_mensuel: 2300,
+      prix_annuel: 23000,
       couleur: '#7C3AED',
       bg: '#F5F3FF',
       border: '#DDD6FE',
@@ -145,8 +145,8 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
     {
       id: 'elite',
       nom: 'Elite',
-      prix_mensuel: 3000,
-      prix_annuel: 30000,
+      prix_mensuel: 4800,
+      prix_annuel: 48000,
       couleur: '#0F172A',
       bg: '#F8FAFC',
       border: '#CBD5E1',
@@ -665,7 +665,7 @@ export default function LandingPage() {
                 desc: 'Idéal pour démarrer',
               },
               {
-                nom: 'Pro', prix_m: 1600, prix_a: 16000, couleur: '#7C3AED',
+                nom: 'Pro', prix_m: 2300, prix_a: 23000, couleur: '#7C3AED',
                 bg: '#1a1a1a', border: '#1a1a1a', btnBg: '#F97316', btnColor: 'white',
                 badge: '⭐ Le plus populaire',
                 features: ['Clientes illimitées', 'Carnet de mesures complet', 'Gestion commandes + photos', 'Factures & reçus PDF', 'Suivi paiements & dettes', 'Tableau de bord avancé'],
@@ -673,7 +673,7 @@ export default function LandingPage() {
                 desc: "Pour l'atelier qui grandit",
               },
               {
-                nom: 'Elite', prix_m: 3000, prix_a: 30000, couleur: '#0F172A',
+                nom: 'Elite', prix_m: 4800, prix_a: 48000, couleur: '#0F172A',
                 bg: 'white', border: '#f0ede8', btnBg: '#1a1a1a', btnColor: 'white',
                 features: ['Tout Pro inclus', 'Multi-atelier (3 espaces)', 'Export comptabilité', 'Logo personnalisé sur PDFs'],
                 exclues: [],
