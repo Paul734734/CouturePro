@@ -21,14 +21,22 @@ app = FastAPI(
 )
 
 # ⚠️ En prod, restreins allow_origins à ton vrai domaine (ex: Netlify).
+# ALLOWED_ORIGINS reste configurable via variable d'env pour un contrôle
+# explicite (ex: sur le VPS). En complément, on autorise toujours en dur
+# les domaines de prod connus (couturepro.app) + les URLs Netlify
+# (preview/deploy) via une regex, pour éviter un blocage CORS à chaque
+# nouvelle URL de preview Netlify sans avoir à modifier le .env serveur.
 ALLOWED_ORIGINS = os.getenv(
     "ALLOWED_ORIGINS",
-    "http://localhost:5173"
+    "http://localhost:5173,https://couturepro.app,https://www.couturepro.app"
 ).split(",")
+
+ALLOWED_ORIGIN_REGEX = r"https://([a-zA-Z0-9-]+\.)?couturepro\.app$|https://[a-zA-Z0-9.-]+\.netlify\.app$"
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
+    allow_origin_regex=ALLOWED_ORIGIN_REGEX,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
