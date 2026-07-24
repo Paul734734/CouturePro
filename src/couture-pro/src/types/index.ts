@@ -88,6 +88,7 @@ export interface Commande {
   dateLivraison?: string
   statut: StatutCommande
   notes?: string
+  tempsConception?: number
 }
 
 export interface Paiement {

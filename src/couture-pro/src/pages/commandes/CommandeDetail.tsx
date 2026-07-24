@@ -61,6 +61,9 @@ function CommandeDetail() {
       <p>Prix total : {commande.prixTotal} FCFA</p>
       <p>Total payé : {commande.avancePaye} FCFA</p>
       <p>Reste à payer : {commande.prixTotal - commande.avancePaye} FCFA</p>
+      {commande.tempsConception != null && (
+        <p>Temps de conception estimé : {commande.tempsConception} jour(s)</p>
+      )}
 
       <h3>Ajouter un paiement</h3>
       <input

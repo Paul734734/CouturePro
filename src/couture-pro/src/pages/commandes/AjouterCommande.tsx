@@ -44,6 +44,7 @@ export default function AjouterCommande() {
     dateLivraison: '',
     statut: 'en_attente',
     notes: '',
+    tempsConception: '',
   })
   const [erreurs, setErreurs] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
@@ -67,6 +68,7 @@ export default function AjouterCommande() {
         dateLivraison: existing.dateLivraison || '',
         statut: existing.statut || 'en_attente',
         notes: existing.notes || '',
+        tempsConception: existing.tempsConception?.toString() || '',
       })
     }
   }, [existing])
@@ -119,6 +121,7 @@ export default function AjouterCommande() {
       statut: form.statut,
       notes: form.notes,
       resteAPayer,
+      tempsConception: form.tempsConception ? Number(form.tempsConception) : undefined,
     }
 
     if (isEdit) {
@@ -302,6 +305,17 @@ export default function AjouterCommande() {
               type="date"
               value={form.dateLivraison}
               onChange={(e) => set('dateLivraison', e.target.value)}
+              style={inputStyle(false)}
+            />
+          </Champ>
+          <Champ label="Temps de conception estimé (jours)">
+            <input
+              type="number"
+              min="0"
+              step="0.5"
+              value={form.tempsConception}
+              onChange={(e) => set('tempsConception', e.target.value)}
+              placeholder="Ex: 3"
               style={inputStyle(false)}
             />
           </Champ>
