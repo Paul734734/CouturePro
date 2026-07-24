@@ -8,6 +8,8 @@ const navItems = [
   { href: '/dashboard', icon: '📊', label: 'Tableau de bord' },
   { href: '/clientes', icon: '👩‍🦱', label: 'Clientes' },
   { href: '/commandes', icon: '📋', label: 'Commandes' },
+  { href: '/stock', icon: '🧵', label: 'Stock' },
+  { href: '/catalogue', icon: '👗', label: 'Catalogue' },
   { href: '/paiements', icon: '💰', label: 'Paiements' },
   { href: '/factures', icon: '🧾', label: 'Factures' },
   { href: '/profil', icon: '⚙️', label: 'Mon profil' },

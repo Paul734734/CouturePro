@@ -1,6 +1,6 @@
 import enum
 from datetime import datetime, timedelta
-from sqlalchemy import Column, String, DateTime, Date, Float, Text, ForeignKey
+from sqlalchemy import Column, String, DateTime, Date, Float, Text, ForeignKey, Boolean
 from sqlalchemy import Enum
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -224,3 +224,41 @@ class Facture(Base):
     notes = Column(Text, nullable=True)
 
     pdf_path = Column(String(255), nullable=True)
+
+
+class ArticleStock(Base):
+    """Gestion de stock : tissus, fournitures, accessoires de l'atelier."""
+    __tablename__ = "articles_stock"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey("users.id"), nullable=False, index=True)
+
+    nom = Column(String(150), nullable=False)
+    categorie = Column(String(100), nullable=True)  # ex: Tissu, Fil, Bouton, Accessoire
+    quantite = Column(Float, default=0)
+    unite = Column(String(20), default="unite")  # ex: metre, unite, rouleau
+    seuil_alerte = Column(Float, nullable=True)  # alerte si quantite <= seuil
+    prix_unitaire = Column(Float, nullable=True)
+    fournisseur = Column(String(150), nullable=True)
+    notes = Column(Text, nullable=True)
+
+    date_ajout = Column(DateTime, default=datetime.utcnow)
+    date_maj = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class ArticleCatalogue(Base):
+    """Catalogue des modeles d'habits proposes par l'atelier."""
+    __tablename__ = "articles_catalogue"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey("users.id"), nullable=False, index=True)
+
+    nom = Column(String(150), nullable=False)
+    categorie = Column(String(100), nullable=True)  # ex: Robe, Tailleur, Boubou
+    description = Column(Text, nullable=True)
+    prix_indicatif = Column(Float, nullable=True)
+    temps_conception_estime = Column(Float, nullable=True)  # en jours
+    image_url = Column(String(255), nullable=True)
+    actif = Column(Boolean, default=True)
+
+    date_ajout = Column(DateTime, default=datetime.utcnow)

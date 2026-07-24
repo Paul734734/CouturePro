@@ -21,6 +21,8 @@ import Factures from './pages/factures/Factures'
 import CommandeDetail from './pages/commandes/CommandeDetail'
 import FactureDetail from './pages/factures/FactureDetail'
 import Profil from './pages/profil/Profil'
+import Stock from './pages/stock/Stock'
+import Catalogue from './pages/catalogue/Catalogue'
 
 
 // Admin
@@ -59,6 +61,8 @@ function App() {
         <Route path="/factures" element={<Factures />} />
         <Route path="/factures/:id" element={<FactureDetail />} />
         <Route path="/profil" element={<Profil />} />
+        <Route path="/stock" element={<Stock />} />
+        <Route path="/catalogue" element={<Catalogue />} />
 
 
         {/* Admin */}

@@ -360,3 +360,75 @@ class PaiementOutEnrichi(CamelModel):
     notes: Optional[str] = None
     clienteNom: Optional[str] = None
     commandeLabel: Optional[str] = None
+
+
+# ---------- STOCK ----------
+class ArticleStockCreate(CamelModel):
+    nom: str
+    categorie: Optional[str] = None
+    quantite: float = 0
+    unite: str = "unite"
+    seuil_alerte: Optional[float] = None
+    prix_unitaire: Optional[float] = None
+    fournisseur: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class ArticleStockUpdate(CamelModel):
+    nom: Optional[str] = None
+    categorie: Optional[str] = None
+    quantite: Optional[float] = None
+    unite: Optional[str] = None
+    seuil_alerte: Optional[float] = None
+    prix_unitaire: Optional[float] = None
+    fournisseur: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class ArticleStockOut(CamelModel):
+    id: str
+    user_id: str
+    nom: str
+    categorie: Optional[str] = None
+    quantite: float
+    unite: str
+    seuil_alerte: Optional[float] = None
+    prix_unitaire: Optional[float] = None
+    fournisseur: Optional[str] = None
+    notes: Optional[str] = None
+    date_ajout: datetime
+    date_maj: datetime
+
+
+# ---------- CATALOGUE ----------
+class ArticleCatalogueCreate(CamelModel):
+    nom: str
+    categorie: Optional[str] = None
+    description: Optional[str] = None
+    prix_indicatif: Optional[float] = None
+    temps_conception_estime: Optional[float] = None
+    image_url: Optional[str] = None
+    actif: bool = True
+
+
+class ArticleCatalogueUpdate(CamelModel):
+    nom: Optional[str] = None
+    categorie: Optional[str] = None
+    description: Optional[str] = None
+    prix_indicatif: Optional[float] = None
+    temps_conception_estime: Optional[float] = None
+    image_url: Optional[str] = None
+    actif: Optional[bool] = None
+
+
+class ArticleCatalogueOut(CamelModel):
+    id: str
+    user_id: str
+    nom: str
+    categorie: Optional[str] = None
+    description: Optional[str] = None
+    prix_indicatif: Optional[float] = None
+    temps_conception_estime: Optional[float] = None
+    image_url: Optional[str] = None
+    actif: bool
+    date_ajout: datetime
