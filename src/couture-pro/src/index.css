@@ -86,6 +86,28 @@ img, video {
    sur petit écran : on préfère un scroll horizontal fluide. */
 .cp-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
+/* Titre principal des blocs "Bonjour" / en-têtes de page : on réduit un peu
+   la taille sur mobile pour éviter tout débordement horizontal. */
+@media (max-width: 480px) {
+  .cp-mobile-title { font-size: 22px !important; }
+}
+
+/* Boutons pleine largeur sur mobile : meilleure zone de tap, alignement propre
+   quand ils sont côte à côte avec un champ de saisie qui passe en colonne. */
+.cp-btn-mobile-full { }
+@media (max-width: 480px) {
+  .cp-btn-mobile-full { width: 100%; }
+  .cp-form-row-mobile-col { flex-direction: column !important; align-items: stretch !important; }
+  .cp-form-row-mobile-col input { max-width: 100% !important; }
+}
+
+/* Colonne statut + facture des lignes "commande"/"facture" : alignée à
+   droite en colonnes desktop, repasse à gauche quand la ligne s'empile
+   en une seule colonne sur mobile. */
+@media (max-width: 640px) {
+  .cp-row-status-col { align-items: flex-start !important; width: 100%; }
+}
+
 /* ───────────────────────────────────────────────
    LandingPage “vivante” — animations globales
    Respecte prefers-reduced-motion

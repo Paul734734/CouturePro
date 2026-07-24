@@ -326,10 +326,10 @@ export default function Dashboard() {
         <div style={{ position: 'relative', zIndex: 1 }}>
           {/* BLOC 1 — Bonjour + sous-titre */}
           <div style={{ marginBottom: 24 }}>
-            <h2 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>
+            <h2 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6, overflowWrap: 'break-word' }} className="cp-mobile-title">
               Bonjour{user?.nom ? `, ${user.nom.split(' ')[0]}` : ''} 👋
             </h2>
-            <p style={{ color: '#666', fontSize: 14 }}>
+            <p style={{ color: '#666', fontSize: 14, overflowWrap: 'break-word' }}>
               {user?.nomAtelier ? `Voici le résumé de votre atelier "${user.nomAtelier}" aujourd'hui.` : "Voici le résumé de votre atelier aujourd'hui."}
             </p>
           </div>
@@ -429,7 +429,7 @@ export default function Dashboard() {
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
-              <div style={{ fontSize: 16, fontWeight: 900 }}>📊 Analyse & Performance — Vue hebdomadaire</div>
+              <div style={{ fontSize: 16, fontWeight: 900, overflowWrap: 'break-word' }}>📊 Analyse & Performance — Vue hebdomadaire</div>
               <div style={{ fontSize: 12, color: '#9CA3AF', fontStyle: 'italic' }}>Dernière mise à jour : {new Date().toLocaleDateString('fr-FR')}</div>
             </div>
 

@@ -81,7 +81,7 @@ function Factures() {
                     <div style={{ fontSize: 12, color: "#888", marginBottom: 4 }}>Date</div>
                     <div style={{ fontSize: 13, fontWeight: 600 }}>{formatDate(f.dateEmission)}</div>
                   </div>
-                  <span style={{
+                  <span className="cp-row-status-col" style={{
                     fontSize: 12, padding: "5px 14px", borderRadius: 50, fontWeight: 600,
                     background: sc.bg, color: sc.color, whiteSpace: "nowrap",
                   }}>
@@ -91,7 +91,7 @@ function Factures() {
                     onClick={(e) => { e.stopPropagation(); supprimerFacture(f.id); }}
                     style={{
                       background: "none", border: "none", cursor: "pointer",
-                      fontSize: 16, color: "#aaa", padding: 4,
+                      fontSize: 18, color: "#aaa", padding: 8, alignSelf: "center",
                     }}
                     title="Supprimer"
                   >

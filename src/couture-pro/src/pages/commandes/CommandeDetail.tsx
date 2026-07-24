@@ -171,7 +171,7 @@ function CommandeDetail() {
 
         <div style={card}>
           <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 14 }}>💰 Ajouter un paiement</h3>
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <div className="cp-form-row-mobile-col" style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             <input
               type="number"
               value={montant}
@@ -179,7 +179,7 @@ function CommandeDetail() {
               placeholder="Montant en FCFA"
               style={{ ...inputStyle, maxWidth: 220 }}
             />
-            <button onClick={handlePaiement} style={btnPrimary}>Valider le paiement</button>
+            <button onClick={handlePaiement} className="cp-btn-mobile-full" style={btnPrimary}>Valider le paiement</button>
           </div>
         </div>
 
@@ -187,23 +187,23 @@ function CommandeDetail() {
           <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 14 }}>🧾 Facture</h3>
           {erreur && <p style={{ color: "#dc2626", fontSize: 13, marginBottom: 10 }}>{erreur}</p>}
           {factureLiee ? (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
-              <div>
-                <div style={value}>Facture {factureLiee.numero}</div>
-                <div style={label}>
+            <div className="cp-form-row-mobile-col" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ ...value, overflowWrap: "break-word" }}>Facture {factureLiee.numero}</div>
+                <div style={{ ...label, overflowWrap: "break-word" }}>
                   {factureLiee.montantPaye.toLocaleString()} / {factureLiee.montantTotal.toLocaleString()} FCFA — {factureLiee.statut}
                 </div>
               </div>
-              <button onClick={() => navigate(`/factures/${factureLiee.id}`)} style={btnSecondary}>
+              <button onClick={() => navigate(`/factures/${factureLiee.id}`)} className="cp-btn-mobile-full" style={btnSecondary}>
                 Voir la facture
               </button>
             </div>
           ) : (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
+            <div className="cp-form-row-mobile-col" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
               <p style={{ fontSize: 13.5, color: "#666", margin: 0 }}>
                 Aucune facture générée pour cette commande.
               </p>
-              <button onClick={handleGenererFacture} disabled={genererFactureLoading} style={btnPrimary}>
+              <button onClick={handleGenererFacture} disabled={genererFactureLoading} className="cp-btn-mobile-full" style={btnPrimary}>
                 {genererFactureLoading ? "Génération..." : "Générer la facture"}
               </button>
             </div>

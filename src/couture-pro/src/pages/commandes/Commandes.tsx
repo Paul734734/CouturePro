@@ -4,7 +4,7 @@ import AppLayout from '../../components/layout/AppLayout'
 import { formatDate, formatMontant, getStatutLabel, getStatutColor } from '../../lib/utils'
 import { useAuthStore } from '@/store/authStore'
 import { useCommandesStore } from '@/store/commandesStore'
-
+import { useFacturesStore } from '@/store/facturesStore'
 
 const statutOptions = ['tous', 'en_attente', 'en_cours', 'essayage', 'pret', 'livre', 'annule'] as const
 
@@ -12,14 +12,41 @@ export default function Commandes() {
   const navigate = useNavigate()
   const { user } = useAuthStore()
   const { commandes, fetchCommandes } = useCommandesStore()
+  const { factures, fetchFactures, ajouterFacture } = useFacturesStore()
+  const [genererFactureId, setGenererFactureId] = useState<string | null>(null)
 
   const [filtre, setFiltre] = useState<(typeof statutOptions)[number]>('tous')
 
-  useEffect(() => { if (user) fetchCommandes() }, [user, fetchCommandes])
+  useEffect(() => {
+    if (user) {
+      fetchCommandes()
+      fetchFactures()
+    }
+  }, [user, fetchCommandes, fetchFactures])
+
   const filtered = useMemo(() => {
     if (filtre === 'tous') return commandes
     return commandes.filter((c) => c.statut === filtre)
   }, [commandes, filtre])
+
+  const getFactureForCommande = (commandeId: string) => factures.find((f) => f.commandeId === commandeId)
+
+  const handleGenererFacture = async (e: { stopPropagation: () => void }, commandeId: string, clienteId: string, prixTotal: number, avancePaye: number) => {
+    e.stopPropagation()
+    setGenererFactureId(commandeId)
+    try {
+      const facture = await ajouterFacture({
+        clienteId,
+        commandeId,
+        type: 'facture',
+        montantTotal: prixTotal,
+        montantPaye: avancePaye,
+      })
+      navigate(`/factures/${facture.id}`)
+    } finally {
+      setGenererFactureId(null)
+    }
+  }
 
   return (
     <AppLayout titre="Commandes" sousTitre="Suivi et encaissement des commandes">
@@ -87,9 +114,33 @@ export default function Commandes() {
                   <div style={{ fontSize: 12, color: '#888', marginBottom: 4 }}>Livraison</div>
                   <div style={{ fontSize: 13, fontWeight: 600 }}>{c.dateLivraison ? formatDate(c.dateLivraison) : '—'}</div>
                 </div>
-                <span style={{ fontSize: 12, padding: '5px 14px', borderRadius: 50, fontWeight: 600, background: '#FFF4ED', color: '#F97316', whiteSpace: 'nowrap' }}>
-                  {getStatutLabel(c.statut)}
-                </span>
+                <div className="cp-row-status-col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
+                  <span style={{ fontSize: 12, padding: '5px 14px', borderRadius: 50, fontWeight: 600, background: '#FFF4ED', color: '#F97316', whiteSpace: 'nowrap' }}>
+                    {getStatutLabel(c.statut)}
+                  </span>
+                  {(() => {
+                    const facture = getFactureForCommande(c.id)
+                    if (facture) {
+                      return (
+                        <button
+                          onClick={(e) => { e.stopPropagation(); navigate(`/factures/${facture.id}`) }}
+                          style={{ fontSize: 11, padding: '4px 12px', borderRadius: 50, fontWeight: 600, background: '#dcfce7', color: '#16a34a', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                        >
+                          🧾 Voir la facture
+                        </button>
+                      )
+                    }
+                    return (
+                      <button
+                        onClick={(e) => handleGenererFacture(e, c.id, c.clienteId, c.prixTotal, c.avancePaye)}
+                        disabled={genererFactureId === c.id}
+                        style={{ fontSize: 11, padding: '4px 12px', borderRadius: 50, fontWeight: 600, background: '#f0ede8', color: '#666', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                      >
+                        {genererFactureId === c.id ? 'Génération…' : '🧾 Générer facture'}
+                      </button>
+                    )
+                  })()}
+                </div>
               </div>
             )
           })}
