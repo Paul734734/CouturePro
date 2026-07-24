@@ -33,6 +33,40 @@ def test_creer_commande_calcule_le_reste_a_payer(client):
     assert data["statut"] == "en_attente"
 
 
+def test_commande_renvoie_le_nom_de_la_cliente(client):
+    # Bug corrige : le backend ne renvoyait jamais clienteNom, alors que le
+    # frontend (Commandes.tsx) fait `c.clienteNom.charAt(0)` -> plantait.
+    token = creer_utilisatrice(client)
+    cliente_id = creer_cliente(client, token, nom="Aissatou Bello")
+
+    r = client.post("/api/commandes", json={
+        "clienteId": cliente_id, "typeVetement": "Boubou", "prixTotal": 15000,
+    }, headers=headers(token))
+    assert r.status_code == 201
+    assert r.json()["clienteNom"] == "Aissatou Bello"
+
+    r2 = client.get("/api/commandes", headers=headers(token))
+    commande = next(c for c in r2.json() if c["clienteId"] == cliente_id)
+    assert commande["clienteNom"] == "Aissatou Bello"
+
+
+def test_commande_persiste_le_temps_de_conception(client):
+    token = creer_utilisatrice(client)
+    cliente_id = creer_cliente(client, token)
+
+    r = client.post("/api/commandes", json={
+        "clienteId": cliente_id, "typeVetement": "Robe de soiree", "prixTotal": 60000,
+        "tempsConception": 4.5,
+    }, headers=headers(token))
+    assert r.status_code == 201
+    assert r.json()["tempsConception"] == 4.5
+
+    commande_id = r.json()["id"]
+    r2 = client.put(f"/api/commandes/{commande_id}", json={"tempsConception": 2}, headers=headers(token))
+    assert r2.status_code == 200
+    assert r2.json()["tempsConception"] == 2
+
+
 def test_commande_refuse_si_cliente_dune_autre_utilisatrice(client):
     token_a = creer_utilisatrice(client, "Atelier A")
     token_b = creer_utilisatrice(client, "Atelier B")

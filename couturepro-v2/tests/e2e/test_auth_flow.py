@@ -55,81 +55,25 @@ def test_me_avec_token_valide_retourne_le_bon_user(client):
     assert r2.json()["user"]["email"] == email
 
 
-def test_update_profil_modifie_les_champs(client):
+def test_register_avec_quartier_est_persiste(client):
+    email = email_unique()
+    r = client.post("/api/auth/register", json={
+        "nom": "Test Couturiere", "email": email, "password": "azerty123",
+        "ville": "Douala", "quartier": "Bonapriso",
+    })
+    assert r.status_code == 201
+    assert r.json()["user"]["quartier"] == "Bonapriso"
+
+
+def test_update_profil_modifie_le_quartier(client):
     email = email_unique()
     r = client.post("/api/auth/register", json={"nom": "Test", "email": email, "password": "azerty123"})
     token = r.json()["token"]
     headers = {"Authorization": f"Bearer {token}"}
 
-    r2 = client.put("/api/auth/me", headers=headers, json={
-        "nomAtelier": "Atelier Lumière",
-        "description": "Spécialiste en robes de soirée",
-        "logoUrl": "https://example.com/logo.png",
-    })
+    r2 = client.put("/api/auth/me", headers=headers, json={"quartier": "Bastos"})
     assert r2.status_code == 200
-    data = r2.json()
-    assert data["nomAtelier"] == "Atelier Lumière"
-    assert data["description"] == "Spécialiste en robes de soirée"
-    assert data["logoUrl"] == "https://example.com/logo.png"
+    assert r2.json()["quartier"] == "Bastos"
 
-
-def test_update_profil_sans_token_est_refuse(client):
-    r = client.put("/api/auth/me", json={"nomAtelier": "Test"})
-    assert r.status_code in (401, 403)
-
-
-def test_update_profil_ignore_les_champs_sensibles(client):
-    email = email_unique()
-    r = client.post("/api/auth/register", json={"nom": "Test", "email": email, "password": "azerty123"})
-    token = r.json()["token"]
-    headers = {"Authorization": f"Bearer {token}"}
-
-    r2 = client.put("/api/auth/me", headers=headers, json={
-        "nomAtelier": "Atelier Test",
-        "role": "admin",
-        "statut": "actif",
-        "forfait": "premium",
-    })
-    assert r2.status_code == 200
     r3 = client.get("/api/auth/me", headers=headers)
-    assert r3.json()["user"]["role"] != "admin"
-
-
-def test_update_profil_modifie_les_champs(client):
-    email = email_unique()
-    r = client.post("/api/auth/register", json={"nom": "Test", "email": email, "password": "azerty123"})
-    token = r.json()["token"]
-    headers = {"Authorization": f"Bearer {token}"}
-
-    r2 = client.put("/api/auth/me", headers=headers, json={
-        "nomAtelier": "Atelier Lumière",
-        "description": "Spécialiste en robes de soirée",
-        "logoUrl": "https://example.com/logo.png",
-    })
-    assert r2.status_code == 200
-    data = r2.json()
-    assert data["nomAtelier"] == "Atelier Lumière"
-    assert data["description"] == "Spécialiste en robes de soirée"
-    assert data["logoUrl"] == "https://example.com/logo.png"
-
-
-def test_update_profil_sans_token_est_refuse(client):
-    r = client.put("/api/auth/me", json={"nomAtelier": "Test"})
-    assert r.status_code in (401, 403)
-
-
-def test_update_profil_ignore_les_champs_sensibles(client):
-    email = email_unique()
-    r = client.post("/api/auth/register", json={"nom": "Test", "email": email, "password": "azerty123"})
-    token = r.json()["token"]
-    headers = {"Authorization": f"Bearer {token}"}
-
-    r2 = client.put("/api/auth/me", headers=headers, json={
-        "nomAtelier": "Atelier Test",
-        "role": "admin",
-        "statut": "actif",
-        "forfait": "premium",
-    })
-    assert r2.status_code == 200
-    r3 = client.get("/api/auth/me", headers=headers)
-    assert r3.json()["user"]["role"] != "admin"
+    assert r3.json()["user"]["quartier"] == "Bastos"

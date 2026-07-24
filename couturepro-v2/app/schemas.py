@@ -210,6 +210,7 @@ class CommandeUpdate(CamelModel):
     date_livraison: Optional[datetime] = None
     statut: Optional[StatutCommande] = None
     notes: Optional[str] = None
+    temps_conception: Optional[float] = None
 
 
 class CommandeStatutUpdate(CamelModel):
