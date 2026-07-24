@@ -3,6 +3,7 @@ import { useRef, useState } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import { useFacturesStore } from '../../store/facturesStore'
 import { useAuthStore } from '../../store/authStore'
+import { resolveFileUrl } from '@/lib/api'
 
 export default function FactureDetail() {
   const { id } = useParams()
@@ -164,9 +165,18 @@ export default function FactureDetail() {
             padding: '28px 28px 24px', color: '#fff',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
-              <div>
-                <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: -0.5 }}>{facture.nomAtelier}</div>
-                <div style={{ opacity: 0.85, fontSize: 13, marginTop: 4 }}>Atelier de couture</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                {facture.logoAtelier && (
+                  <img
+                    src={resolveFileUrl(facture.logoAtelier)}
+                    alt="Logo atelier"
+                    style={{ width: 52, height: 52, borderRadius: 10, objectFit: 'cover', background: '#fff', flexShrink: 0 }}
+                  />
+                )}
+                <div>
+                  <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: -0.5 }}>{facture.nomAtelier}</div>
+                  <div style={{ opacity: 0.85, fontSize: 13, marginTop: 4 }}>Atelier de couture</div>
+                </div>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div style={{
