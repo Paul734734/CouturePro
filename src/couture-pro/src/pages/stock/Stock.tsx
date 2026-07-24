@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import { useStockStore, type FormulaireArticleStock } from '@/store/stockStore'
+import ConfirmModal from '@/components/ui/ConfirmModal'
 
 const UNITES = ['unite', 'metre', 'rouleau', 'kg', 'boite']
 
@@ -12,6 +13,8 @@ export default function Stock() {
   const [form, setForm] = useState({
     nom: '', categorie: '', quantite: '', unite: 'unite', seuilAlerte: '', prixUnitaire: '', fournisseur: '', notes: '',
   })
+  const [idASupprimer, setIdASupprimer] = useState<string | null>(null)
+  const [suppressionEnCours, setSuppressionEnCours] = useState(false)
 
   useEffect(() => {
     fetchStock()
@@ -65,9 +68,19 @@ export default function Stock() {
     setShowForm(false)
   }
 
-  const handleSupprimer = async (id: string) => {
-    if (!confirm('Supprimer cet article du stock ?')) return
-    await supprimerArticle(id)
+  const handleSupprimer = (id: string) => {
+    setIdASupprimer(id)
+  }
+
+  const confirmerSuppression = async () => {
+    if (!idASupprimer) return
+    setSuppressionEnCours(true)
+    try {
+      await supprimerArticle(idASupprimer)
+      setIdASupprimer(null)
+    } finally {
+      setSuppressionEnCours(false)
+    }
   }
 
   const inputStyle = { width: '100%', padding: '10px 14px', border: '1px solid #e5e0d8', borderRadius: 10, fontSize: 14, outline: 'none', background: '#FAFAF8', boxSizing: 'border-box' as const }
@@ -186,6 +199,15 @@ export default function Stock() {
             </div>
           </div>
         )}
+
+        <ConfirmModal
+          ouvert={idASupprimer !== null}
+          titre="Supprimer cet article ?"
+          message="Cet article sera définitivement retiré du stock. Cette action est irréversible."
+          enCours={suppressionEnCours}
+          onConfirmer={confirmerSuppression}
+          onAnnuler={() => setIdASupprimer(null)}
+        />
       </div>
     </AppLayout>
   )

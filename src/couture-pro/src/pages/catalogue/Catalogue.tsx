@@ -3,6 +3,7 @@ import type { ChangeEvent } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import { useCatalogueStore, type FormulaireArticleCatalogue } from '@/store/catalogueStore'
 import { uploadPhoto, resolveFileUrl } from '@/lib/api'
+import ConfirmModal from '@/components/ui/ConfirmModal'
 
 export default function Catalogue() {
   const { catalogue, fetchCatalogue, ajouterItem, modifierItem, supprimerItem, isLoading, error } = useCatalogueStore()
@@ -14,6 +15,8 @@ export default function Catalogue() {
   })
   const [uploadEnCours, setUploadEnCours] = useState(false)
   const [uploadErreur, setUploadErreur] = useState('')
+  const [idASupprimer, setIdASupprimer] = useState<string | null>(null)
+  const [suppressionEnCours, setSuppressionEnCours] = useState(false)
 
   useEffect(() => {
     fetchCatalogue()
@@ -66,9 +69,19 @@ export default function Catalogue() {
     setShowForm(false)
   }
 
-  const handleSupprimer = async (id: string) => {
-    if (!confirm('Supprimer ce modèle du catalogue ?')) return
-    await supprimerItem(id)
+  const handleSupprimer = (id: string) => {
+    setIdASupprimer(id)
+  }
+
+  const confirmerSuppression = async () => {
+    if (!idASupprimer) return
+    setSuppressionEnCours(true)
+    try {
+      await supprimerItem(idASupprimer)
+      setIdASupprimer(null)
+    } finally {
+      setSuppressionEnCours(false)
+    }
   }
 
   const handleChoisirPhoto = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -207,6 +220,15 @@ export default function Catalogue() {
             </div>
           </div>
         )}
+
+        <ConfirmModal
+          ouvert={idASupprimer !== null}
+          titre="Supprimer ce modèle ?"
+          message="Ce modèle sera définitivement retiré du catalogue. Cette action est irréversible."
+          enCours={suppressionEnCours}
+          onConfirmer={confirmerSuppression}
+          onAnnuler={() => setIdASupprimer(null)}
+        />
       </div>
     </AppLayout>
   )
