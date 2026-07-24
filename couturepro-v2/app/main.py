@@ -59,7 +59,12 @@ def health():
 def _bootstrap_admin():
     """Crée le compte superadmin au premier démarrage, si absent."""
     email = os.getenv("ADMIN_EMAIL", "admin@couturepro.app")
-    password = os.getenv("ADMIN_PASSWORD", "change-moi-avec-un-mot-de-passe-fort-et-unique")
+    password = os.getenv("ADMIN_PASSWORD")
+    if not password:
+        raise RuntimeError(
+            "ADMIN_PASSWORD n'est pas définie. Définis-la dans .env "
+            "(un mot de passe fort, unique) avant de démarrer l'application."
+        )
 
     db = SessionLocal()
     try:
