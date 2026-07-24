@@ -63,6 +63,29 @@ img, video {
   .cp-grid-row-1auto { grid-template-columns: 1fr; row-gap: 8px; }
 }
 
+/* ═══════════════════════════════════════════
+   Hauteurs de graphiques (Recharts) responsives.
+   Les graphiques du dashboard utilisaient des hauteurs
+   fixes en pixels (300-330px), ce qui les rendait trop
+   hauts / écrasés sur mobile. On réduit progressivement.
+═══════════════════════════════════════════ */
+.cp-chart-lg { width: 100%; height: 330px; }
+.cp-chart-md { width: 100%; height: 300px; }
+
+@media (max-width: 640px) {
+  .cp-chart-lg { height: 240px; }
+  .cp-chart-md { height: 220px; }
+}
+
+@media (max-width: 380px) {
+  .cp-chart-lg { height: 210px; }
+  .cp-chart-md { height: 190px; }
+}
+
+/* Wrapper générique pour éviter qu'un tableau n'écrase ses colonnes
+   sur petit écran : on préfère un scroll horizontal fluide. */
+.cp-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
 /* ───────────────────────────────────────────────
    LandingPage “vivante” — animations globales
    Respecte prefers-reduced-motion

@@ -356,7 +356,8 @@ export default function Dashboard() {
             </div>
 
             <div style={{ background: 'white', borderRadius: 16, border: '1px solid #f0ede8', overflow: 'hidden' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+              <table style={{ width: '100%', minWidth: 560, borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid #f0ede8', background: '#fafaf8' }}>
                     {['Cliente', 'Vêtement', 'Livraison', 'Avance', 'Statut'].map((h) => (
@@ -410,6 +411,7 @@ export default function Dashboard() {
                   })}
                 </tbody>
               </table>
+              </div>
             </div>
           </div>
 
@@ -627,7 +629,7 @@ export default function Dashboard() {
                   <div style={{ background: 'white', borderRadius: 16, border: '1px solid #f0ede8', padding: 20, marginBottom: 16 }}>
                     <div style={{ fontSize: 14, fontWeight: 900, marginBottom: 10 }}>Évolution hebdomadaire du chiffre d'affaires</div>
 
-                          <div style={{ width: '100%', height: 330 }}>
+                          <div className="cp-chart-lg">
                       <ResponsiveContainer width="100%" height="100%">
 
                         <ComposedChart data={weeksForPeriod.map((w) => ({
@@ -675,7 +677,7 @@ export default function Dashboard() {
                   <div style={{ background: 'white', borderRadius: 16, border: '1px solid #f0ede8', padding: 20, marginBottom: 16 }}>
                     <div style={{ fontSize: 14, fontWeight: 900, marginBottom: 10 }}>Commandes par statut — par semaine</div>
 
-                    <div style={{ width: '100%', height: 300 }}>
+                    <div className="cp-chart-md">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart
                           data={weeksForPeriod.map((w) => ({
