@@ -59,6 +59,8 @@ def creer_facture(
         montant_paye=montant_paye,
         montant_reste=montant_reste,
         statut=statut,
+        logo_atelier=current_user.logo_url,
+        nom_atelier=current_user.nom_atelier,
         **data,
     )
     db.add(facture)

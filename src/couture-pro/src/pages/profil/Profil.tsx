@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import type { ChangeEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AppLayout from '../../components/layout/AppLayout'
 import { useAuthStore } from '../../store/authStore'
+import { uploadPhoto, resolveFileUrl } from '@/lib/api'
 
 export default function Profil() {
   const user = useAuthStore((s) => s.user)
@@ -20,6 +22,24 @@ export default function Profil() {
   })
   const [saved, setSaved] = useState(false)
   const [activeSection, setActiveSection] = useState<'profil' | 'securite' | 'abonnement'>('profil')
+  const [uploadEnCours, setUploadEnCours] = useState(false)
+  const [uploadErreur, setUploadErreur] = useState('')
+
+  const handleChoisirLogo = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploadErreur('')
+    setUploadEnCours(true)
+    try {
+      const url = await uploadPhoto(file)
+      setForm((f) => ({ ...f, logoUrl: url }))
+    } catch (err: any) {
+      setUploadErreur(err.response?.data?.detail || "Erreur lors de l'envoi du logo.")
+    } finally {
+      setUploadEnCours(false)
+      e.target.value = ''
+    }
+  }
 
   useEffect(() => {
     if (user) {
@@ -157,18 +177,32 @@ export default function Profil() {
                 ))}
                 <div>
                   <label style={{ fontSize: 13, fontWeight: 600, color: '#444', display: 'block', marginBottom: 6 }}>
-                    URL du logo
+                    Logo de l'atelier
                   </label>
-                  <input
-                    value={form.logoUrl}
-                    onChange={(e) => set('logoUrl', e.target.value)}
-                    placeholder="https://exemple.com/logo.png"
-                    style={{
-                      width: '100%', padding: '11px 14px', borderRadius: 10, fontSize: 14,
-                      border: '1.5px solid #e5e5e5', outline: 'none', background: '#FAFAF8',
-                      boxSizing: 'border-box', color: '#1a1a1a',
-                    }}
-                  />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{
+                      width: 64, height: 64, borderRadius: 12, overflow: 'hidden', flexShrink: 0,
+                      background: form.logoUrl ? `center / cover no-repeat url(${resolveFileUrl(form.logoUrl)})` : '#FAFAF8',
+                      border: '1.5px solid #e5e5e5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22,
+                    }}>
+                      {!form.logoUrl && '🏪'}
+                    </div>
+                    <label style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 16px',
+                      borderRadius: 10, border: '1.5px solid #e5e5e5', background: '#FAFAF8',
+                      fontSize: 13, fontWeight: 600, color: '#555', cursor: uploadEnCours ? 'default' : 'pointer',
+                    }}>
+                      {uploadEnCours ? 'Envoi...' : form.logoUrl ? 'Changer le logo' : '📷 Choisir un logo'}
+                      <input
+                        type="file"
+                        accept="image/png, image/jpeg, image/webp"
+                        onChange={handleChoisirLogo}
+                        disabled={uploadEnCours}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
+                  </div>
+                  {uploadErreur && <p style={{ color: '#DC2626', fontSize: 12, marginTop: 6 }}>{uploadErreur}</p>}
                 </div>
                 <div>
                   <label style={{ fontSize: 13, fontWeight: 600, color: '#444', display: 'block', marginBottom: 6 }}>
