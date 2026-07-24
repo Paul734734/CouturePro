@@ -1,15 +1,21 @@
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://couturepro.app/api";
+// Tous les appels du store incluent déjà leur propre prefixe "/api/..."
+// (ex: api.get("/api/catalogue")). On normalise donc ici l'origine du serveur
+// en retirant un éventuel suffixe "/api" final de VITE_API_URL, pour éviter
+// un double prefixe (https://host/api/api/...) si la variable d'env sur
+// Netlify est definie avec ou sans ce suffixe.
+const RAW_API_URL = import.meta.env.VITE_API_URL || "https://couturepro.app";
+const API_BASE_URL = RAW_API_URL.replace(/\/api\/?$/, "");
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
 // Le dossier /uploads est servi par le backend hors du prefixe /api
-// (voir app.mount("/uploads", ...) cote FastAPI) : on retire /api pour
-// obtenir l'origine du serveur et construire une URL absolue vers l'image.
-const API_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, "");
+// (voir app.mount("/uploads", ...) cote FastAPI). API_BASE_URL est deja
+// l'origine nue (sans /api), donc on l'utilise directement.
+const API_ORIGIN = API_BASE_URL;
 
 export function resolveFileUrl(path?: string | null): string {
   if (!path) return "";
