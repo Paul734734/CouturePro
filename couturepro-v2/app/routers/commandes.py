@@ -1,9 +1,10 @@
+from datetime import datetime
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models import User, Commande, Cliente, StatutCommande
+from app.models import User, Commande, Cliente, StatutCommande, Paiement, TypePaiement, Facture, StatutFacture, TypeDocument
 from app.schemas import CommandeCreate, CommandeUpdate, CommandeOut, CommandeStatutUpdate
 from app.dependencies import require_acces
 
@@ -27,6 +28,53 @@ def _get_commande_or_404(db: Session, commande_id: str, user_id: str) -> Command
     return commande
 
 
+def _calculer_statut_facture(montant_total: float, montant_paye: float) -> StatutFacture:
+    if montant_paye <= 0:
+        return StatutFacture.IMPAYEE
+    if montant_paye >= montant_total:
+        return StatutFacture.PAYEE
+    return StatutFacture.PARTIELLE
+
+
+def _prochain_numero_facture(db: Session, user_id: str) -> str:
+    nb = db.query(Facture).filter(Facture.user_id == user_id).count()
+    return f"FAC-{nb + 1:03d}"
+
+
+def _synchroniser_facture_commande(db: Session, commande: Commande, current_user: User):
+    """Crée ou met à jour la facture liée à la commande pour qu'elle reflète
+    toujours le prix total et le montant réellement payé de la commande."""
+    facture = db.query(Facture).filter(Facture.commande_id == commande.id).first()
+    montant_total = commande.prix_total or 0
+    montant_paye = commande.avance_paye or 0
+    montant_reste = max(0.0, montant_total - montant_paye)
+    statut = _calculer_statut_facture(montant_total, montant_paye)
+
+    if facture:
+        facture.montant_total = montant_total
+        facture.montant_paye = montant_paye
+        facture.montant_reste = montant_reste
+        facture.statut = statut
+    else:
+        cliente = db.query(Cliente).filter(Cliente.id == commande.cliente_id).first()
+        facture = Facture(
+            user_id=current_user.id,
+            cliente_id=commande.cliente_id,
+            cliente_nom=cliente.nom if cliente else "",
+            commande_id=commande.id,
+            commande_description=commande.type_vetement,
+            numero=_prochain_numero_facture(db, current_user.id),
+            type=TypeDocument.FACTURE,
+            montant_total=montant_total,
+            montant_paye=montant_paye,
+            montant_reste=montant_reste,
+            statut=statut,
+            logo_atelier=current_user.logo_url,
+            nom_atelier=current_user.nom_atelier,
+        )
+        db.add(facture)
+
+
 @router.post("", response_model=CommandeOut, status_code=201)
 def creer_commande(
     payload: CommandeCreate,
@@ -40,6 +88,24 @@ def creer_commande(
     db.add(commande)
     db.commit()
     db.refresh(commande)
+
+    # Si une avance a été renseignée dès la création, elle doit apparaître
+    # dans le suivi des paiements et générer directement une facture qui
+    # reflète les montants réels de la commande (pas seulement stockée sur
+    # la commande elle-même).
+    if (commande.avance_paye or 0) > 0:
+        paiement = Paiement(
+            user_id=current_user.id,
+            commande_id=commande.id,
+            montant=commande.avance_paye,
+            type=TypePaiement.AVANCE,
+            notes="Avance enregistrée à la création de la commande",
+        )
+        db.add(paiement)
+        _synchroniser_facture_commande(db, commande, current_user)
+        db.commit()
+        db.refresh(commande)
+
     return commande
 
 
@@ -75,9 +141,31 @@ def modifier_commande(
     current_user: User = Depends(require_acces("commandes")),
 ):
     commande = _get_commande_or_404(db, commande_id, current_user.id)
-    for field, value in payload.model_dump(exclude_unset=True).items():
+    updates = payload.model_dump(exclude_unset=True)
+    ancienne_avance = commande.avance_paye or 0
+
+    for field, value in updates.items():
         setattr(commande, field, value)
     commande.reste_a_payer = max((commande.prix_total or 0) - (commande.avance_paye or 0), 0)
+
+    # Si l'avance payée a augmenté (montant ajouté directement depuis le
+    # formulaire de modification), on enregistre la différence comme un
+    # paiement traçable et on garde la facture liée synchronisée.
+    nouvelle_avance = commande.avance_paye or 0
+    if "avance_paye" in updates and nouvelle_avance > ancienne_avance:
+        paiement = Paiement(
+            user_id=current_user.id,
+            commande_id=commande.id,
+            montant=nouvelle_avance - ancienne_avance,
+            type=TypePaiement.SOLDE if commande.reste_a_payer == 0 else TypePaiement.PARTIEL,
+            notes="Paiement ajouté depuis la modification de la commande",
+        )
+        db.add(paiement)
+
+    if "avance_paye" in updates or "prix_total" in updates:
+        if nouvelle_avance > 0 or db.query(Facture).filter(Facture.commande_id == commande.id).first():
+            _synchroniser_facture_commande(db, commande, current_user)
+
     db.commit()
     db.refresh(commande)
     return commande

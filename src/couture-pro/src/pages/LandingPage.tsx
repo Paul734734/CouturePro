@@ -155,8 +155,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
     },
   ] as const
 
-  const getPrix = (p: typeof plans[number]) =>
-    billing === 'mensuel' ? p.prix_mensuel : Math.round(p.prix_annuel / 12)
+  const getPrix = (p: typeof plans[number]) => p.prix_mensuel
 
   const getEconomie = (p: typeof plans[number]) =>
     Math.round(((p.prix_mensuel * 12 - p.prix_annuel) / (p.prix_mensuel * 12)) * 100)

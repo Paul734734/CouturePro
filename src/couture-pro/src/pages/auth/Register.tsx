@@ -77,10 +77,7 @@ export default function Register() {
     setFieldErrors(p => ({ ...p, [key]: undefined }))
   }
 
-  const getPrix = (f: Forfait) =>
-    billing === 'mensuel'
-      ? FORFAIT_PRIX[f].mensuel
-      : Math.round(FORFAIT_PRIX[f].annuel / 12)
+  const getPrix = (f: Forfait) => FORFAIT_PRIX[f].mensuel
 
   const getEco = (f: Forfait) =>
     Math.round(((FORFAIT_PRIX[f].mensuel * 12 - FORFAIT_PRIX[f].annuel) / (FORFAIT_PRIX[f].mensuel * 12)) * 100)
