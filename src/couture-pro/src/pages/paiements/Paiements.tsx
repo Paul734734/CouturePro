@@ -49,10 +49,11 @@ function Paiements() {
             {paiements.map((p) => (
               <div
                 key={p.id}
+                className="cp-grid-row-3auto"
                 style={{
                   background: "white", borderRadius: 16, border: "1px solid #f0ede8",
-                  padding: "20px 24px", display: "grid",
-                  gridTemplateColumns: "1fr 1fr 1fr auto", gap: 20, alignItems: "center",
+                  padding: "20px 24px",
+                  gap: 20,
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>

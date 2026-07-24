@@ -267,7 +267,7 @@ export default function AjouterCommande() {
               background: reste > 0 ? '#FFF7ED' : '#f0fdf4',
               border: `1px solid ${reste > 0 ? '#fed7aa' : '#bbf7d0'}`,
               borderRadius: 10, padding: '12px 16px',
-              display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8,
+              display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(90px, 1fr))', gap: 8,
             }}>
               {[
                 { label: 'Total', val: `${Number(form.prixTotal).toLocaleString()}`, color: '#1a1a1a' },

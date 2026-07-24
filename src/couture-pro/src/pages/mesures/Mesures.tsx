@@ -103,7 +103,7 @@ export default function Mesures() {
 
   return (
     <AppLayout titre="Mesures">
-      <div style={{ maxWidth: 1100, display: 'grid', gridTemplateColumns: '280px 1fr', gap: 20 }}>
+      <div className="cp-grid-sidebar" style={{ maxWidth: 1100, gap: 20 }}>
 
         {/* LISTE CLIENTES */}
         <div style={{ background: 'white', borderRadius: 16, border: '1px solid #f0ede8', overflow: 'hidden', height: 'fit-content' }}>
@@ -169,7 +169,7 @@ export default function Mesures() {
                   <div style={{ textAlign: 'center', padding: 40, color: '#888', fontSize: 13 }}>Chargement des mesures...</div>
                 ) : editing ? (
                   <>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 16 }}>
+                    <div className="cp-grid-3" style={{ gap: 16, marginBottom: 16 }}>
                       {champsMesures.map(c => (
                         <div key={c.key}>
                           <label style={{ fontSize: 12, fontWeight: 600, color: '#555', marginBottom: 4, display: 'block' }}>{c.icon} {c.label} (cm)</label>
@@ -184,7 +184,7 @@ export default function Mesures() {
                   </>
                 ) : currentMesures ? (
                   <>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12, marginBottom: 20 }}>
+                    <div className="cp-grid-2" style={{ gap: 12, marginBottom: 20 }}>
                       <div style={{ background: '#FFF4ED', borderRadius: 14, padding: 20 }}>
                         <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 14, color: '#F97316' }}>📐 Mensurations principales</div>
                         {[
@@ -216,7 +216,7 @@ export default function Mesures() {
                       </div>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+                    <div className="cp-grid-4" style={{ gap: 12 }}>
                       {champsMesures.map(c => (
                         <div key={c.key} style={{ background: '#FAFAF8', borderRadius: 12, padding: '14px', border: '1px solid #f0ede8', textAlign: 'center' }}>
                           <div style={{ fontSize: 10, color: '#888', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '.5px' }}>{c.label}</div>

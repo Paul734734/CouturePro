@@ -132,7 +132,7 @@ function CommandeDetail() {
     <AppLayout titre="Détail de la commande" sousTitre={commande.typeVetement}>
       <div style={{ maxWidth: 640 }}>
         <div style={card}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+          <div className="cp-grid-2" style={{ gap: 18 }}>
             <div>
               <div style={label}>Cliente</div>
               <div style={value}>{clienteNom ?? "Inconnue"}</div>
@@ -153,7 +153,7 @@ function CommandeDetail() {
             )}
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 20, paddingTop: 20, borderTop: "1px solid #f0ede8" }}>
+          <div className="cp-grid-3" style={{ gap: 12, marginTop: 20, paddingTop: 20, borderTop: "1px solid #f0ede8" }}>
             <div>
               <div style={label}>Prix total</div>
               <div style={{ ...value, color: "#1a1a1a" }}>{commande.prixTotal.toLocaleString()} FCFA</div>

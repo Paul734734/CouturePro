@@ -63,7 +63,7 @@ export default function Commandes() {
               <div
                 key={c.id}
                 onClick={() => navigate(`/commandes/${c.id}`)}
-                style={{ background: 'white', borderRadius: 16, border: '1px solid #f0ede8', padding: '20px 24px', cursor: 'pointer', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: 20, alignItems: 'center' }}
+                className="cp-grid-row-3auto" style={{ background: 'white', borderRadius: 16, border: '1px solid #f0ede8', padding: '20px 24px', cursor: 'pointer', gap: 20 }}
                 onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 4px 20px rgba(249,115,22,0.08)')}
                 onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
               >

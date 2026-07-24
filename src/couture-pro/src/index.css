@@ -8,10 +8,59 @@
   box-sizing: border-box;
 }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background-color: #FAFAF8;
   color: #1a1a1a;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ═══════════════════════════════════════════
+   COUTURE PRO — GRILLES RESPONSIVE GLOBALES
+   Remplace les gridTemplateColumns fixes en
+   inline style : on garde gap/marge en inline,
+   et le nombre de colonnes vient de ces classes,
+   qui s'adaptent automatiquement au mobile.
+═══════════════════════════════════════════ */
+.cp-grid-2 { display: grid; grid-template-columns: 1fr 1fr; }
+.cp-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cp-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cp-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); }
+
+/* lignes de type "carte cliquable" : colonnes de contenu + une colonne auto (badge, bouton...) */
+.cp-grid-row-1auto { display: grid; grid-template-columns: 1fr auto; align-items: center; }
+.cp-grid-row-3auto { display: grid; grid-template-columns: 1fr 1fr 1fr auto; align-items: center; }
+.cp-grid-row-3auto2 { display: grid; grid-template-columns: 1fr 1fr 1fr auto auto; align-items: center; }
+.cp-grid-row-1auto2 { display: grid; grid-template-columns: 1fr auto auto; align-items: center; }
+
+/* layout "liste (sidebar) + détail" — ex: page Mesures */
+.cp-grid-sidebar { display: grid; grid-template-columns: 280px 1fr; }
+
+@media (max-width: 900px) {
+  .cp-grid-5 { grid-template-columns: repeat(3, 1fr); }
+  .cp-grid-sidebar { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .cp-grid-2, .cp-grid-3, .cp-grid-4, .cp-grid-5 { grid-template-columns: repeat(2, 1fr); }
+  .cp-grid-row-3auto, .cp-grid-row-3auto2, .cp-grid-row-1auto2 {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .cp-grid-2, .cp-grid-3, .cp-grid-4, .cp-grid-5 { grid-template-columns: 1fr; }
+  .cp-grid-row-1auto { grid-template-columns: 1fr; row-gap: 8px; }
 }
 
 /* ───────────────────────────────────────────────

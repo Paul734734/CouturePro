@@ -332,7 +332,7 @@ export default function Dashboard() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 16, marginBottom: 32 }}>
+          <div className="cp-grid-5" style={{ gap: 16, marginBottom: 32 }}>
             {stats.map((s) => (
               <div key={s.label}>
                 <AnimatedStatCard
@@ -574,7 +574,7 @@ export default function Dashboard() {
               return (
                 <>
                   {/* KPI cards */}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, marginBottom: 20 }}>
+                  <div className="cp-grid-3" style={{ gap: 14, marginBottom: 20 }}>
                     {[kpiA, kpiB, kpiC].map((k, idx) => {
                       const isA = idx === 0
 

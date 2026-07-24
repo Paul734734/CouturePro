@@ -19,9 +19,14 @@ const bottomNavItems = [
   { href: '/dashboard', icon: '🏠', label: 'Accueil' },
   { href: '/clientes', icon: '👩', label: 'Clientes' },
   { href: '/commandes', icon: '📋', label: 'Commandes' },
-  { href: '/paiements', icon: '💰', label: 'Paiements' },
   { href: '/factures', icon: '🧾', label: 'Factures' },
 ]
+
+// Le reste des sections (Stock, Catalogue, Paiements, Profil...) est accessible
+// via le bouton "Plus" sur mobile, pour ne pas surcharger la barre du bas.
+const plusNavItems = navItems.filter(
+  (item) => !bottomNavItems.some((b) => b.href === item.href)
+)
 
 
 interface AppLayoutProps {
@@ -45,6 +50,7 @@ export default function AppLayout({
   const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
   const logout = useAuthStore((s) => s.logout)
+  const [menuPlusOuvert, setMenuPlusOuvert] = useState(false)
 
   const handleLogout = () => {
     logout()
@@ -121,10 +127,45 @@ export default function AppLayout({
           ) : null}
         </div>
 
-        <main className="flex-1 min-h-[calc(100vh-80px)] px-4 md:px-8 py-6">
+        <main className="flex-1 min-h-[calc(100vh-80px)] px-4 md:px-8 py-6 pb-24 md:pb-6">
           {children}
         </main>
       </div>
+
+      {/* ✅ Menu "Plus" mobile : accès à Stock, Catalogue, Paiements, Profil... */}
+      {menuPlusOuvert && (
+        <div
+          onClick={() => setMenuPlusOuvert(false)}
+          className="md:hidden fixed inset-0 bg-black/40 z-[60] flex items-end"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full bg-white rounded-t-3xl p-4 pb-8"
+            style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom))' }}
+          >
+            <div className="w-10 h-1.5 bg-gray-200 rounded-full mx-auto mb-4" />
+            <div className="grid grid-cols-3 gap-3">
+              {plusNavItems.map((item) => (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={() => setMenuPlusOuvert(false)}
+                  className="flex flex-col items-center gap-1.5 py-3 rounded-2xl bg-gray-50 text-gray-700 text-xs font-medium"
+                >
+                  <span className="text-2xl">{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+            </div>
+            <button
+              onClick={() => { setMenuPlusOuvert(false); handleLogout() }}
+              className="mt-4 w-full text-sm text-gray-600 border border-gray-200 rounded-xl px-3 py-2.5"
+            >
+              🚪 Se déconnecter
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ✅ Bottom nav reste pour mobile */}
       <nav
@@ -149,6 +190,15 @@ export default function AppLayout({
 
           )
         })}
+        <button
+          onClick={() => setMenuPlusOuvert(true)}
+          className={`flex flex-col items-center gap-1 px-2 py-1 rounded-xl text-[11px] font-medium ${
+            plusNavItems.some((i) => i.href === location.pathname) ? 'text-orange-500' : 'text-gray-500'
+          }`}
+        >
+          <span className="text-xl">☰</span>
+          <span className="text-[10px]">Plus</span>
+        </button>
       </nav>
     </div>
   )

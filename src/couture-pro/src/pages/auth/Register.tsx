@@ -235,7 +235,7 @@ const handleSubmit = async () => {
             </div>
 
             {/* Cards forfaits */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14, marginBottom: 28 }}>
+            <div className="cp-grid-3" style={{ gap: 14, marginBottom: 28 }}>
               {FORFAITS.map(p => {
                 const selected = forfait === p.id
                 return (
@@ -350,7 +350,7 @@ const handleSubmit = async () => {
               </div>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div className="cp-grid-2" style={{ gap: 12 }}>
               <div>
                 <label style={lbl}>Téléphone / WhatsApp</label>
                 <div style={{ display: 'flex', gap: 8 }}>

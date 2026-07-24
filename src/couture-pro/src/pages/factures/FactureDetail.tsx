@@ -176,7 +176,7 @@ export default function FactureDetail() {
           </div>
 
           <div style={{ padding: '28px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 28 }}>
+            <div className="cp-grid-2" style={{ gap: 20, marginBottom: 28 }}>
               <div>
                 <div style={{ fontSize: 11, fontWeight: 700, color: '#F97316', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
                   Facturé à

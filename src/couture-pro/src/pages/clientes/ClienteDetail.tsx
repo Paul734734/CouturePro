@@ -194,7 +194,7 @@ export default function ClienteDetail() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginTop: 20 }}>
+          <div className="cp-grid-3" style={{ gap: 12, marginTop: 20 }}>
             {[
               { label: 'Total commandé', value: `${totalCommandes.toLocaleString()} FCFA`, color: '#1a1a1a' },
               { label: 'Total payé', value: `${totalPaye.toLocaleString()} FCFA`, color: '#16a34a' },
@@ -256,7 +256,7 @@ export default function ClienteDetail() {
         </div>
 
         {onglet === 'Infos' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div className="cp-grid-2" style={{ gap: 16 }}>
             <InfoCard titre="📞 Contact">
               <InfoLigne label="Téléphone" valeur={cliente.telephone || '—'} />
               <InfoLigne label="Ville" valeur={cliente.ville || '—'} />
@@ -361,7 +361,7 @@ export default function ClienteDetail() {
                   </Link>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 16 }}>
+                <div className="cp-grid-4" style={{ gap: 10, marginBottom: 16 }}>
                   {[
                     { label: 'Poitrine', val: mesures[0].poitrine },
                     { label: 'Taille', val: mesures[0].taille },

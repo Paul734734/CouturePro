@@ -32,7 +32,7 @@ export default function AdminDashboard() {
         )}
 
         {stats && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 20 }}>
+          <div className="cp-grid-3" style={{ gap: 12, marginBottom: 20 }}>
             {[
               { label: 'Total utilisatrices', val: stats.nbUtilisatricesTotal, color: '#1a1a1a', icon: '👩' },
               { label: 'Comptes actifs', val: stats.nbUtilisatricesActives, color: '#16a34a', icon: '✅' },
@@ -60,7 +60,7 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        <div className="cp-grid-2" style={{ gap: 12 }}>
           {[
             {
               to: '/admin/utilisatrices', icon: '👥', titre: 'Utilisatrices',

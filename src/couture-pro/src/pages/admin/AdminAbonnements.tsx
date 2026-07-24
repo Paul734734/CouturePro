@@ -70,7 +70,7 @@ export default function AdminAbonnements() {
           </div>
         )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 12, marginBottom: 20 }}>
+        <div className="cp-grid-4" style={{ gap: 12, marginBottom: 20 }}>
           {[
             { label: 'Actifs', val: utilisatrices.filter((u) => u.statut === 'actif').length, color: '#16a34a' },
             { label: 'En essai', val: utilisatrices.filter((u) => u.statut === 'essai').length, color: '#2563eb' },
@@ -143,7 +143,7 @@ export default function AdminAbonnements() {
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, alignItems: 'center', marginTop: 16 }}>
+                <div className="cp-grid-row-1auto" style={{ gap: 12, marginTop: 16 }}>
                   <div style={{ display: 'grid', gap: 8 }}>
                     <div style={{ fontSize: 13, color: '#444' }}>
                       📅 Fin: <strong>{u.dateExpiration ? new Date(u.dateExpiration).toLocaleDateString('fr-FR') : '—'}</strong>
