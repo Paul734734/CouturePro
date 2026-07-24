@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
+import type { ChangeEvent } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import { useCatalogueStore, type FormulaireArticleCatalogue } from '@/store/catalogueStore'
+import { uploadPhoto, resolveFileUrl } from '@/lib/api'
 
 export default function Catalogue() {
   const { catalogue, fetchCatalogue, ajouterItem, modifierItem, supprimerItem, isLoading, error } = useCatalogueStore()
@@ -10,6 +12,8 @@ export default function Catalogue() {
   const [form, setForm] = useState({
     nom: '', categorie: '', description: '', prixIndicatif: '', tempsConceptionEstime: '', imageUrl: '', actif: true,
   })
+  const [uploadEnCours, setUploadEnCours] = useState(false)
+  const [uploadErreur, setUploadErreur] = useState('')
 
   useEffect(() => {
     fetchCatalogue()
@@ -23,6 +27,7 @@ export default function Catalogue() {
   const resetForm = () => {
     setForm({ nom: '', categorie: '', description: '', prixIndicatif: '', tempsConceptionEstime: '', imageUrl: '', actif: true })
     setEditingId(null)
+    setUploadErreur('')
   }
 
   const ouvrirEdition = (id: string) => {
@@ -66,6 +71,22 @@ export default function Catalogue() {
     await supprimerItem(id)
   }
 
+  const handleChoisirPhoto = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploadErreur('')
+    setUploadEnCours(true)
+    try {
+      const url = await uploadPhoto(file)
+      setForm((f) => ({ ...f, imageUrl: url }))
+    } catch (err: any) {
+      setUploadErreur(err.response?.data?.detail || "Erreur lors de l'envoi de la photo.")
+    } finally {
+      setUploadEnCours(false)
+      e.target.value = ''
+    }
+  }
+
   const inputStyle = { width: '100%', padding: '10px 14px', border: '1px solid #e5e0d8', borderRadius: 10, fontSize: 14, outline: 'none', background: '#FAFAF8', boxSizing: 'border-box' as const }
   const labelStyle = { fontSize: 12, fontWeight: 600, color: '#555', marginBottom: 4, display: 'block' }
 
@@ -100,7 +121,7 @@ export default function Catalogue() {
               onClick={() => ouvrirEdition(item.id)}
               style={{ background: '#fff', border: '1px solid #f0ede8', borderRadius: 14, overflow: 'hidden', cursor: 'pointer', opacity: item.actif ? 1 : 0.55 }}
             >
-              <div style={{ height: 140, background: item.imageUrl ? `center / cover no-repeat url(${item.imageUrl})` : '#FAFAF8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32 }}>
+              <div style={{ height: 140, background: item.imageUrl ? `center / cover no-repeat url(${resolveFileUrl(item.imageUrl)})` : '#FAFAF8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32 }}>
                 {!item.imageUrl && '👗'}
               </div>
               <div style={{ padding: 14 }}>
@@ -148,8 +169,31 @@ export default function Catalogue() {
                   </div>
                 </div>
                 <div>
-                  <label style={labelStyle}>URL de l'image (optionnel)</label>
-                  <input placeholder="https://..." style={inputStyle} value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} />
+                  <label style={labelStyle}>Photo du modèle</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{
+                      width: 64, height: 64, borderRadius: 12, overflow: 'hidden', flexShrink: 0,
+                      background: form.imageUrl ? `center / cover no-repeat url(${resolveFileUrl(form.imageUrl)})` : '#FAFAF8',
+                      border: '1px solid #e5e0d8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22,
+                    }}>
+                      {!form.imageUrl && '👗'}
+                    </div>
+                    <label style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 16px',
+                      borderRadius: 10, border: '1px solid #e5e0d8', background: '#FAFAF8',
+                      fontSize: 13, fontWeight: 600, color: '#555', cursor: uploadEnCours ? 'default' : 'pointer',
+                    }}>
+                      {uploadEnCours ? 'Envoi...' : form.imageUrl ? 'Changer la photo' : '📷 Choisir une photo'}
+                      <input
+                        type="file"
+                        accept="image/png, image/jpeg, image/webp"
+                        onChange={handleChoisirPhoto}
+                        disabled={uploadEnCours}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
+                  </div>
+                  {uploadErreur && <p style={{ color: '#DC2626', fontSize: 12, marginTop: 6 }}>{uploadErreur}</p>}
                 </div>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: '#555' }}>
                   <input type="checkbox" checked={form.actif} onChange={(e) => setForm({ ...form, actif: e.target.checked })} />
