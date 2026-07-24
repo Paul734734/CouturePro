@@ -8,6 +8,7 @@ import LandingPage from './pages/LandingPage'
 // bundle initial léger : chaque page ne se télécharge que quand on y navigue.
 const Login = lazy(() => import('./pages/auth/Login'))
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'))
+const ResetPassword = lazy(() => import('./pages/auth/ResetPassword'))
 const Register = lazy(() => import('./pages/auth/Register'))
 
 const Dashboard = lazy(() => import('./pages/dashboard/Dashboard'))
@@ -53,6 +54,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* App (Couturière) */}
           <Route path="/dashboard" element={<Dashboard />} />
