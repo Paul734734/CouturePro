@@ -528,6 +528,18 @@ export default function LandingPage() {
               <div style={{ fontSize: 13, color: '#555' }}>+1000 couturières satisfaites</div>
             </div>
           </div>
+
+          <div style={{
+            marginTop: 24,
+            display: 'flex', alignItems: 'flex-start', gap: 10,
+            background: '#FFFBEB', border: '1px solid #FDE68A',
+            borderRadius: 14, padding: '14px 18px', maxWidth: 460,
+          }}>
+            <span style={{ fontSize: 18, lineHeight: 1 }}>💰</span>
+            <p style={{ fontSize: 13.5, color: '#7a5b00', lineHeight: 1.6, margin: 0 }}>
+              <strong>Bon à savoir :</strong> à partir d'1 an d'ancienneté sur Eureka, vous pouvez demander un prêt de <strong>250 000 FCFA</strong> pour financer votre prochaine collection.
+            </p>
+          </div>
         </div>
 
         {/* Dashboard mock — caché sur mobile via CSS */}
