@@ -20,6 +20,7 @@ export interface ForfaitAcces {
   paiements: boolean;
   multiAtelier: boolean;
   exportCompta: boolean;
+  dashboardAvance: boolean;
   maxClientes: number | null;
 }
 
@@ -33,6 +34,7 @@ const ACCES_PAR_DEFAUT: ForfaitAcces = {
   paiements: false,
   multiAtelier: false,
   exportCompta: false,
+  dashboardAvance: false,
   maxClientes: 0,
 };
 

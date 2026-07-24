@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useFacturesStore } from "@/store/facturesStore";
 import { formatMontant, formatDate } from "@/lib/utils";
 import AppLayout from "@/components/layout/AppLayout";
+import { useAcces, FeatureGate } from "@/components/hooks/useAcces";
 
 const statutColor: Record<string, { bg: string; color: string; label: string }> = {
   payee: { bg: "#dcfce7", color: "#16a34a", label: "Payée" },
@@ -12,11 +13,21 @@ const statutColor: Record<string, { bg: string; color: string; label: string }> 
 
 function Factures() {
   const navigate = useNavigate();
+  const { peutAcceder, estEssai } = useAcces();
+  const acces = peutAcceder("factures") || estEssai;
   const { factures, fetchFactures, supprimerFacture, isLoading, error } = useFacturesStore();
 
   useEffect(() => {
-    fetchFactures();
-  }, [fetchFactures]);
+    if (acces) fetchFactures();
+  }, [fetchFactures, acces]);
+
+  if (!acces) {
+    return (
+      <AppLayout titre="Factures" sousTitre="Factures, devis et reçus">
+        <FeatureGate feature="factures" />
+      </AppLayout>
+    );
+  }
 
   if (isLoading) {
     return (

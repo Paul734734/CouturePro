@@ -44,6 +44,11 @@ const FEATURE_LABELS: Partial<Record<keyof ForfaitAcces, { titre: string; desc: 
     desc: 'Gérez jusqu\'à 3 espaces ateliers distincts depuis un seul compte.',
     forfaitMin: 'Elite',
   },
+  dashboardAvance: {
+    titre: 'Tableau de bord avancé',
+    desc: 'Débloquez les graphiques d\'évolution, le taux de recouvrement et les analyses hebdomadaires détaillées.',
+    forfaitMin: 'Pro',
+  },
   exportCompta: {
     titre: 'Export comptabilité',
     desc: 'Exportez vos données financières pour votre comptable.',

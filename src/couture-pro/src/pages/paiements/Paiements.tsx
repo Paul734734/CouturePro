@@ -2,13 +2,24 @@ import { useEffect } from "react";
 import { usePaiementsStore } from "@/store/paiementsStore";
 import { formatMontant, formatDate } from "@/lib/utils";
 import AppLayout from "@/components/layout/AppLayout";
+import { useAcces, FeatureGate } from "@/components/hooks/useAcces";
 
 function Paiements() {
+  const { peutAcceder, estEssai } = useAcces();
+  const acces = peutAcceder("paiements") || estEssai;
   const { paiements, fetchPaiements, isLoading, error } = usePaiementsStore();
 
   useEffect(() => {
-    fetchPaiements();
-  }, [fetchPaiements]);
+    if (acces) fetchPaiements();
+  }, [fetchPaiements, acces]);
+
+  if (!acces) {
+    return (
+      <AppLayout titre="Paiements" sousTitre="Historique des paiements reçus">
+        <FeatureGate feature="paiements" />
+      </AppLayout>
+    );
+  }
 
   if (isLoading) {
     return (

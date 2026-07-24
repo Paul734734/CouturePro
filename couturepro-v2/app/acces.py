@@ -11,6 +11,7 @@ FORFAIT_ACCES = {
         "paiements": False,
         "multiAtelier": False,
         "exportCompta": False,
+        "dashboardAvance": False,
         "maxClientes": 30,
     },
     Forfait.PRO: {
@@ -21,6 +22,7 @@ FORFAIT_ACCES = {
         "paiements": True,
         "multiAtelier": False,
         "exportCompta": False,
+        "dashboardAvance": True,
         "maxClientes": None,
     },
     Forfait.ELITE: {
@@ -31,6 +33,7 @@ FORFAIT_ACCES = {
         "paiements": True,
         "multiAtelier": True,
         "exportCompta": True,
+        "dashboardAvance": True,
         "maxClientes": None,
     },
 }
@@ -43,6 +46,7 @@ ESSAI_ACCES = {
     "paiements": True,
     "multiAtelier": False,
     "exportCompta": False,
+    "dashboardAvance": True,
     "maxClientes": None,
 }
 
@@ -54,6 +58,7 @@ BLOQUE_ACCES = {
     "paiements": False,
     "multiAtelier": False,
     "exportCompta": False,
+    "dashboardAvance": False,
     "maxClientes": 0,
 }
 

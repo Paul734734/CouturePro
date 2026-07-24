@@ -7,6 +7,7 @@ import { useCommandesStore } from '@/store/commandesStore'
 import { useClientesStore } from '@/store/clientesStore'
 import { usePaiementsStore } from '@/store/paiementsStore'
 import { calculerSemaines, variationPct } from '@/lib/weeklyStats'
+import { FeatureGate } from '@/components/hooks/useAcces'
 import { useEffect, useMemo, useState } from 'react'
 
 import {
@@ -417,7 +418,12 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* BLOC 4 — 📊 Analyse & Performance — Vue hebdomadaire */}
+          {/* BLOC 4 — 📊 Analyse & Performance — Vue hebdomadaire (Pro & Elite uniquement) */}
+          {!acces.dashboardAvance ? (
+            <div style={{ marginBottom: 24 }}>
+              <FeatureGate feature="dashboardAvance" compact />
+            </div>
+          ) : (
           <div
             style={{
               background: 'white',
@@ -668,6 +674,7 @@ export default function Dashboard() {
               )
             })()}
           </div>
+          )}
         </div>
       </div>
     </AppLayout>
