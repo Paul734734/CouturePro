@@ -6,7 +6,7 @@ import AppLayout from "@/components/layout/AppLayout";
 
 const statutColor: Record<string, { bg: string; color: string; label: string }> = {
   payee: { bg: "#dcfce7", color: "#16a34a", label: "Payée" },
-  partielle: { bg: "#fff7ed", color: "#F97316", label: "Partielle" },
+  partielle: { bg: "#fcf6e0", color: "#C9A227", label: "Partielle" },
   impayee: { bg: "#fee2e2", color: "#ef4444", label: "Impayée" },
 };
 
@@ -66,7 +66,7 @@ function Factures() {
                     padding: "20px 24px", cursor: "pointer",
                     gap: 20,
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 4px 20px rgba(249,115,22,0.08)")}
+                  onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 4px 20px rgba(201, 162, 39,0.08)")}
                   onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
                 >
                   <div>

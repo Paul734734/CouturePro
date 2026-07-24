@@ -98,7 +98,7 @@ export default function Stock() {
           />
           <button
             onClick={() => { resetForm(); setShowForm(true) }}
-            style={{ background: '#F97316', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 20px', fontWeight: 600, cursor: 'pointer' }}
+            style={{ background: '#C9A227', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 20px', fontWeight: 600, cursor: 'pointer' }}
           >
             + Nouvel article
           </button>
@@ -194,7 +194,7 @@ export default function Stock() {
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
                 <button onClick={() => { setShowForm(false); resetForm() }} style={{ flex: 1, padding: 10, borderRadius: 10, border: '1px solid #e5e5e5', background: '#fff', cursor: 'pointer' }}>Annuler</button>
-                <button onClick={handleSubmit} style={{ flex: 1, padding: 10, borderRadius: 10, border: 'none', background: '#F97316', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Enregistrer</button>
+                <button onClick={handleSubmit} style={{ flex: 1, padding: 10, borderRadius: 10, border: 'none', background: '#C9A227', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Enregistrer</button>
               </div>
             </div>
           </div>

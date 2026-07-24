@@ -124,9 +124,9 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
       nom: 'Starter',
       prix_mensuel: 1000,
       prix_annuel: 10000,
-      couleur: '#F97316',
-      bg: '#FFF4ED',
-      border: '#FED7AA',
+      couleur: '#C9A227',
+      bg: '#FBF3DC',
+      border: '#E8D28C',
       features: ["Jusqu'à 30 clientes", 'Carnet de mesures', 'Gestion commandes', 'Tableau de bord'],
       exclues: ['Factures PDF', 'Suivi paiements avancé'],
     },
@@ -209,7 +209,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
               <div
                 style={{
                   width: 50, height: 26, borderRadius: 13,
-                  background: billing === 'annuel' ? '#F97316' : '#E5E7EB',
+                  background: billing === 'annuel' ? '#C9A227' : '#E5E7EB',
                   position: 'relative', cursor: 'pointer', transition: 'background 0.2s',
                   flexShrink: 0,
                 }}
@@ -284,7 +284,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
                 disabled={!forfait}
                 onClick={() => forfait && setStep(2)}
                 style={{
-                  background: forfait ? '#F97316' : '#E5E7EB', color: forfait ? 'white' : '#aaa',
+                  background: forfait ? '#C9A227' : '#E5E7EB', color: forfait ? 'white' : '#aaa',
                   border: 'none', padding: '14px 40px', borderRadius: 50,
                   fontSize: 15, fontWeight: 700, cursor: forfait ? 'pointer' : 'not-allowed',
                   transition: 'background 0.2s', width: '100%', maxWidth: 320,
@@ -340,7 +340,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
                       outline: 'none', background: '#FAFAFA',
                       transition: 'border-color 0.2s',
                     }}
-                    onFocus={e => (e.target.style.borderColor = '#F97316')}
+                    onFocus={e => (e.target.style.borderColor = '#C9A227')}
                     onBlur={e => (e.target.style.borderColor = '#E5E7EB')}
                   />
                 </div>
@@ -364,7 +364,7 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
               disabled={isLoading}
               style={{
                 marginTop: 18, width: '100%',
-                background: isLoading ? '#FED7AA' : '#F97316',
+                background: isLoading ? '#E8D28C' : '#C9A227',
                 color: 'white', border: 'none', padding: '14px',
                 borderRadius: 50, fontSize: 15, fontWeight: 700,
                 cursor: isLoading ? 'wait' : 'pointer',
@@ -437,7 +437,7 @@ export default function LandingPage() {
           top: 0,
           zIndex: 100,
           backdropFilter: 'blur(10px)',
-          boxShadow: '0 10px 30px rgba(249,115,22,0.06)',
+          boxShadow: '0 10px 30px rgba(201, 162, 39,0.06)',
           animation: 'bb-float 6s ease-in-out infinite',
         }}
       >
@@ -463,7 +463,7 @@ export default function LandingPage() {
           <Link to="/login" style={{ fontSize: 14, color: '#C9962C', textDecoration: 'none', fontWeight: 500 }}>Connexion</Link>
           <button
             onClick={() => navigate('/register')}
-            style={{ background: '#F97316', color: 'white', border: 'none', padding: '10px 22px', borderRadius: 50, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
+            style={{ background: '#C9A227', color: 'white', border: 'none', padding: '10px 22px', borderRadius: 50, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
           >Inscription</button>
         </div>
       </nav>
@@ -481,7 +481,7 @@ export default function LandingPage() {
         }}
       >
         <div>
-          <div className="cp-badge-glow" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#FFF4ED', color: '#C9962C', padding: '6px 14px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 24, border: '1px solid #FED7AA' }}>
+          <div className="cp-badge-glow" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#FBF3DC', color: '#C9962C', padding: '6px 14px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 24, border: '1px solid #E8D28C' }}>
             ✨ Plateforme #1 pour les ateliers africains
           </div>
 
@@ -508,7 +508,7 @@ export default function LandingPage() {
             <button
               onClick={() => navigate('/register')}
               className="bb-liv-btn bb-liv-glow"
-              style={{ background: '#F97316', color: 'white', padding: '14px 28px', borderRadius: 50, fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer', boxShadow: '0 10px 30px rgba(249,115,22,0.22)' }}
+              style={{ background: '#C9A227', color: 'white', padding: '14px 28px', borderRadius: 50, fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer', boxShadow: '0 10px 30px rgba(201, 162, 39,0.22)' }}
             >Essayer gratuitement</button>
             <button
               onClick={() => scrollTo(tarifRef)}
@@ -521,7 +521,7 @@ export default function LandingPage() {
               {['A', 'M', 'F', 'S', 'N'].map((l, i) => (
                 <div key={i} style={{ width: 36, height: 36, borderRadius: '50%', border: '2.5px solid white', marginLeft: i === 0 ? 0 : -10, background: ['#F4A261', '#E76F51', '#2A9D8F', '#E9C46A', '#264653'][i], color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 600 }}>{l}</div>
               ))}
-              <div style={{ width: 36, height: 36, borderRadius: '50%', border: '2.5px solid white', marginLeft: -10, background: '#F97316', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>1k+</div>
+              <div style={{ width: 36, height: 36, borderRadius: '50%', border: '2.5px solid white', marginLeft: -10, background: '#C9A227', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>1k+</div>
             </div>
             <div>
               <div><strong>9,5/10</strong> <span style={{ color: '#C9962C' }}>★★★★★</span></div>
@@ -575,7 +575,7 @@ export default function LandingPage() {
               <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 8 }}>Commandes récentes</div>
               {[
                 { n: 'Aminata Diallo', d: 'Robe ankara · 15 juin', b: 'Livré', bc: '#DCFCE7', tc: '#16a34a' },
-                { n: 'Fatoumata Koné', d: 'Ensemble 2 pièces · 18 juin', b: 'En cours', bc: '#FFF4ED', tc: '#F97316' },
+                { n: 'Fatoumata Koné', d: 'Ensemble 2 pièces · 18 juin', b: 'En cours', bc: '#FBF3DC', tc: '#C9A227' },
                 { n: 'Nadia Mbaye', d: 'Boubou · 20 juin', b: 'Essayage', bc: '#EFF6FF', tc: '#2563eb' },
               ].map((o, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '7px 0', borderBottom: i < 2 ? '1px solid #f0ede8' : 'none' }}>
@@ -599,15 +599,15 @@ export default function LandingPage() {
       {/* ─── FONCTIONNALITÉS ─────────────────────────────────── */}
       <section ref={featRef} className="cp-reveal cp-features-section" style={{ padding: '90px 48px 80px', background: 'white', scrollMarginTop: 70 }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ display: 'inline-block', background: '#FFF4ED', color: '#C9962C', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #FED7AA' }}>Fonctionnalités</div>
+          <div style={{ display: 'inline-block', background: '#FBF3DC', color: '#C9962C', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #E8D28C' }}>Fonctionnalités</div>
           <h2 style={{ fontSize: 38, fontWeight: 800, marginBottom: 12 }}>Tout ce dont vous avez besoin,<br />dans votre poche</h2>
           <p style={{ color: '#666', fontSize: 16, maxWidth: 520, lineHeight: 1.7, marginBottom: 48 }}>Une plateforme pensée pour les ateliers de couture d'Afrique francophone.</p>
           <div className="cp-features-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24 }}>
             {[
-              { icon: '👥', title: 'Gestion des clientes', desc: "Enregistrez nom, téléphone, ville, style préféré, budget et notes. Retrouvez n'importe quelle cliente en 2 secondes.", bg: '#FFF4ED' },
+              { icon: '👥', title: 'Gestion des clientes', desc: "Enregistrez nom, téléphone, ville, style préféré, budget et notes. Retrouvez n'importe quelle cliente en 2 secondes.", bg: '#FBF3DC' },
               { icon: '📏', title: 'Carnet de mesures', desc: 'Toutes les mesures sauvegardées : poitrine, taille, hanche, longueur, manches... Accessible partout, même hors ligne.', bg: '#EFF6FF' },
               { icon: '📋', title: 'Gestion des commandes', desc: 'Créez et suivez chaque commande avec photo du modèle, statut, date de livraison et avances reçues.', bg: '#F0FDF4' },
-              { icon: '🧾', title: 'Factures & reçus PDF', desc: 'Générez des factures professionnelles avec votre logo. Partagez par WhatsApp en un clic.', bg: '#FFF4ED' },
+              { icon: '🧾', title: 'Factures & reçus PDF', desc: 'Générez des factures professionnelles avec votre logo. Partagez par WhatsApp en un clic.', bg: '#FBF3DC' },
               { icon: '💰', title: 'Suivi des paiements', desc: 'Visualisez les dettes en cours, avances reçues et montants à encaisser. Fini les oublis.', bg: '#EFF6FF' },
               { icon: '📊', title: 'Tableau de bord', desc: 'Un résumé clair : recettes du mois, commandes en cours, clientes actives et impayés.', bg: '#F0FDF4' },
             ].map((f, i) => (
@@ -626,7 +626,7 @@ export default function LandingPage() {
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLDivElement
                   el.style.transform = 'translateY(-6px) scale(1.02)'
-                  el.style.boxShadow = '0 24px 70px rgba(249,115,22,0.12)'
+                  el.style.boxShadow = '0 24px 70px rgba(201, 162, 39,0.12)'
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLDivElement
@@ -634,7 +634,7 @@ export default function LandingPage() {
                   el.style.boxShadow = 'none'
                 }}
               >
-                <div aria-hidden style={{ position: 'absolute', inset: -60, background: 'radial-gradient(circle at 30% 20%, rgba(249,115,22,0.18), rgba(249,115,22,0) 58%)', filter: 'blur(3px)', pointerEvents: 'none', opacity: 0.9, transform: 'translateZ(0)' }} />
+                <div aria-hidden style={{ position: 'absolute', inset: -60, background: 'radial-gradient(circle at 30% 20%, rgba(201, 162, 39,0.18), rgba(201, 162, 39,0) 58%)', filter: 'blur(3px)', pointerEvents: 'none', opacity: 0.9, transform: 'translateZ(0)' }} />
                 <div style={{ position: 'relative' }}>
                   <div style={{ width: 48, height: 48, borderRadius: 14, background: f.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, marginBottom: 18 }}>{f.icon}</div>
                   <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>{f.title}</div>
@@ -650,7 +650,7 @@ export default function LandingPage() {
       <section ref={tarifRef} className="cp-reveal cp-tarifs-section" style={{ padding: '90px 48px 80px', background: '#FAFAF8', scrollMarginTop: 70 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div style={{ display: 'inline-block', background: '#FFF4ED', color: '#C9962C', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #FED7AA' }}>Tarifs</div>
+            <div style={{ display: 'inline-block', background: '#FBF3DC', color: '#C9962C', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #E8D28C' }}>Tarifs</div>
             <h2 style={{ fontSize: 38, fontWeight: 800, marginBottom: 12 }}>Des prix adaptés à votre atelier</h2>
             <p style={{ color: '#666', fontSize: 16, maxWidth: 480, margin: '0 auto' }}>Commencez gratuitement pendant 7 jours. Choisissez ensuite le forfait qui vous convient.</p>
           </div>
@@ -658,15 +658,15 @@ export default function LandingPage() {
           <div className="cp-tarifs-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, alignItems: 'stretch' }}>
             {[
               {
-                nom: 'Starter', prix_m: 1000, prix_a: 10000, couleur: '#F97316',
-                bg: 'white', border: '#f0ede8', btnBg: '#FFF4ED', btnColor: '#F97316',
+                nom: 'Starter', prix_m: 1000, prix_a: 10000, couleur: '#C9A227',
+                bg: 'white', border: '#f0ede8', btnBg: '#FBF3DC', btnColor: '#C9A227',
                 features: ["Jusqu'à 30 clientes", 'Carnet de mesures', 'Gestion commandes', 'Tableau de bord de base'],
                 exclues: ['Factures PDF', 'Suivi paiements avancé'],
                 desc: 'Idéal pour démarrer',
               },
               {
                 nom: 'Pro', prix_m: 2300, prix_a: 23000, couleur: '#7C3AED',
-                bg: '#1a1a1a', border: '#1a1a1a', btnBg: '#F97316', btnColor: 'white',
+                bg: '#1a1a1a', border: '#1a1a1a', btnBg: '#C9A227', btnColor: 'white',
                 badge: '⭐ Le plus populaire',
                 features: ['Clientes illimitées', 'Carnet de mesures complet', 'Gestion commandes + photos', 'Factures & reçus PDF', 'Suivi paiements & dettes', 'Tableau de bord avancé'],
                 exclues: [],
@@ -694,11 +694,11 @@ export default function LandingPage() {
                   }}
                 >
                   {p.badge && (
-                    <div style={{ position: 'absolute', top: -14, left: '50%', transform: 'translateX(-50%)', background: '#F97316', color: 'white', fontSize: 11, fontWeight: 700, padding: '5px 14px', borderRadius: 50, whiteSpace: 'nowrap' }}>
+                    <div style={{ position: 'absolute', top: -14, left: '50%', transform: 'translateX(-50%)', background: '#C9A227', color: 'white', fontSize: 11, fontWeight: 700, padding: '5px 14px', borderRadius: 50, whiteSpace: 'nowrap' }}>
                       {p.badge}
                     </div>
                   )}
-                  <div style={{ fontSize: 12, fontWeight: 700, color: isDark ? '#F97316' : p.couleur, letterSpacing: 0.5, marginBottom: 6 }}>{p.nom}</div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: isDark ? '#C9A227' : p.couleur, letterSpacing: 0.5, marginBottom: 6 }}>{p.nom}</div>
                   <div style={{ fontSize: 13, color: isDark ? '#999' : '#888', marginBottom: 16 }}>{p.desc}</div>
                   <div style={{ marginBottom: 8 }}>
                     <span style={{ fontSize: 36, fontWeight: 900, color: isDark ? 'white' : '#1a1a1a' }}>{p.prix_m.toLocaleString('fr-FR')}</span>
@@ -728,7 +728,7 @@ export default function LandingPage() {
                       border: 'none', padding: '13px', borderRadius: 50,
                       fontSize: 14, fontWeight: 800, cursor: 'pointer', width: '100%',
                       transition: 'opacity 0.2s',
-                      boxShadow: p.nom === 'Pro' ? '0 18px 50px rgba(249,115,22,0.18)' : undefined,
+                      boxShadow: p.nom === 'Pro' ? '0 18px 50px rgba(201, 162, 39,0.18)' : undefined,
                     }}
                   >
                     Commencer avec {p.nom}
@@ -750,7 +750,7 @@ export default function LandingPage() {
       <section ref={temoRef} className="cp-reveal cp-temo-section" style={{ padding: '90px 48px 80px', background: 'white', scrollMarginTop: 70 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 52 }}>
-            <div style={{ display: 'inline-block', background: '#FFF4ED', color: '#C9962C', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #FED7AA' }}>Témoignages</div>
+            <div style={{ display: 'inline-block', background: '#FBF3DC', color: '#C9962C', padding: '6px 16px', borderRadius: 50, fontSize: 12, fontWeight: 600, marginBottom: 16, border: '1px solid #E8D28C' }}>Témoignages</div>
             <h2 style={{ fontSize: 38, fontWeight: 800, marginBottom: 12 }}>Ce que disent nos couturières</h2>
             <p style={{ color: '#666', fontSize: 16 }}>Plus de 1000 ateliers font confiance à Eureka chaque jour.</p>
           </div>
@@ -814,7 +814,7 @@ export default function LandingPage() {
                         onMouseEnter={(e) => { if (!prefersReducedMotion) (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px) scale(1.02)' }}
                         onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0px) scale(1)' }}
                       >
-                        <div aria-hidden style={{ position: 'absolute', inset: -80, background: 'radial-gradient(circle at 30% 20%, rgba(249,115,22,0.18), rgba(249,115,22,0) 58%)', filter: 'blur(2px)', pointerEvents: 'none' }} />
+                        <div aria-hidden style={{ position: 'absolute', inset: -80, background: 'radial-gradient(circle at 30% 20%, rgba(201, 162, 39,0.18), rgba(201, 162, 39,0) 58%)', filter: 'blur(2px)', pointerEvents: 'none' }} />
                         <div style={{ position: 'relative' }}>
                           <div style={{ color: '#C9962C', fontSize: 18, marginBottom: 14 }}>{'★'.repeat(t.note)}</div>
                           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#333', fontStyle: 'italic', marginBottom: 20 }}>"{t.quote}"</p>
@@ -837,14 +837,14 @@ export default function LandingPage() {
       </section>
 
       {/* ─── CTA FINAL ───────────────────────────────────────── */}
-      <section className="cp-reveal cp-cta-section" style={{ padding: '80px 48px', background: 'linear-gradient(135deg,#1a1a1a 0%,#2d1a0a 100%)', textAlign: 'center' }}>
+      <section className="cp-reveal cp-cta-section" style={{ padding: '80px 48px', background: 'linear-gradient(135deg,#1a1a1a 0%,#2a2008 100%)', textAlign: 'center' }}>
         <h2 style={{ fontSize: 42, fontWeight: 800, color: 'white', marginBottom: 14 }}>Rejoignez +1000 couturières qui ont digitalisé leur atelier</h2>
         <p style={{ color: '#999', fontSize: 16, marginBottom: 36 }}>Commencez gratuitement · Sans carte bancaire · 7 jours offerts</p>
         <div className="cp-cta-btns" style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
           <button
             onClick={() => navigate('/register')}
             className="bb-liv-btn bb-liv-glow"
-            style={{ background: '#F97316', color: 'white', padding: '14px 32px', borderRadius: 50, fontSize: 15, fontWeight: 800, border: 'none', cursor: 'pointer', boxShadow: '0 18px 50px rgba(249,115,22,0.2)' }}
+            style={{ background: '#C9A227', color: 'white', padding: '14px 32px', borderRadius: 50, fontSize: 15, fontWeight: 800, border: 'none', cursor: 'pointer', boxShadow: '0 18px 50px rgba(201, 162, 39,0.2)' }}
           >Démarrer gratuitement — 7 jours offerts</button>
           <button
             onClick={() => scrollTo(tarifRef)}
@@ -869,13 +869,13 @@ export default function LandingPage() {
           overflow: 'hidden',
         }}
       >
-        <div aria-hidden style={{ position: 'absolute', inset: -140, background: 'radial-gradient(circle at 30% 20%, rgba(249,115,22,0.22), rgba(249,115,22,0) 58%)', filter: 'blur(10px)', pointerEvents: 'none', opacity: 0.9 }} />
+        <div aria-hidden style={{ position: 'absolute', inset: -140, background: 'radial-gradient(circle at 30% 20%, rgba(201, 162, 39,0.22), rgba(201, 162, 39,0) 58%)', filter: 'blur(10px)', pointerEvents: 'none', opacity: 0.9 }} />
         <span style={{ fontSize: 18, color: 'white', fontWeight: 700, position: 'relative' }}>✂ Eureka</span>
         <span style={{ fontSize: 13, color: '#777', position: 'relative' }}>© 2026 Eureka · Fait avec ❤ pour l'Afrique</span>
         <Link
           to="/login"
           className="bb-liv-btn"
-          style={{ fontSize: 13, color: '#C9962C', textDecoration: 'none', fontWeight: 800, position: 'relative', padding: '6px 10px', borderRadius: 12, border: '1px solid rgba(249,115,22,0.25)' }}
+          style={{ fontSize: 13, color: '#C9962C', textDecoration: 'none', fontWeight: 800, position: 'relative', padding: '6px 10px', borderRadius: 12, border: '1px solid rgba(201, 162, 39,0.25)' }}
         >Connexion</Link>
       </footer>
 

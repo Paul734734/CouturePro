@@ -82,7 +82,7 @@ export default function AdminUtilisatrices() {
               style={{
                 padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600,
                 border: filtre === f.key ? 'none' : '1px solid #e5e5e5',
-                background: filtre === f.key ? '#F97316' : '#fff',
+                background: filtre === f.key ? '#C9A227' : '#fff',
                 color: filtre === f.key ? '#fff' : '#555', cursor: 'pointer',
               }}
             >
@@ -112,7 +112,7 @@ export default function AdminUtilisatrices() {
                   <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
                     <div style={{
                       width: 44, height: 44, borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #F97316, #fb923c)',
+                      background: 'linear-gradient(135deg, #C9A227, #d9bb5c)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 18, fontWeight: 700, color: '#fff', flexShrink: 0,
                     }}>
@@ -153,7 +153,7 @@ export default function AdminUtilisatrices() {
               <div style={{ textAlign: 'center', marginBottom: 20 }}>
                 <div style={{
                   width: 60, height: 60, borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #F97316, #fb923c)',
+                  background: 'linear-gradient(135deg, #C9A227, #d9bb5c)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: 24, fontWeight: 700, color: '#fff', margin: '0 auto 10px',
                 }}>

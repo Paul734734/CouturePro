@@ -96,7 +96,7 @@ export default function Profil() {
         }}>
           <div style={{
             width: 80, height: 80, borderRadius: '50%',
-            background: 'linear-gradient(135deg, #F97316, #fb923c)',
+            background: 'linear-gradient(135deg, #C9A227, #d9bb5c)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 32, fontWeight: 700, color: '#fff',
             margin: '0 auto 12px',
@@ -104,11 +104,11 @@ export default function Profil() {
             {user?.nom?.charAt(0).toUpperCase()}
           </div>
           <div style={{ fontWeight: 700, fontSize: 18, color: '#1a1a1a' }}>{user?.nom}</div>
-          <div style={{ color: '#F97316', fontSize: 14, fontWeight: 600, marginTop: 2 }}>{user?.nomAtelier}</div>
+          <div style={{ color: '#C9A227', fontSize: 14, fontWeight: 600, marginTop: 2 }}>{user?.nomAtelier}</div>
           <div style={{ color: '#888', fontSize: 13, marginTop: 2 }}>{user?.email}</div>
           <div style={{
             display: 'inline-block', marginTop: 10,
-            background: '#FFF7ED', color: '#F97316', border: '1px solid #fed7aa',
+            background: '#FCF6E0', color: '#C9A227', border: '1px solid #e8d28c',
             borderRadius: 20, padding: '3px 14px', fontSize: 12, fontWeight: 600,
           }}>
             Couturière
@@ -131,7 +131,7 @@ export default function Profil() {
               type="button"
               style={{
                 flex: 1, padding: '10px 6px', borderRadius: 8, border: 'none',
-                background: activeSection === t.key ? '#F97316' : 'transparent',
+                background: activeSection === t.key ? '#C9A227' : 'transparent',
                 color: activeSection === t.key ? '#fff' : '#666',
                 fontWeight: activeSection === t.key ? 700 : 500,
                 fontSize: 12, cursor: 'pointer',
@@ -148,7 +148,7 @@ export default function Profil() {
               background: '#fff', border: '1px solid #f0f0f0', borderRadius: 14,
               padding: '20px', marginBottom: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
             }}>
-              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#F97316', margin: '0 0 16px', textTransform: 'uppercase' }}>
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#C9A227', margin: '0 0 16px', textTransform: 'uppercase' }}>
                 🏪 Informations atelier
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -227,7 +227,7 @@ export default function Profil() {
               onClick={handleSave}
               style={{
                 width: '100%', padding: '14px', borderRadius: 12, border: 'none',
-                background: saved ? '#16a34a' : '#F97316', color: '#fff',
+                background: saved ? '#16a34a' : '#C9A227', color: '#fff',
                 fontWeight: 700, fontSize: 15, cursor: 'pointer', transition: 'background 0.2s',
               }}
             >
@@ -241,7 +241,7 @@ export default function Profil() {
             background: '#fff', border: '1px solid #f0f0f0', borderRadius: 14,
             padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
           }}>
-            <h3 style={{ fontSize: 13, fontWeight: 700, color: '#F97316', margin: '0 0 16px', textTransform: 'uppercase' }}>
+            <h3 style={{ fontSize: 13, fontWeight: 700, color: '#C9A227', margin: '0 0 16px', textTransform: 'uppercase' }}>
               🔒 Changer le mot de passe
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -269,7 +269,7 @@ export default function Profil() {
                 type="button"
                 style={{
                   width: '100%', padding: '13px', borderRadius: 10, border: 'none',
-                  background: '#F97316', color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer',
+                  background: '#C9A227', color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer',
                 }}
               >
                 🔐 Mettre à jour le mot de passe
@@ -295,8 +295,8 @@ export default function Profil() {
             <div style={{
               background: joursRestants && joursRestants <= 7
                 ? 'linear-gradient(135deg, #fee2e2, #fef2f2)'
-                : 'linear-gradient(135deg, #FFF7ED, #fff)',
-              border: `1px solid ${joursRestants && joursRestants <= 7 ? '#fca5a5' : '#fed7aa'}`,
+                : 'linear-gradient(135deg, #FCF6E0, #fff)',
+              border: `1px solid ${joursRestants && joursRestants <= 7 ? '#fca5a5' : '#e8d28c'}`,
               borderRadius: 14, padding: '24px', marginBottom: 16,
               boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
             }}>
@@ -314,8 +314,8 @@ export default function Profil() {
               {joursRestants !== null && (
                 <div style={{
                   display: 'inline-block',
-                  background: joursRestants <= 7 ? '#fee2e2' : joursRestants <= 30 ? '#fff7ed' : '#dcfce7',
-                  color: joursRestants <= 7 ? '#ef4444' : joursRestants <= 30 ? '#F97316' : '#16a34a',
+                  background: joursRestants <= 7 ? '#fee2e2' : joursRestants <= 30 ? '#fcf6e0' : '#dcfce7',
+                  color: joursRestants <= 7 ? '#ef4444' : joursRestants <= 30 ? '#C9A227' : '#16a34a',
                   borderRadius: 20, padding: '6px 16px', fontSize: 13, fontWeight: 700,
                 }}>
                   {joursRestants > 0 ? `${joursRestants} jours restants` : 'Abonnement expiré'}
@@ -327,7 +327,7 @@ export default function Profil() {
               background: '#fff', border: '1px solid #f0f0f0', borderRadius: 14,
               padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
             }}>
-              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#F97316', margin: '0 0 14px', textTransform: 'uppercase' }}>
+              <h3 style={{ fontSize: 13, fontWeight: 700, color: '#C9A227', margin: '0 0 14px', textTransform: 'uppercase' }}>
                 📦 Renouveler l'abonnement
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -349,13 +349,13 @@ export default function Profil() {
                         </div>
                       )}
                     </div>
-                    <div style={{ fontWeight: 700, color: '#F97316', fontSize: 15 }}>{plan.prix}</div>
+                    <div style={{ fontWeight: 700, color: '#C9A227', fontSize: 15 }}>{plan.prix}</div>
                   </div>
                 ))}
               </div>
               <button style={{
                 width: '100%', padding: '14px', borderRadius: 10, border: 'none',
-                background: '#F97316', color: '#fff', fontWeight: 700, fontSize: 15,
+                background: '#C9A227', color: '#fff', fontWeight: 700, fontSize: 15,
                 cursor: 'pointer', marginTop: 16,
               }}>
                 💰 Payer via MoMo / Orange Money

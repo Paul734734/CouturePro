@@ -32,7 +32,7 @@ const AdminAbonnements = lazy(() => import('./pages/admin/AdminAbonnements'))
 
 function ChargementPage() {
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#F97316', fontWeight: 600 }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#C9A227', fontWeight: 600 }}>
       Chargement...
     </div>
   )

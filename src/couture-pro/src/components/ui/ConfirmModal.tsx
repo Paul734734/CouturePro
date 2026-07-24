@@ -58,7 +58,7 @@ export default function ConfirmModal({
             disabled={enCours}
             style={{
               flex: 1, padding: 10, borderRadius: 10, border: 'none',
-              background: danger ? '#DC2626' : '#F97316', color: '#fff',
+              background: danger ? '#DC2626' : '#C9A227', color: '#fff',
               fontWeight: 600, fontSize: 14, cursor: enCours ? 'default' : 'pointer',
               opacity: enCours ? 0.7 : 1,
             }}

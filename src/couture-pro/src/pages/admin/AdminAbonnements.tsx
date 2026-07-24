@@ -105,7 +105,7 @@ export default function AdminAbonnements() {
               style={{
                 padding: '10px 18px', borderRadius: 999, fontSize: 13, fontWeight: 600,
                 border: filtre === f.key ? 'none' : '1px solid #e5e5e5',
-                background: filtre === f.key ? '#F97316' : '#fff',
+                background: filtre === f.key ? '#C9A227' : '#fff',
                 color: filtre === f.key ? '#fff' : '#555', cursor: 'pointer',
               }}
             >
@@ -174,7 +174,7 @@ export default function AdminAbonnements() {
                     onClick={() => { setRenewing(u); setMois(1) }}
                     style={{
                       padding: '10px 16px', borderRadius: 12, border: 'none',
-                      background: '#F97316', color: '#fff', fontWeight: 700, cursor: 'pointer',
+                      background: '#C9A227', color: '#fff', fontWeight: 700, cursor: 'pointer',
                     }}
                   >
                     🔄 Renouveler
@@ -206,7 +206,7 @@ export default function AdminAbonnements() {
                     style={{
                       flex: 1, padding: '10px 0', borderRadius: 10, fontSize: 13, fontWeight: 700,
                       border: mois === m ? 'none' : '1px solid #e5e5e5',
-                      background: mois === m ? '#F97316' : '#fff',
+                      background: mois === m ? '#C9A227' : '#fff',
                       color: mois === m ? '#fff' : '#555', cursor: 'pointer',
                     }}
                   >
@@ -235,7 +235,7 @@ export default function AdminAbonnements() {
                   onClick={confirmerRenouvellement}
                   disabled={saving}
                   type="button"
-                  style={{ flex: 1, padding: 12, borderRadius: 10, border: 'none', background: '#F97316', color: '#fff', fontWeight: 700, cursor: 'pointer' }}
+                  style={{ flex: 1, padding: 12, borderRadius: 10, border: 'none', background: '#C9A227', color: '#fff', fontWeight: 700, cursor: 'pointer' }}
                 >
                   {saving ? '...' : 'Confirmer'}
                 </button>

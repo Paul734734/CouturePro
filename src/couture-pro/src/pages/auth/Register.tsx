@@ -23,9 +23,9 @@ const FORFAITS = [
   {
     id: 'starter' as Forfait,
     nom: 'Starter',
-    couleur: '#F97316',
-    bg: '#FFF4ED',
-    border: '#FED7AA',
+    couleur: '#C9A227',
+    bg: '#FBF3DC',
+    border: '#E8D28C',
     desc: 'Pour débuter',
     features: ["Jusqu'à 30 clientes", 'Carnet de mesures', 'Gestion commandes', 'Tableau de bord'],
     exclues: ['Factures PDF', 'Suivi paiements avancé'],
@@ -162,7 +162,7 @@ const handleSubmit = async () => {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #FFF4ED 0%, #FAFAF8 60%, #FFF4ED 100%)',
+      background: 'linear-gradient(135deg, #FBF3DC 0%, #FAFAF8 60%, #FBF3DC 100%)',
       display: 'flex', flexDirection: 'column', alignItems: 'center',
       justifyContent: 'center', padding: '32px 20px',
       fontFamily: 'Inter, sans-serif',
@@ -184,12 +184,12 @@ const handleSubmit = async () => {
               <div style={{
                 width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: 13, fontWeight: 700,
-                background: step >= s.n ? '#F97316' : '#E5E7EB',
+                background: step >= s.n ? '#C9A227' : '#E5E7EB',
                 color: step >= s.n ? 'white' : '#999',
               }}>{s.n}</div>
               <span style={{ fontSize: 13, fontWeight: step === s.n ? 700 : 400, color: step === s.n ? '#1a1a1a' : '#999' }}>{s.label}</span>
             </div>
-            {i === 0 && <div style={{ width: 32, height: 2, background: step >= 2 ? '#F97316' : '#E5E7EB', borderRadius: 2 }} />}
+            {i === 0 && <div style={{ width: 32, height: 2, background: step >= 2 ? '#C9A227' : '#E5E7EB', borderRadius: 2 }} />}
           </>
         ))}
       </div>
@@ -214,7 +214,7 @@ const handleSubmit = async () => {
               <div
                 style={{
                   width: 50, height: 26, borderRadius: 13,
-                  background: billing === 'annuel' ? '#F97316' : '#E5E7EB',
+                  background: billing === 'annuel' ? '#C9A227' : '#E5E7EB',
                   position: 'relative', cursor: 'pointer', transition: 'background 0.2s',
                   flexShrink: 0,
                 }}
@@ -301,7 +301,7 @@ const handleSubmit = async () => {
             <button
               onClick={() => setStep(2)}
               style={{
-                width: '100%', background: '#F97316', color: 'white',
+                width: '100%', background: '#C9A227', color: 'white',
                 border: 'none', padding: '14px', borderRadius: 50,
                 fontSize: 15, fontWeight: 700, cursor: 'pointer',
               }}
@@ -310,7 +310,7 @@ const handleSubmit = async () => {
             </button>
             <p style={{ textAlign: 'center', fontSize: 12, color: '#999', marginTop: 10, marginBottom: 0 }}>
               Déjà un compte ?{' '}
-              <Link to="/login" style={{ color: '#F97316', fontWeight: 600, textDecoration: 'none' }}>Se connecter</Link>
+              <Link to="/login" style={{ color: '#C9A227', fontWeight: 600, textDecoration: 'none' }}>Se connecter</Link>
             </p>
           </div>
         )}
@@ -336,7 +336,7 @@ const handleSubmit = async () => {
                   </div>
                 </div>
               </div>
-              <button onClick={() => setStep(1)} style={{ fontSize: 12, color: '#F97316', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
+              <button onClick={() => setStep(1)} style={{ fontSize: 12, color: '#C9A227', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
                 Changer
               </button>
             </div>
@@ -383,7 +383,7 @@ const handleSubmit = async () => {
                       borderColor: fieldErrors.telephone ? '#DC2626' : '#E5E7EB',
                       background: fieldErrors.telephone ? '#FEF2F2' : '#FAFAFA',
                     }}
-                    onFocus={(e) => (e.target.style.borderColor = fieldErrors.telephone ? '#DC2626' : '#F97316')}
+                    onFocus={(e) => (e.target.style.borderColor = fieldErrors.telephone ? '#DC2626' : '#C9A227')}
                     onBlur={(e) => (e.target.style.borderColor = fieldErrors.telephone ? '#DC2626' : '#E5E7EB')}
                   />
                 </div>
@@ -414,7 +414,7 @@ const handleSubmit = async () => {
                       borderColor: fieldErrors[f.key] ? '#DC2626' : '#E5E7EB',
                       background: fieldErrors[f.key] ? '#FEF2F2' : '#FAFAFA',
                     }}
-                    onFocus={e => (e.target.style.borderColor = fieldErrors[f.key] ? '#DC2626' : '#F97316')}
+                    onFocus={e => (e.target.style.borderColor = fieldErrors[f.key] ? '#DC2626' : '#C9A227')}
                     onBlur={e => (e.target.style.borderColor = fieldErrors[f.key] ? '#DC2626' : '#E5E7EB')}
                   />
                   {fieldErrors[f.key] && (
@@ -436,7 +436,7 @@ const handleSubmit = async () => {
               onClick={handleSubmit}
               disabled={isLoading}
               style={{
-                width: '100%', background: isLoading ? '#FED7AA' : '#F97316',
+                width: '100%', background: isLoading ? '#E8D28C' : '#C9A227',
                 color: 'white', border: 'none', padding: '14px',
                 borderRadius: 50, fontSize: 15, fontWeight: 700,
                 cursor: isLoading ? 'wait' : 'pointer', marginTop: 18,

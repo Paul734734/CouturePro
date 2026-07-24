@@ -60,7 +60,7 @@ export default function Commandes() {
             <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>Commandes</h2>
             <p style={{ margin: '4px 0 0', fontSize: 13, color: '#888' }}>{commandes.length} commandes au total</p>
           </div>
-          <button onClick={() => navigate('/commandes/ajouter')} style={{ background: '#F97316', color: 'white', border: 'none', padding: '11px 22px', borderRadius: 50, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+          <button onClick={() => navigate('/commandes/ajouter')} style={{ background: '#C9A227', color: 'white', border: 'none', padding: '11px 22px', borderRadius: 50, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
             + Nouvelle commande
           </button>
         </div>
@@ -71,7 +71,7 @@ export default function Commandes() {
             const color = getStatutColor(s)
             const active = filtre === s
             return (
-              <button key={s} onClick={() => setFiltre(s)} style={{ padding: '7px 16px', borderRadius: 50, border: active ? 'none' : '1px solid #e5e0d8', background: active ? '#F97316' : 'white', color: active ? 'white' : '#555', fontSize: 13, fontWeight: active ? 600 : 400, cursor: 'pointer' }}>
+              <button key={s} onClick={() => setFiltre(s)} style={{ padding: '7px 16px', borderRadius: 50, border: active ? 'none' : '1px solid #e5e0d8', background: active ? '#C9A227' : 'white', color: active ? 'white' : '#555', fontSize: 13, fontWeight: active ? 600 : 400, cursor: 'pointer' }}>
                 {s === 'tous' ? 'Toutes' : getStatutLabel(s)}
                 <span style={{ marginLeft: 6, background: active ? 'rgba(255,255,255,0.3)' : '#f0ede8', borderRadius: 50, padding: '1px 7px', fontSize: 11 }}>
                   {s === 'tous' ? commandes.length : commandes.filter(c => c.statut === s).length}
@@ -91,11 +91,11 @@ export default function Commandes() {
                 key={c.id}
                 onClick={() => navigate(`/commandes/${c.id}`)}
                 className="cp-grid-row-3auto" style={{ background: 'white', borderRadius: 16, border: '1px solid #f0ede8', padding: '20px 24px', cursor: 'pointer', gap: 20 }}
-                onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 4px 20px rgba(249,115,22,0.08)')}
+                onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 4px 20px rgba(201, 162, 39,0.08)')}
                 onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ width: 42, height: 42, borderRadius: '50%', background: '#FFF4ED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700, color: '#F97316', flexShrink: 0 }}>
+                  <div style={{ width: 42, height: 42, borderRadius: '50%', background: '#FBF3DC', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700, color: '#C9A227', flexShrink: 0 }}>
                     {c.clienteNom.charAt(0)}
                   </div>
                   <div>
@@ -106,7 +106,7 @@ export default function Commandes() {
                 <div>
                   <div style={{ fontSize: 12, color: '#888', marginBottom: 6 }}>Paiement</div>
                   <div style={{ height: 6, background: '#f0ede8', borderRadius: 3, marginBottom: 4 }}>
-                    <div style={{ height: '100%', width: `${progress}%`, background: progress === 100 ? '#22c55e' : '#F97316', borderRadius: 3 }} />
+                    <div style={{ height: '100%', width: `${progress}%`, background: progress === 100 ? '#22c55e' : '#C9A227', borderRadius: 3 }} />
                   </div>
                   <div style={{ fontSize: 12, color: '#555' }}>{formatMontant(c.avancePaye)} / {formatMontant(c.prixTotal)}</div>
                 </div>
@@ -115,7 +115,7 @@ export default function Commandes() {
                   <div style={{ fontSize: 13, fontWeight: 600 }}>{c.dateLivraison ? formatDate(c.dateLivraison) : '—'}</div>
                 </div>
                 <div className="cp-row-status-col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
-                  <span style={{ fontSize: 12, padding: '5px 14px', borderRadius: 50, fontWeight: 600, background: '#FFF4ED', color: '#F97316', whiteSpace: 'nowrap' }}>
+                  <span style={{ fontSize: 12, padding: '5px 14px', borderRadius: 50, fontWeight: 600, background: '#FBF3DC', color: '#C9A227', whiteSpace: 'nowrap' }}>
                     {getStatutLabel(c.statut)}
                   </span>
                   {(() => {

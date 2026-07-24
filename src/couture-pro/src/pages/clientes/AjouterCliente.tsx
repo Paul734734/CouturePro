@@ -221,7 +221,7 @@ export default function AjouterCliente() {
             disabled={loading}
             style={{
               flex: 2, padding: '14px', borderRadius: 12, border: 'none',
-              background: loading ? '#fbd0b0' : '#F97316', color: '#fff',
+              background: loading ? '#eeddb0' : '#C9A227', color: '#fff',
               fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', fontSize: 15,
             }}
           >
@@ -236,7 +236,7 @@ export default function AjouterCliente() {
 function Section({ titre, children }: { titre: string; children: React.ReactNode }) {
   return (
     <div style={{ background: '#fff', border: '1px solid #f0f0f0', borderRadius: 14, padding: '20px 20px', marginBottom: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-      <h3 style={{ fontSize: 13, fontWeight: 700, color: '#F97316', margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: 0.5 }}>{titre}</h3>
+      <h3 style={{ fontSize: 13, fontWeight: 700, color: '#C9A227', margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: 0.5 }}>{titre}</h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>{children}</div>
     </div>
   )

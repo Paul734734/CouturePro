@@ -124,8 +124,8 @@ img, video {
 }
 
 @keyframes bb-pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 rgba(249,115,22,0.0) }
-  50% { box-shadow: 0 0 24px rgba(249,115,22,0.25) }
+  0%, 100% { box-shadow: 0 0 0 rgba(201, 162, 39,0.0) }
+  50% { box-shadow: 0 0 24px rgba(201, 162, 39,0.25) }
 }
 
 .bb-liv-btn {
@@ -169,8 +169,8 @@ img, video {
 ─────────────────────────────────────────────── */
 
 @keyframes bb-footer-breathe {
-  0%, 100% { box-shadow: 0 0 0 rgba(249,115,22,0); }
-  50% { box-shadow: 0 0 30px rgba(249,115,22,0.18); }
+  0%, 100% { box-shadow: 0 0 0 rgba(201, 162, 39,0); }
+  50% { box-shadow: 0 0 30px rgba(201, 162, 39,0.18); }
 }
 
 .bb-footer-breathe {
@@ -183,7 +183,7 @@ img, video {
 
 .bb-tarif-card:hover {
   transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 24px 70px rgba(249,115,22,0.14) !important;
+  box-shadow: 0 24px 70px rgba(201, 162, 39,0.14) !important;
 }
 
 .bb-tarif-cta {
@@ -264,12 +264,12 @@ img, video {
 
 @keyframes pulsePro {
   0%, 100% { box-shadow: 0 24px 60px rgba(0,0,0,0.18); }
-  50% { box-shadow: 0 32px 80px rgba(249,115,22,0.28); }
+  50% { box-shadow: 0 32px 80px rgba(201, 162, 39,0.28); }
 }
 
 @keyframes glowBadge {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(249,115,22,0); }
-  50% { box-shadow: 0 0 16px 4px rgba(249,115,22,0.18); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 162, 39,0); }
+  50% { box-shadow: 0 0 16px 4px rgba(201, 162, 39,0.18); }
 }
 
 @keyframes navReveal {
@@ -291,10 +291,10 @@ img, video {
 .cp-shimmer-text {
   background: linear-gradient(
     90deg,
-    #F97316 0%,
-    #ff9a4d 40%,
-    #F97316 60%,
-    #d4580a 100%
+    #C9A227 0%,
+    #e0c46c 40%,
+    #C9A227 60%,
+    #8a6d1a 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -327,7 +327,7 @@ img, video {
   transform: translateY(0) !important;
   transition: transform 0.3s ease !important;
   backdrop-filter: blur(14px) !important;
-  box-shadow: 0 4px 32px rgba(249,115,22,0.10) !important;
+  box-shadow: 0 4px 32px rgba(201, 162, 39,0.10) !important;
 }
 
 /* Scroll reveal générique */
@@ -355,7 +355,7 @@ img, video {
   width: 340px;
   height: 340px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(249,115,22,0.07) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(201, 162, 39,0.07) 0%, transparent 70%);
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);

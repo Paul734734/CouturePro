@@ -116,12 +116,12 @@ export default function Mesures() {
           )}
           {clientes.map((c) => (
             <div key={c.id} onClick={() => { navigate(`/mesures/${c.id}`); setEditing(false) }}
-              style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 20px', cursor: 'pointer', borderBottom: '1px solid #f0ede8', background: selectedId === c.id ? '#FFF4ED' : 'white', transition: 'background .15s' }}>
-              <div style={{ width: 38, height: 38, borderRadius: '50%', background: selectedId === c.id ? '#F97316' : '#FFF4ED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: selectedId === c.id ? 'white' : '#F97316' }}>
+              style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 20px', cursor: 'pointer', borderBottom: '1px solid #f0ede8', background: selectedId === c.id ? '#FBF3DC' : 'white', transition: 'background .15s' }}>
+              <div style={{ width: 38, height: 38, borderRadius: '50%', background: selectedId === c.id ? '#C9A227' : '#FBF3DC', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: selectedId === c.id ? 'white' : '#C9A227' }}>
                 {c.nom.charAt(0)}
               </div>
               <div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: selectedId === c.id ? '#F97316' : '#1a1a1a' }}>{c.nom}</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: selectedId === c.id ? '#C9A227' : '#1a1a1a' }}>{c.nom}</div>
               </div>
             </div>
           ))}
@@ -147,12 +147,12 @@ export default function Mesures() {
                   {editing ? (
                     <>
                       <button onClick={() => setEditing(false)} disabled={saving} style={{ padding: '9px 18px', background: '#FAFAF8', border: '1px solid #e5e0d8', borderRadius: 10, fontSize: 13, cursor: 'pointer' }}>Annuler</button>
-                      <button onClick={save} disabled={saving} style={{ padding: '9px 18px', background: '#F97316', color: 'white', border: 'none', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                      <button onClick={save} disabled={saving} style={{ padding: '9px 18px', background: '#C9A227', color: 'white', border: 'none', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                         {saving ? 'Sauvegarde...' : '💾 Sauvegarder'}
                       </button>
                     </>
                   ) : (
-                    <button onClick={startEdit} style={{ padding: '9px 18px', background: '#FFF4ED', color: '#F97316', border: '1px solid #FED7AA', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                    <button onClick={startEdit} style={{ padding: '9px 18px', background: '#FBF3DC', color: '#C9A227', border: '1px solid #E8D28C', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                       ✏️ {currentMesures ? 'Modifier' : 'Saisir les mesures'}
                     </button>
                   )}
@@ -185,8 +185,8 @@ export default function Mesures() {
                 ) : currentMesures ? (
                   <>
                     <div className="cp-grid-2" style={{ gap: 12, marginBottom: 20 }}>
-                      <div style={{ background: '#FFF4ED', borderRadius: 14, padding: 20 }}>
-                        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 14, color: '#F97316' }}>📐 Mensurations principales</div>
+                      <div style={{ background: '#FBF3DC', borderRadius: 14, padding: 20 }}>
+                        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 14, color: '#C9A227' }}>📐 Mensurations principales</div>
                         {[
                           { key: 'poitrine', label: 'Poitrine' },
                           { key: 'taille', label: 'Taille' },
@@ -195,7 +195,7 @@ export default function Mesures() {
                           <div key={m.key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
                             <span style={{ fontSize: 13, color: '#555' }}>{m.label}</span>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                              <div style={{ height: 6, width: Math.min((((currentMesures as any)[m.key] || 0) / 120) * 80, 80), background: '#F97316', borderRadius: 3 }} />
+                              <div style={{ height: 6, width: Math.min((((currentMesures as any)[m.key] || 0) / 120) * 80, 80), background: '#C9A227', borderRadius: 3 }} />
                               <span style={{ fontSize: 15, fontWeight: 700, color: '#1a1a1a', minWidth: 40, textAlign: 'right' }}>{(currentMesures as any)[m.key] ?? '—'} cm</span>
                             </div>
                           </div>
@@ -238,7 +238,7 @@ export default function Mesures() {
                     <div style={{ fontSize: 48, marginBottom: 16 }}>📏</div>
                     <div style={{ fontSize: 16, fontWeight: 600, color: '#1a1a1a', marginBottom: 8 }}>Aucune mesure enregistrée</div>
                     <div style={{ fontSize: 13, color: '#888', marginBottom: 24 }}>Cliquez sur "Saisir les mesures" pour commencer</div>
-                    <button onClick={startEdit} style={{ background: '#F97316', color: 'white', border: 'none', padding: '12px 24px', borderRadius: 50, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+                    <button onClick={startEdit} style={{ background: '#C9A227', color: 'white', border: 'none', padding: '12px 24px', borderRadius: 50, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
                       + Saisir les mesures
                     </button>
                   </div>

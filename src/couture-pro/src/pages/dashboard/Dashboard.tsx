@@ -44,7 +44,7 @@ type CommandeUi = {
 }
 
 const statutConfig: Record<string, { label: string; bg: string; color: string }> = {
-  en_attente: { label: 'En attente', bg: '#FFF4ED', color: '#F97316' },
+  en_attente: { label: 'En attente', bg: '#FBF3DC', color: '#C9A227' },
   en_cours: { label: 'En cours', bg: '#EFF6FF', color: '#2563eb' },
   essayage: { label: 'Essayage', bg: '#F5F3FF', color: '#7c3aed' },
   pret: { label: 'Prêt', bg: '#ECFDF5', color: '#059669' },
@@ -292,7 +292,7 @@ export default function Dashboard() {
               left: -60,
               width: 240,
               height: 240,
-              background: 'radial-gradient(circle at 30% 30%, rgba(249,115,22,0.35), rgba(249,115,22,0) 60%)',
+              background: 'radial-gradient(circle at 30% 30%, rgba(201, 162, 39,0.35), rgba(201, 162, 39,0) 60%)',
               filter: 'blur(4px)',
               animation: 'bb-float-1 7.5s ease-in-out infinite',
             }}
@@ -352,7 +352,7 @@ export default function Dashboard() {
           <div style={{ marginBottom: 24 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <h3 style={{ fontSize: 16, fontWeight: 700 }}>Commandes récentes</h3>
-              <Link to="/commandes" style={{ fontSize: 13, color: '#F97316', textDecoration: 'none' }}>
+              <Link to="/commandes" style={{ fontSize: 13, color: '#C9A227', textDecoration: 'none' }}>
                 Voir tout →
               </Link>
             </div>
@@ -386,7 +386,7 @@ export default function Dashboard() {
                                 width: 32,
                                 height: 32,
                                 borderRadius: '50%',
-                                background: '#F97316',
+                                background: '#C9A227',
                                 color: 'white',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -447,7 +447,7 @@ export default function Dashboard() {
                     onClick={() => setPeriodKey(t.key)}
                     style={{
                       border: '1px solid #f0ede8',
-                      background: active ? '#F97316' : 'white',
+                      background: active ? '#C9A227' : 'white',
                       color: active ? 'white' : '#374151',
                       borderRadius: 999,
                       padding: '10px 14px',
@@ -519,7 +519,7 @@ export default function Dashboard() {
 
               const getBadgeBg = (n: number) => {
                 if (n > 70) return '#DCFCE7'
-                if (n >= 50) return '#FFF4ED'
+                if (n >= 50) return '#FBF3DC'
                 return '#FEE2E2'
               }
 
@@ -562,7 +562,7 @@ export default function Dashboard() {
 
                               {/* using AreaChart mini with Recharts, but keep simple line */}
                               <BarChart data={k.spark} margin={{ left: 0, right: 0, top: 0, bottom: 0 }}>
-                                <Bar dataKey="v" fill={idx === 0 ? '#22c55e' : idx === 1 ? '#3B82F6' : '#F97316'} radius={[999, 999, 0, 0]} opacity={0.5} />
+                                <Bar dataKey="v" fill={idx === 0 ? '#22c55e' : idx === 1 ? '#3B82F6' : '#C9A227'} radius={[999, 999, 0, 0]} opacity={0.5} />
                               </BarChart>
                             </ResponsiveContainer>
                           </div>
@@ -614,7 +614,7 @@ export default function Dashboard() {
                           <Area dataKey="recettes" yAxisId="left" type="monotone" stroke="#22c55e" fill="url(#recettesGradient)" />
 
                           {/* Dotted line (orange) */}
-                          <Line dataKey="reste" yAxisId="left" type="monotone" stroke="#F97316" strokeWidth={3} strokeDasharray="6 6" dot={{ r: 3, fill: '#F97316' }} />
+                          <Line dataKey="reste" yAxisId="left" type="monotone" stroke="#C9A227" strokeWidth={3} strokeDasharray="6 6" dot={{ r: 3, fill: '#C9A227' }} />
 
                           {/* Bars transparent (commands) */}
                           <Bar dataKey="commandes" yAxisId="right" fill="#3B82F6" opacity={0.3} radius={[4, 4, 0, 0]} />
@@ -648,8 +648,8 @@ export default function Dashboard() {
                           <Bar dataKey="livrees" name="Livrées" fill="#1d4ed8" radius={[4, 4, 0, 0]} >
                             <LabelList dataKey="livrees" position="top" fill="#1d4ed8" style={{ fontSize: 12, fontWeight: 800 }} />
                           </Bar>
-                          <Bar dataKey="enCours" name="En cours" fill="#F97316" radius={[4, 4, 0, 0]} >
-                            <LabelList dataKey="enCours" position="top" fill="#F97316" style={{ fontSize: 12, fontWeight: 800 }} />
+                          <Bar dataKey="enCours" name="En cours" fill="#C9A227" radius={[4, 4, 0, 0]} >
+                            <LabelList dataKey="enCours" position="top" fill="#C9A227" style={{ fontSize: 12, fontWeight: 800 }} />
                           </Bar>
                           <Bar dataKey="enRetard" name="En retard / impayées" fill="#EF4444" radius={[4, 4, 0, 0]} >
                             <LabelList dataKey="enRetard" position="top" fill="#EF4444" style={{ fontSize: 12, fontWeight: 800 }} />

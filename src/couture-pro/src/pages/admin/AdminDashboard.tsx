@@ -38,7 +38,7 @@ export default function AdminDashboard() {
               { label: 'Comptes actifs', val: stats.nbUtilisatricesActives, color: '#16a34a', icon: '✅' },
               { label: 'En essai', val: stats.nbUtilisatricesEssai, color: '#2563eb', icon: '🕐' },
               { label: 'Suspendus/Expirés', val: stats.nbUtilisatricesSuspendues + stats.nbUtilisatricesExpirees, color: '#ef4444', icon: '⛔' },
-              { label: 'Revenus estimés / mois', val: `${stats.revenusEstimesMensuel.toLocaleString()} FCFA`, color: '#F97316', icon: '💰' },
+              { label: 'Revenus estimés / mois', val: `${stats.revenusEstimesMensuel.toLocaleString()} FCFA`, color: '#C9A227', icon: '💰' },
               {
                 label: 'Taux actif',
                 val: stats.nbUtilisatricesTotal > 0

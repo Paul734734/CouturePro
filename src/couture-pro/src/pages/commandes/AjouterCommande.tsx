@@ -170,12 +170,12 @@ export default function AjouterCommande() {
           </Champ>
           {clienteSelectionnee && (
             <div style={{
-              background: '#FFF7ED', border: '1px solid #fed7aa', borderRadius: 10,
+              background: '#FCF6E0', border: '1px solid #e8d28c', borderRadius: 10,
               padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10,
             }}>
               <div style={{
                 width: 36, height: 36, borderRadius: '50%',
-                background: '#F97316', color: '#fff',
+                background: '#C9A227', color: '#fff',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontWeight: 700, fontSize: 15, flexShrink: 0,
               }}>
@@ -225,7 +225,7 @@ export default function AjouterCommande() {
                     alt="Modèle"
                     style={{ maxHeight: 200, borderRadius: 8, maxWidth: '100%', objectFit: 'cover' }}
                   />
-                  <p style={{ color: '#F97316', fontSize: 12, margin: '8px 0 0', fontWeight: 600 }}>
+                  <p style={{ color: '#C9A227', fontSize: 12, margin: '8px 0 0', fontWeight: 600 }}>
                     Cliquer pour changer
                   </p>
                 </div>
@@ -264,15 +264,15 @@ export default function AjouterCommande() {
           </Champ>
           {Number(form.prixTotal) > 0 && (
             <div style={{
-              background: reste > 0 ? '#FFF7ED' : '#f0fdf4',
-              border: `1px solid ${reste > 0 ? '#fed7aa' : '#bbf7d0'}`,
+              background: reste > 0 ? '#FCF6E0' : '#f0fdf4',
+              border: `1px solid ${reste > 0 ? '#e8d28c' : '#bbf7d0'}`,
               borderRadius: 10, padding: '12px 16px',
               display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(90px, 1fr))', gap: 8,
             }}>
               {[
                 { label: 'Total', val: `${Number(form.prixTotal).toLocaleString()}`, color: '#1a1a1a' },
                 { label: 'Avance', val: `${Number(form.avancePaye || 0).toLocaleString()}`, color: '#16a34a' },
-                { label: 'Reste', val: `${reste.toLocaleString()}`, color: reste > 0 ? '#F97316' : '#16a34a' },
+                { label: 'Reste', val: `${reste.toLocaleString()}`, color: reste > 0 ? '#C9A227' : '#16a34a' },
               ].map((s) => (
                 <div key={s.label} style={{ textAlign: 'center' }}>
                   <div style={{ fontSize: 15, fontWeight: 700, color: s.color }}>{s.val}</div>
@@ -332,7 +332,7 @@ export default function AjouterCommande() {
                   style={{
                     padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600,
                     border: form.statut === s.value ? 'none' : '1px solid #e5e5e5',
-                    background: form.statut === s.value ? '#F97316' : '#fff',
+                    background: form.statut === s.value ? '#C9A227' : '#fff',
                     color: form.statut === s.value ? '#fff' : '#555',
                     cursor: 'pointer', transition: 'all 0.15s',
                   }}
@@ -368,7 +368,7 @@ export default function AjouterCommande() {
             disabled={loading}
             style={{
               flex: 2, padding: '14px', borderRadius: 12, border: 'none',
-              background: loading ? '#fbd0b0' : '#F97316', color: '#fff',
+              background: loading ? '#eeddb0' : '#C9A227', color: '#fff',
               fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', fontSize: 15,
             }}
           >
@@ -386,7 +386,7 @@ function Section({ titre, children }: { titre: string; children: ReactNode }) {
       background: '#fff', border: '1px solid #f0f0f0', borderRadius: 14,
       padding: '20px 20px', marginBottom: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
     }}>
-      <h3 style={{ fontSize: 13, fontWeight: 700, color: '#F97316', margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+      <h3 style={{ fontSize: 13, fontWeight: 700, color: '#C9A227', margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: 0.5 }}>
         {titre}
       </h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>{children}</div>

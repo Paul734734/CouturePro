@@ -14,7 +14,7 @@ const utilisatrices = [
     commandes: 28,
     dateInscription: "1 mars 2026",
     initiale: "A",
-    couleur: "bg-orange-100 text-orange-600",
+    couleur: "bg-gold-100 text-gold-600",
   },
   {
     id: 2,
@@ -146,7 +146,7 @@ export default function Admin() {
             <button
               key={item.label}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors text-left ${
-                item.active ? "bg-orange-500 text-white" : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                item.active ? "bg-gold-500 text-white" : "text-gray-400 hover:bg-gray-800 hover:text-white"
               }`}
             >
               <span>{item.icon}</span>
@@ -157,7 +157,7 @@ export default function Admin() {
 
         <div className="px-4 py-4 border-t border-gray-800">
           <div className="flex items-center gap-3 px-3 py-2">
-            <div className="w-9 h-9 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold text-sm">AD</div>
+            <div className="w-9 h-9 rounded-full bg-gold-500 flex items-center justify-center text-white font-bold text-sm">AD</div>
             <div>
               <p className="text-sm font-semibold text-white">Administrateur</p>
               <p className="text-xs text-gray-400">admin@couturepro.app</p>
@@ -202,7 +202,7 @@ export default function Admin() {
             </div>
             <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
               <p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1">Revenu mensuel</p>
-              <p className="text-3xl font-bold text-orange-500">{stats.revenuMensuel.toLocaleString("fr-FR")}</p>
+              <p className="text-3xl font-bold text-gold-500">{stats.revenuMensuel.toLocaleString("fr-FR")}</p>
               <p className="text-xs text-gray-400 mt-1">FCFA estimé</p>
             </div>
           </div>
@@ -230,7 +230,7 @@ export default function Admin() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Rechercher par nom, email ou ville..."
-              className="w-full bg-white border border-gray-200 rounded-xl pl-9 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300 shadow-sm"
+              className="w-full bg-white border border-gray-200 rounded-xl pl-9 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-300 shadow-sm"
             />
           </div>
 
@@ -242,8 +242,8 @@ export default function Admin() {
                 onClick={() => setFiltreStatut(f)}
                 className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium border transition-all ${
                   filtreStatut === f
-                    ? "bg-orange-500 text-white border-orange-500"
-                    : "bg-white text-gray-600 border-gray-200 hover:border-orange-200"
+                    ? "bg-gold-500 text-white border-gold-500"
+                    : "bg-white text-gray-600 border-gray-200 hover:border-gold-200"
                 }`}
               >
                 {f}
@@ -314,7 +314,7 @@ export default function Admin() {
                       ✅ Réactiver
                     </button>
                   ) : (
-                    <button className="flex-1 py-2.5 text-xs text-orange-600 font-semibold hover:bg-orange-50 flex items-center justify-center gap-1.5 transition-colors">
+                    <button className="flex-1 py-2.5 text-xs text-gold-600 font-semibold hover:bg-gold-50 flex items-center justify-center gap-1.5 transition-colors">
                       🔄 Renouveler
                     </button>
                   )}
@@ -343,7 +343,7 @@ export default function Admin() {
                   <p className="text-xs text-gray-400">Facturation tous les 3 mois</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <input type="number" defaultValue={15000} className="w-24 border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-right font-medium focus:outline-none focus:ring-2 focus:ring-orange-300" />
+                  <input type="number" defaultValue={15000} className="w-24 border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-right font-medium focus:outline-none focus:ring-2 focus:ring-gold-300" />
                   <span className="text-xs text-gray-400">FCFA</span>
                 </div>
               </div>
@@ -353,7 +353,7 @@ export default function Admin() {
                   <p className="text-xs text-gray-400">Jours après expiration avant blocage</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <input type="number" defaultValue={7} className="w-16 border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-right font-medium focus:outline-none focus:ring-2 focus:ring-orange-300" />
+                  <input type="number" defaultValue={7} className="w-16 border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-right font-medium focus:outline-none focus:ring-2 focus:ring-gold-300" />
                   <span className="text-xs text-gray-400">jours</span>
                 </div>
               </div>
@@ -363,12 +363,12 @@ export default function Admin() {
                   <p className="text-xs text-gray-400">Jours d'essai pour les nouveaux comptes</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <input type="number" defaultValue={30} className="w-16 border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-right font-medium focus:outline-none focus:ring-2 focus:ring-orange-300" />
+                  <input type="number" defaultValue={30} className="w-16 border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-right font-medium focus:outline-none focus:ring-2 focus:ring-gold-300" />
                   <span className="text-xs text-gray-400">jours</span>
                 </div>
               </div>
             </div>
-            <button className="mt-4 w-full bg-orange-500 text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-orange-600 transition-colors">
+            <button className="mt-4 w-full bg-gold-500 text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-gold-600 transition-colors">
               Enregistrer les paramètres
             </button>
           </div>
@@ -417,8 +417,8 @@ export default function Admin() {
             <div className="space-y-2">
               <h3 className="text-sm font-semibold text-gray-700">Activité</h3>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-orange-50 rounded-xl p-3 text-center">
-                  <p className="text-2xl font-bold text-orange-600">{selected.clientes}</p>
+                <div className="bg-gold-50 rounded-xl p-3 text-center">
+                  <p className="text-2xl font-bold text-gold-600">{selected.clientes}</p>
                   <p className="text-xs text-gray-500">Clientes</p>
                 </div>
                 <div className="bg-blue-50 rounded-xl p-3 text-center">
@@ -439,7 +439,7 @@ export default function Admin() {
                   ✅ Réactiver
                 </button>
               )}
-              <button className="py-2.5 text-sm text-orange-600 bg-orange-500 text-white rounded-xl font-semibold hover:bg-orange-600 transition-colors">
+              <button className="py-2.5 text-sm text-gold-600 bg-gold-500 text-white rounded-xl font-semibold hover:bg-gold-600 transition-colors">
                 🔄 Renouveler
               </button>
             </div>

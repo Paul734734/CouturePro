@@ -50,7 +50,7 @@ export default function ResetPassword() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #FFF4ED 0%, #FAFAF8 60%, #FFF4ED 100%)',
+      background: 'linear-gradient(135deg, #FBF3DC 0%, #FAFAF8 60%, #FBF3DC 100%)',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       padding: 20, fontFamily: 'Inter, sans-serif',
     }}>
@@ -66,7 +66,7 @@ export default function ResetPassword() {
               Votre mot de passe a été mis à jour avec succès.
             </p>
             <Link to="/login" style={{
-              display: 'block', textAlign: 'center', background: '#F97316', color: 'white',
+              display: 'block', textAlign: 'center', background: '#C9A227', color: 'white',
               padding: '13px', borderRadius: 12, fontWeight: 700, textDecoration: 'none',
             }}>
               Se connecter
@@ -130,7 +130,7 @@ export default function ResetPassword() {
               onClick={handleSubmit}
               disabled={isLoading}
               style={{
-                width: '100%', background: isLoading ? '#fbbf80' : '#F97316', color: 'white',
+                width: '100%', background: isLoading ? '#e3cb8e' : '#C9A227', color: 'white',
                 border: 'none', padding: '14px', borderRadius: 12,
                 fontSize: 15, fontWeight: 700, cursor: isLoading ? 'default' : 'pointer', marginBottom: 16,
               }}>
@@ -138,7 +138,7 @@ export default function ResetPassword() {
             </button>
 
             <p style={{ textAlign: 'center', fontSize: 14, color: '#888', margin: 0 }}>
-              <Link to="/login" style={{ color: '#F97316', fontWeight: 700, textDecoration: 'none' }}>
+              <Link to="/login" style={{ color: '#C9A227', fontWeight: 700, textDecoration: 'none' }}>
                 Retour à la connexion
               </Link>
             </p>

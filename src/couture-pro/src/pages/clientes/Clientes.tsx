@@ -58,7 +58,7 @@ export default function Clientes() {
           />
           <button
             onClick={() => setShowForm(true)}
-            style={{ background: '#F97316', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 20px', fontWeight: 600, cursor: 'pointer' }}
+            style={{ background: '#C9A227', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 20px', fontWeight: 600, cursor: 'pointer' }}
           >
             + Nouvelle cliente
           </button>
@@ -79,7 +79,7 @@ export default function Clientes() {
               <div style={{ fontWeight: 700, marginBottom: 4 }}>{c.nom}</div>
               <div style={{ color: '#888', fontSize: 13 }}>{c.telephone}</div>
               <div style={{ color: '#888', fontSize: 13 }}>{c.ville}{c.quartier ? ` · ${c.quartier}` : ''}</div>
-              {c.stylePreference && <div style={{ color: '#F97316', fontSize: 12, marginTop: 6 }}>{c.stylePreference}</div>}
+              {c.stylePreference && <div style={{ color: '#C9A227', fontSize: 12, marginTop: 6 }}>{c.stylePreference}</div>}
               <div style={{ color: '#bbb', fontSize: 11, marginTop: 8 }}>Ajoutée le {formatDate(c.dateAjout)}</div>
             </div>
           ))}
@@ -145,7 +145,7 @@ export default function Clientes() {
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
                 <button onClick={() => setShowForm(false)} style={{ flex: 1, padding: 10, borderRadius: 10, border: '1px solid #e5e5e5', background: '#fff', cursor: 'pointer' }}>Annuler</button>
-                <button onClick={handleSubmit} style={{ flex: 1, padding: 10, borderRadius: 10, border: 'none', background: '#F97316', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Enregistrer</button>
+                <button onClick={handleSubmit} style={{ flex: 1, padding: 10, borderRadius: 10, border: 'none', background: '#C9A227', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Enregistrer</button>
               </div>
             </div>
           </div>

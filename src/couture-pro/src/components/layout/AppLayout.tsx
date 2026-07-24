@@ -81,12 +81,12 @@ export default function AppLayout({
                   key={item.href}
                   to={item.href}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                    active ? 'bg-orange-50 text-orange-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    active ? 'bg-gold-50 text-gold-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
                   <span>{item.icon}</span>
                   <span>{item.label}</span>
-                  {active && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-orange-500" />}
+                  {active && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-gold-500" />}
                 </Link>
               )
             })}
@@ -94,7 +94,7 @@ export default function AppLayout({
 
           <div className="px-4 py-4 border-t border-gray-100">
             <div className="flex items-center gap-3 px-3 py-2">
-              <div className="w-9 h-9 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold text-sm">{initiale}</div>
+              <div className="w-9 h-9 rounded-full bg-gold-500 flex items-center justify-center text-white font-bold text-sm">{initiale}</div>
               <div>
                 <p className="text-sm font-semibold text-gray-800">{nomAffiche}</p>
                 <p className="text-xs text-gray-400">Couturière</p>
@@ -119,7 +119,7 @@ export default function AppLayout({
           {actionLabel && onAction ? (
             <button
               onClick={onAction}
-              className="inline-flex items-center gap-2 bg-orange-500 text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-orange-600 transition-colors shrink-0"
+              className="inline-flex items-center gap-2 bg-gold-500 text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gold-600 transition-colors shrink-0"
             >
               <span className="text-lg leading-none">+</span>
               {actionLabel}
@@ -180,7 +180,7 @@ export default function AppLayout({
               key={item.href}
               to={item.href}
               className={`flex flex-col items-center gap-1 px-2 py-1 rounded-xl text-[11px] font-medium ${
-                active ? 'text-orange-500' : 'text-gray-500'
+                active ? 'text-gold-500' : 'text-gray-500'
               }`}
             >
               <span className="text-xl">{item.icon}</span>
@@ -193,7 +193,7 @@ export default function AppLayout({
         <button
           onClick={() => setMenuPlusOuvert(true)}
           className={`flex flex-col items-center gap-1 px-2 py-1 rounded-xl text-[11px] font-medium ${
-            plusNavItems.some((i) => i.href === location.pathname) ? 'text-orange-500' : 'text-gray-500'
+            plusNavItems.some((i) => i.href === location.pathname) ? 'text-gold-500' : 'text-gray-500'
           }`}
         >
           <span className="text-xl">☰</span>

@@ -28,7 +28,7 @@ const inputStyle: CSSProperties = {
 };
 
 const btnPrimary: CSSProperties = {
-  background: "#F97316",
+  background: "#C9A227",
   color: "white",
   border: "none",
   borderRadius: 10,
@@ -164,7 +164,7 @@ function CommandeDetail() {
             </div>
             <div>
               <div style={label}>Reste à payer</div>
-              <div style={{ ...value, color: resteAPayer > 0 ? "#F97316" : "#16a34a" }}>{resteAPayer.toLocaleString()} FCFA</div>
+              <div style={{ ...value, color: resteAPayer > 0 ? "#C9A227" : "#16a34a" }}>{resteAPayer.toLocaleString()} FCFA</div>
             </div>
           </div>
         </div>

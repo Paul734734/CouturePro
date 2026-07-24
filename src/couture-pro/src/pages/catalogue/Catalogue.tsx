@@ -115,7 +115,7 @@ export default function Catalogue() {
           />
           <button
             onClick={() => { resetForm(); setShowForm(true) }}
-            style={{ background: '#F97316', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 20px', fontWeight: 600, cursor: 'pointer' }}
+            style={{ background: '#C9A227', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 20px', fontWeight: 600, cursor: 'pointer' }}
           >
             + Nouveau modèle
           </button>
@@ -140,7 +140,7 @@ export default function Catalogue() {
               <div style={{ padding: 14 }}>
                 <div style={{ fontWeight: 700 }}>{item.nom}</div>
                 {item.categorie && <div style={{ color: '#888', fontSize: 12 }}>{item.categorie}</div>}
-                {item.prixIndicatif != null && <div style={{ color: '#F97316', fontWeight: 600, fontSize: 14, marginTop: 6 }}>{item.prixIndicatif.toLocaleString()} FCFA</div>}
+                {item.prixIndicatif != null && <div style={{ color: '#C9A227', fontWeight: 600, fontSize: 14, marginTop: 6 }}>{item.prixIndicatif.toLocaleString()} FCFA</div>}
                 {item.tempsConceptionEstime != null && <div style={{ color: '#bbb', fontSize: 11, marginTop: 4 }}>{item.tempsConceptionEstime} jour(s) de conception</div>}
                 {!item.actif && <div style={{ color: '#bbb', fontSize: 11, marginTop: 4 }}>Archivé</div>}
                 <button
@@ -215,7 +215,7 @@ export default function Catalogue() {
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
                 <button onClick={() => { setShowForm(false); resetForm() }} style={{ flex: 1, padding: 10, borderRadius: 10, border: '1px solid #e5e5e5', background: '#fff', cursor: 'pointer' }}>Annuler</button>
-                <button onClick={handleSubmit} style={{ flex: 1, padding: 10, borderRadius: 10, border: 'none', background: '#F97316', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Enregistrer</button>
+                <button onClick={handleSubmit} style={{ flex: 1, padding: 10, borderRadius: 10, border: 'none', background: '#C9A227', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Enregistrer</button>
               </div>
             </div>
           </div>

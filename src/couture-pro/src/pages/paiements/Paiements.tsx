@@ -58,9 +58,9 @@ function Paiements() {
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <div style={{
-                    width: 42, height: 42, borderRadius: "50%", background: "#FFF4ED",
+                    width: 42, height: 42, borderRadius: "50%", background: "#FBF3DC",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 16, fontWeight: 700, color: "#F97316", flexShrink: 0,
+                    fontSize: 16, fontWeight: 700, color: "#C9A227", flexShrink: 0,
                   }}>
                     {p.clienteNom?.charAt(0) || "?"}
                   </div>
@@ -79,7 +79,7 @@ function Paiements() {
                 </div>
                 <span style={{
                   fontSize: 12, padding: "5px 14px", borderRadius: 50, fontWeight: 600,
-                  background: "#FFF4ED", color: "#F97316", whiteSpace: "nowrap",
+                  background: "#FBF3DC", color: "#C9A227", whiteSpace: "nowrap",
                 }}>
                   {p.type}
                 </span>

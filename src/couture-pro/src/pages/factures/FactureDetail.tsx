@@ -23,7 +23,7 @@ export default function FactureDetail() {
           <button
             onClick={() => navigate('/factures')}
             style={{
-              background: '#F97316', color: '#fff', border: 'none',
+              background: '#C9A227', color: '#fff', border: 'none',
               borderRadius: 12, padding: '12px 28px', fontWeight: 600, cursor: 'pointer',
             }}
           >
@@ -101,7 +101,7 @@ export default function FactureDetail() {
 
   const statutColor = {
     payee: { bg: '#dcfce7', color: '#16a34a', label: 'Payée' },
-    partielle: { bg: '#fff7ed', color: '#F97316', label: 'Partielle' },
+    partielle: { bg: '#fcf6e0', color: '#C9A227', label: 'Partielle' },
     impayee: { bg: '#fee2e2', color: '#ef4444', label: 'Impayée' },
   }[facture.statut] || { bg: '#f3f4f6', color: '#555', label: facture.statut }
 
@@ -133,7 +133,7 @@ export default function FactureDetail() {
               onClick={handleTelecharger}
               style={{
                 flex: 1, padding: '12px', borderRadius: 10, border: 'none',
-                background: '#FFF7ED', color: '#F97316', fontWeight: 600, cursor: 'pointer', fontSize: 13,
+                background: '#FCF6E0', color: '#C9A227', fontWeight: 600, cursor: 'pointer', fontSize: 13,
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               }}
             >
@@ -143,7 +143,7 @@ export default function FactureDetail() {
               onClick={handlePartager}
               style={{
                 flex: 1, padding: '12px', borderRadius: 10, border: 'none',
-                background: '#F97316', color: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: 13,
+                background: '#C9A227', color: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: 13,
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               }}
             >
@@ -161,7 +161,7 @@ export default function FactureDetail() {
           data-print
         >
           <div style={{
-            background: 'linear-gradient(135deg, #F97316, #fb923c)',
+            background: 'linear-gradient(135deg, #C9A227, #d9bb5c)',
             padding: '28px 28px 24px', color: '#fff',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
@@ -193,13 +193,13 @@ export default function FactureDetail() {
           <div style={{ padding: '28px' }}>
             <div className="cp-grid-2" style={{ gap: 20, marginBottom: 28 }}>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: '#F97316', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: '#C9A227', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
                   Facturé à
                 </div>
                 <div style={{ fontWeight: 700, fontSize: 16, color: '#1a1a1a', marginBottom: 4 }}>{facture.clienteNom}</div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: '#F97316', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: '#C9A227', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
                   Dates
                 </div>
                 <div style={{ fontSize: 13, color: '#555', marginBottom: 2 }}>
@@ -259,10 +259,10 @@ export default function FactureDetail() {
                 ))}
                 <div style={{
                   display: 'flex', justifyContent: 'space-between',
-                  padding: '12px 0', borderTop: '2px solid #F97316', marginTop: 4,
+                  padding: '12px 0', borderTop: '2px solid #C9A227', marginTop: 4,
                 }}>
                   <span style={{ fontSize: 15, fontWeight: 700, color: '#1a1a1a' }}>Reste à payer</span>
-                  <span style={{ fontSize: 16, fontWeight: 800, color: facture.montantReste > 0 ? '#F97316' : '#16a34a' }}>
+                  <span style={{ fontSize: 16, fontWeight: 800, color: facture.montantReste > 0 ? '#C9A227' : '#16a34a' }}>
                     {Number(facture.montantReste).toLocaleString()} FCFA
                   </span>
                 </div>

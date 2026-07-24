@@ -68,7 +68,7 @@ export function FeatureGate({ feature, compact = false }: FeatureGateProps) {
   if (compact) {
     return (
       <div style={{
-        background: '#FFF4ED', border: '1.5px solid #FED7AA',
+        background: '#FBF3DC', border: '1.5px solid #E8D28C',
         borderRadius: 14, padding: '16px 20px',
         display: 'flex', alignItems: 'center', gap: 16,
       }}>
@@ -77,7 +77,7 @@ export function FeatureGate({ feature, compact = false }: FeatureGateProps) {
           <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 2 }}>{titre}</div>
           <div style={{ fontSize: 13, color: '#666', marginBottom: 8 }}>{desc}</div>
           <Link to="/profil" style={{
-            display: 'inline-block', background: '#F97316', color: 'white',
+            display: 'inline-block', background: '#C9A227', color: 'white',
             padding: '7px 16px', borderRadius: 50, fontSize: 12, fontWeight: 700,
             textDecoration: 'none',
           }}>
@@ -98,16 +98,16 @@ export function FeatureGate({ feature, compact = false }: FeatureGateProps) {
       {/* Icône verrou animée */}
       <div style={{
         width: 80, height: 80, borderRadius: '50%',
-        background: '#FFF4ED', border: '2px solid #FED7AA',
+        background: '#FBF3DC', border: '2px solid #E8D28C',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: 36, marginBottom: 24,
-        boxShadow: '0 8px 24px rgba(249,115,22,0.15)',
+        boxShadow: '0 8px 24px rgba(201, 162, 39,0.15)',
       }}>🔒</div>
 
       <div style={{
-        display: 'inline-block', background: '#FFF4ED', color: '#F97316',
+        display: 'inline-block', background: '#FBF3DC', color: '#C9A227',
         padding: '4px 14px', borderRadius: 50, fontSize: 11, fontWeight: 700,
-        marginBottom: 14, border: '1px solid #FED7AA', letterSpacing: 0.5,
+        marginBottom: 14, border: '1px solid #E8D28C', letterSpacing: 0.5,
       }}>
         FORFAIT {forfaitMin.toUpperCase()} REQUIS
       </div>
@@ -149,7 +149,7 @@ export function FeatureGate({ feature, compact = false }: FeatureGateProps) {
 
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
         <Link to="/profil" style={{
-          background: '#F97316', color: 'white',
+          background: '#C9A227', color: 'white',
           padding: '13px 28px', borderRadius: 50, fontSize: 14, fontWeight: 700,
           textDecoration: 'none',
         }}>
@@ -179,7 +179,7 @@ export function BanniereEssai() {
 
   return (
     <div style={{
-      background: 'linear-gradient(90deg, #F97316, #FB923C)',
+      background: 'linear-gradient(90deg, #C9A227, #D9BB5C)',
       color: 'white', padding: '10px 20px',
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       fontSize: 13, fontWeight: 500,
@@ -188,7 +188,7 @@ export function BanniereEssai() {
         🎁 Essai gratuit — <strong>{joursRestants} jour{joursRestants > 1 ? 's' : ''} restant{joursRestants > 1 ? 's' : ''}</strong> · Toutes les fonctionnalités débloquées
       </span>
       <Link to="/profil" style={{
-        background: 'white', color: '#F97316',
+        background: 'white', color: '#C9A227',
         padding: '5px 14px', borderRadius: 50,
         fontSize: 12, fontWeight: 700, textDecoration: 'none',
         whiteSpace: 'nowrap',

@@ -132,7 +132,7 @@ export const statutCommandeStyle: Record<StatutCommande, string> = {
   en_cours: "bg-blue-100 text-blue-700",
   essayage: "bg-purple-100 text-purple-700",
   pret: "bg-green-100 text-green-700",
-  livre: "bg-orange-100 text-orange-700",
+  livre: "bg-gold-100 text-gold-700",
   annule: "bg-red-100 text-red-700",
 };
 
@@ -144,7 +144,7 @@ export const statutPaiementLabel: Record<StatutPaiement, string> = {
 
 export const statutPaiementStyle: Record<StatutPaiement, string> = {
   solde: "bg-green-100 text-green-700",
-  partiel: "bg-orange-100 text-orange-700",
+  partiel: "bg-gold-100 text-gold-700",
   impaye: "bg-red-100 text-red-700",
 };
 
@@ -185,7 +185,7 @@ export function filtrerParRecherche<T>(
 // ─────────────────────────────────────────
 
 const couleursAvatar = [
-  "bg-orange-100 text-orange-600",
+  "bg-gold-100 text-gold-600",
   "bg-blue-100 text-blue-600",
   "bg-green-100 text-green-600",
   "bg-purple-100 text-purple-600",

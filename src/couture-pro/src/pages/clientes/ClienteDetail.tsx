@@ -59,7 +59,7 @@ export default function ClienteDetail() {
           <button
             onClick={() => navigate('/clientes')}
             style={{
-              background: '#F97316',
+              background: '#C9A227',
               color: '#fff',
               border: 'none',
               borderRadius: 12,
@@ -105,7 +105,7 @@ export default function ClienteDetail() {
                 width: 72,
                 height: 72,
                 borderRadius: '50%',
-                background: 'linear-gradient(135deg, #F97316, #fb923c)',
+                background: 'linear-gradient(135deg, #C9A227, #d9bb5c)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -130,9 +130,9 @@ export default function ClienteDetail() {
                 {cliente.stylePreference && (
                   <span
                     style={{
-                      background: '#FFF7ED',
-                      color: '#F97316',
-                      border: '1px solid #fed7aa',
+                      background: '#FCF6E0',
+                      color: '#C9A227',
+                      border: '1px solid #e8d28c',
                       borderRadius: 20,
                       padding: '3px 12px',
                       fontSize: 12,
@@ -162,7 +162,7 @@ export default function ClienteDetail() {
               <Link
                 to={`/clientes/${cliente.id}/modifier`}
                 style={{
-                  background: '#F97316',
+                  background: '#C9A227',
                   color: '#fff',
                   textDecoration: 'none',
                   borderRadius: 10,
@@ -198,7 +198,7 @@ export default function ClienteDetail() {
             {[
               { label: 'Total commandé', value: `${totalCommandes.toLocaleString()} FCFA`, color: '#1a1a1a' },
               { label: 'Total payé', value: `${totalPaye.toLocaleString()} FCFA`, color: '#16a34a' },
-              { label: 'Reste à payer', value: `${totalReste.toLocaleString()} FCFA`, color: totalReste > 0 ? '#F97316' : '#16a34a' },
+              { label: 'Reste à payer', value: `${totalReste.toLocaleString()} FCFA`, color: totalReste > 0 ? '#C9A227' : '#16a34a' },
             ].map((stat) => (
               <div
                 key={stat.label}
@@ -238,7 +238,7 @@ export default function ClienteDetail() {
                 padding: '10px 8px',
                 borderRadius: 8,
                 border: 'none',
-                background: onglet === o ? '#F97316' : 'transparent',
+                background: onglet === o ? '#C9A227' : 'transparent',
                 color: onglet === o ? '#fff' : '#666',
                 fontWeight: onglet === o ? 700 : 500,
                 fontSize: 13,
@@ -294,7 +294,7 @@ export default function ClienteDetail() {
               <Link
                 to={`/commandes/ajouter?clienteId=${cliente.id}`}
                 style={{
-                  background: '#F97316',
+                  background: '#C9A227',
                   color: '#fff',
                   textDecoration: 'none',
                   borderRadius: 10,
@@ -312,8 +312,8 @@ export default function ClienteDetail() {
                 to={`/mesures/${cliente.id}`}
                 style={{
                   background: '#fff',
-                  color: '#F97316',
-                  border: '1px solid #F97316',
+                  color: '#C9A227',
+                  border: '1px solid #C9A227',
                   textDecoration: 'none',
                   borderRadius: 10,
                   padding: '11px 20px',
@@ -353,7 +353,7 @@ export default function ClienteDetail() {
                   <Link
                     to={`/mesures/${cliente.id}`}
                     style={{
-                      background: '#F97316',
+                      background: '#C9A227',
                       color: '#fff',
                       textDecoration: 'none',
                       borderRadius: 10,
@@ -425,7 +425,7 @@ export default function ClienteDetail() {
               <Link
                 to={`/commandes/ajouter?clienteId=${cliente.id}`}
                 style={{
-                  background: '#F97316',
+                  background: '#C9A227',
                   color: '#fff',
                   textDecoration: 'none',
                   borderRadius: 10,
@@ -488,7 +488,7 @@ export default function ClienteDetail() {
                           ✅ {Number(cmd.avancePaye).toLocaleString()} payé
                         </span>
                         {(cmd.prixTotal - cmd.avancePaye) > 0 && (
-                          <span style={{ fontSize: 13, color: '#F97316', fontWeight: 600 }}>
+                          <span style={{ fontSize: 13, color: '#C9A227', fontWeight: 600 }}>
                             ⚠️ {Number(cmd.prixTotal - cmd.avancePaye).toLocaleString()} reste
                           </span>
                         )}
@@ -512,7 +512,7 @@ export default function ClienteDetail() {
               <Link
                 to={`/factures?clienteId=${cliente.id}`}
                 style={{
-                  background: '#F97316',
+                  background: '#C9A227',
                   color: '#fff',
                   textDecoration: 'none',
                   borderRadius: 10,
@@ -563,8 +563,8 @@ export default function ClienteDetail() {
                               fontWeight: 600,
                               borderRadius: 20,
                               padding: '2px 10px',
-                              background: fac.statut === 'payee' ? '#dcfce7' : fac.statut === 'partielle' ? '#fff7ed' : '#fef2f2',
-                              color: fac.statut === 'payee' ? '#16a34a' : fac.statut === 'partielle' ? '#F97316' : '#ef4444',
+                              background: fac.statut === 'payee' ? '#dcfce7' : fac.statut === 'partielle' ? '#fcf6e0' : '#fef2f2',
+                              color: fac.statut === 'payee' ? '#16a34a' : fac.statut === 'partielle' ? '#C9A227' : '#ef4444',
                             }}
                           >
                             {fac.statut === 'payee' ? 'Payée' : fac.statut === 'partielle' ? 'Partielle' : 'Impayée'}
@@ -572,7 +572,7 @@ export default function ClienteDetail() {
                         </div>
                       </div>
                       {fac.montantReste > 0 && (
-                        <div style={{ fontSize: 13, color: '#F97316', marginTop: 8, fontWeight: 600 }}>
+                        <div style={{ fontSize: 13, color: '#C9A227', marginTop: 8, fontWeight: 600 }}>
                           Reste : {Number(fac.montantReste).toLocaleString()} FCFA
                         </div>
                       )}
@@ -671,7 +671,7 @@ function InfoCard({ titre, children }: { titre: string; children: React.ReactNod
         boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
       }}
     >
-      <h3 style={{ fontSize: 13, fontWeight: 700, color: '#F97316', marginBottom: 14, margin: '0 0 14px' }}>
+      <h3 style={{ fontSize: 13, fontWeight: 700, color: '#C9A227', marginBottom: 14, margin: '0 0 14px' }}>
         {titre}
       </h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>{children}</div>
@@ -717,7 +717,7 @@ function EmptyState({
       <Link
         to={lien}
         style={{
-          background: '#F97316',
+          background: '#C9A227',
           color: '#fff',
           textDecoration: 'none',
           borderRadius: 10,

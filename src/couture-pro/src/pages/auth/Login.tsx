@@ -55,7 +55,7 @@ export default function Login() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #FFF4ED 0%, #FAFAF8 60%, #FFF4ED 100%)',
+      background: 'linear-gradient(135deg, #FBF3DC 0%, #FAFAF8 60%, #FBF3DC 100%)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -132,14 +132,14 @@ export default function Login() {
         </div>
 
         <div style={{ textAlign: 'right', marginBottom: 24 }}>
-          <Link to="/forgot-password" style={{ fontSize: 13, color: '#F97316', textDecoration: 'none', fontWeight: 500 }}>Mot de passe oublié ?</Link>
+          <Link to="/forgot-password" style={{ fontSize: 13, color: '#C9A227', textDecoration: 'none', fontWeight: 500 }}>Mot de passe oublié ?</Link>
         </div>
 
         <button
           onClick={handleLogin}
           disabled={isLoading}
           style={{
-            width: '100%', background: isLoading ? '#fbbf80' : '#F97316', color: 'white',
+            width: '100%', background: isLoading ? '#e3cb8e' : '#C9A227', color: 'white',
             border: 'none', padding: '14px', borderRadius: 12,
             fontSize: 15, fontWeight: 700, cursor: isLoading ? 'default' : 'pointer', marginBottom: 16
           }}>
@@ -148,7 +148,7 @@ export default function Login() {
 
         <p style={{ textAlign: 'center', fontSize: 14, color: '#888', margin: 0 }}>
           Pas encore de compte ?{' '}
-          <Link to="/register" style={{ color: '#F97316', fontWeight: 700, textDecoration: 'none' }}>S'inscrire gratuitement</Link>
+          <Link to="/register" style={{ color: '#C9A227', fontWeight: 700, textDecoration: 'none' }}>S'inscrire gratuitement</Link>
         </p>
       </div>
 

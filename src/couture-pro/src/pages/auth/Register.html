@@ -17,10 +17,10 @@ export default function Register() {
   const label = { fontSize: 13, fontWeight: 600 as const, color: '#374151', display: 'block' as const, marginBottom: 5 }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #FFF4ED 0%, #FAFAF8 60%, #FFF4ED 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'Inter, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #FBF3DC 0%, #FAFAF8 60%, #FBF3DC 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'Inter, sans-serif' }}>
 
       <div style={{ textAlign: 'center', marginBottom: 28 }}>
-        <div style={{ width: 52, height: 52, background: '#F97316', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, margin: '0 auto 10px' }}>✂</div>
+        <div style={{ width: 52, height: 52, background: '#C9A227', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, margin: '0 auto 10px' }}>✂</div>
         <div style={{ fontSize: 20, fontWeight: 800 }}>Couture Pro</div>
         <div style={{ fontSize: 12, color: '#888', marginTop: 3 }}>Créez votre espace atelier gratuitement</div>
       </div>
@@ -51,13 +51,13 @@ export default function Register() {
           ))}
         </div>
 
-        <button onClick={handleRegister} style={{ width: '100%', background: '#F97316', color: 'white', border: 'none', padding: '14px', borderRadius: 12, fontSize: 15, fontWeight: 700, cursor: 'pointer', marginTop: 20, marginBottom: 16 }}>
+        <button onClick={handleRegister} style={{ width: '100%', background: '#C9A227', color: 'white', border: 'none', padding: '14px', borderRadius: 12, fontSize: 15, fontWeight: 700, cursor: 'pointer', marginTop: 20, marginBottom: 16 }}>
           Créer mon compte gratuitement →
         </button>
 
         <p style={{ textAlign: 'center', fontSize: 13, color: '#888', margin: 0 }}>
           Déjà un compte ?{' '}
-          <Link to="/login" style={{ color: '#F97316', fontWeight: 700, textDecoration: 'none' }}>Se connecter</Link>
+          <Link to="/login" style={{ color: '#C9A227', fontWeight: 700, textDecoration: 'none' }}>Se connecter</Link>
         </p>
       </div>
 

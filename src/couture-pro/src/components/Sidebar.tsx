@@ -23,7 +23,7 @@ export default function Sidebar() {
   const initiale = nomAffiche.charAt(0).toUpperCase()
 
   const FORFAIT_LABEL: Record<string, { label: string; couleur: string; bg: string }> = {
-    starter: { label: 'Starter', couleur: '#F97316', bg: '#FFF4ED' },
+    starter: { label: 'Starter', couleur: '#C9A227', bg: '#FBF3DC' },
     pro:     { label: 'Pro',     couleur: '#7C3AED', bg: '#F5F3FF' },
     elite:   { label: 'Elite',   couleur: '#0F172A', bg: '#F1F5F9' },
   }
@@ -61,8 +61,8 @@ export default function Sidebar() {
                 display: 'flex', alignItems: 'center', gap: 10,
                 padding: '10px 12px', borderRadius: 12, marginBottom: 2,
                 textDecoration: 'none',
-                background: isActive ? '#FFF4ED' : 'transparent',
-                color: isActive ? '#F97316' : isLocked ? '#ccc' : '#444',
+                background: isActive ? '#FBF3DC' : 'transparent',
+                color: isActive ? '#C9A227' : isLocked ? '#ccc' : '#444',
                 fontWeight: isActive ? 700 : 400,
                 fontSize: 14,
                 transition: 'background 0.15s',
@@ -77,7 +77,7 @@ export default function Sidebar() {
               {isActive && (
                 <div style={{
                   position: 'absolute', right: 12, width: 6, height: 6,
-                  borderRadius: '50%', background: '#F97316',
+                  borderRadius: '50%', background: '#C9A227',
                 }} />
               )}
 
@@ -86,7 +86,7 @@ export default function Sidebar() {
 
               {/* Icône verrou */}
               {isLocked && (
-                <span style={{ fontSize: 11, color: '#F97316', background: '#FFF4ED', padding: '2px 6px', borderRadius: 50, fontWeight: 700, flexShrink: 0 }}>
+                <span style={{ fontSize: 11, color: '#C9A227', background: '#FBF3DC', padding: '2px 6px', borderRadius: 50, fontWeight: 700, flexShrink: 0 }}>
                   🔒 Pro
                 </span>
               )}
@@ -99,7 +99,7 @@ export default function Sidebar() {
       {estEssai && (
         <div style={{
           margin: '0 12px 12px',
-          background: 'linear-gradient(135deg, #F97316, #FB923C)',
+          background: 'linear-gradient(135deg, #C9A227, #D9BB5C)',
           borderRadius: 14, padding: '14px',
           color: 'white',
         }}>
@@ -109,7 +109,7 @@ export default function Sidebar() {
           </div>
           <Link to="/profil" style={{
             display: 'block', textAlign: 'center',
-            background: 'white', color: '#F97316',
+            background: 'white', color: '#C9A227',
             padding: '7px', borderRadius: 50,
             fontSize: 11, fontWeight: 700, textDecoration: 'none',
           }}>
@@ -139,7 +139,7 @@ export default function Sidebar() {
       {/* Profil + déconnexion */}
       <div style={{ padding: '12px 16px', borderTop: '1px solid #f0ede8' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-          <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#F97316', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, fontWeight: 700, flexShrink: 0 }}>
+          <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#C9A227', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, fontWeight: 700, flexShrink: 0 }}>
             {initiale}
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
