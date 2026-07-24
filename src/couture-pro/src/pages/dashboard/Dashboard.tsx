@@ -676,7 +676,7 @@ export default function Dashboard() {
                     <div style={{ fontSize: 14, fontWeight: 900, marginBottom: 10 }}>Commandes par statut — par semaine</div>
 
                     <div style={{ width: '100%', height: 300 }}>
-                      <ResponsiveContainer>
+                      <ResponsiveContainer width="100%" height="100%">
                         <BarChart
                           data={weeksForPeriod.map((w) => ({
                             semaine: `S${w.idx}`,
