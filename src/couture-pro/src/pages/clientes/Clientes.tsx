@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import AppLayout from '../../components/layout/AppLayout'
 import { formatDate } from '../../lib/utils'
 import { useClientesStore } from '@/store/clientesStore'
 import type { Cliente, FormulaireCliente } from '../../types'
 
 export default function Clientes() {
+  const navigate = useNavigate()
   const { clientes, fetchClientes, ajouterCliente, isLoading, error } = useClientesStore()
   const [search, setSearch] = useState('')
   const [showForm, setShowForm] = useState(false)
@@ -67,7 +69,13 @@ export default function Clientes() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 14 }}>
           {filtered.map((c) => (
-            <div key={c.id} style={{ background: '#fff', border: '1px solid #f0ede8', borderRadius: 14, padding: 16 }}>
+            <div
+              key={c.id}
+              onClick={() => navigate(`/clientes/${c.id}`)}
+              style={{ background: '#fff', border: '1px solid #f0ede8', borderRadius: 14, padding: 16, cursor: 'pointer', transition: 'box-shadow .15s' }}
+              onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.06)')}
+              onMouseLeave={(e) => (e.currentTarget.style.boxShadow = 'none')}
+            >
               <div style={{ fontWeight: 700, marginBottom: 4 }}>{c.nom}</div>
               <div style={{ color: '#888', fontSize: 13 }}>{c.telephone}</div>
               <div style={{ color: '#888', fontSize: 13 }}>{c.ville}{c.quartier ? ` · ${c.quartier}` : ''}</div>

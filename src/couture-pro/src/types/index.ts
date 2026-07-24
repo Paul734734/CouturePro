@@ -77,6 +77,7 @@ export type FormulaireCommande = Omit<Commande, 'id' | 'userId' | 'resteAPayer'>
 export interface Commande {
   id: string
   clienteId: string
+  clienteNom?: string
   userId: string
   typeVetement: string
   description?: string

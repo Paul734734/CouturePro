@@ -11,8 +11,11 @@ import LandingPage from './pages/LandingPage'
 // App
 import Dashboard from './pages/dashboard/Dashboard'
 import Clientes from './pages/clientes/Clientes'
+import ClienteDetail from './pages/clientes/ClienteDetail'
+import AjouterCliente from './pages/clientes/AjouterCliente'
 import Mesures from './pages/mesures/Mesures'
 import Commandes from './pages/commandes/Commandes'
+import AjouterCommande from './pages/commandes/AjouterCommande'
 import Paiements from './pages/paiements/Paiements'
 import Factures from './pages/factures/Factures'
 import CommandeDetail from './pages/commandes/CommandeDetail'
@@ -44,9 +47,14 @@ function App() {
         {/* App (Couturière) */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/clientes" element={<Clientes />} />
+        <Route path="/clientes/:id" element={<ClienteDetail />} />
+        <Route path="/clientes/:id/modifier" element={<AjouterCliente />} />
         <Route path="/mesures" element={<Mesures />} />
+        <Route path="/mesures/:clienteId" element={<Mesures />} />
         <Route path="/commandes" element={<Commandes />} />
+        <Route path="/commandes/ajouter" element={<AjouterCommande />} />
         <Route path="/commandes/:id" element={<CommandeDetail />} />
+        <Route path="/commandes/:id/modifier" element={<AjouterCommande />} />
         <Route path="/paiements" element={<Paiements />} />
         <Route path="/factures" element={<Factures />} />
         <Route path="/factures/:id" element={<FactureDetail />} />

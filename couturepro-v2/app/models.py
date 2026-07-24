@@ -158,6 +158,12 @@ class Commande(Base):
     notes = Column(Text, nullable=True)
     temps_conception = Column(Float, nullable=True)
 
+    cliente = relationship("Cliente")
+
+    @property
+    def cliente_nom(self):
+        return self.cliente.nom if self.cliente else None
+
 
 class TypePaiement(str, enum.Enum):
     AVANCE = "avance"

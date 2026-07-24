@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import AppLayout from '../../components/layout/AppLayout'
 import { useClientesStore } from '@/store/clientesStore'
 import { useMesuresStore, type FormulaireMesure } from '@/store/mesuresStore'
@@ -19,6 +20,8 @@ const champsMesures = [
 ] as const
 
 export default function Mesures() {
+  const { clienteId } = useParams()
+  const navigate = useNavigate()
   const { clientes, fetchClientes, isLoading: loadingClientes } = useClientesStore()
   const {
     fetchMesuresCliente,
@@ -29,7 +32,7 @@ export default function Mesures() {
     error,
   } = useMesuresStore()
 
-  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [selectedId, setSelectedId] = useState<string | null>(clienteId || null)
   const [editing, setEditing] = useState(false)
   const [form, setForm] = useState<any>({})
   const [saving, setSaving] = useState(false)
@@ -38,12 +41,14 @@ export default function Mesures() {
     fetchClientes()
   }, [fetchClientes])
 
-  // sélectionne automatiquement la première cliente une fois la liste chargée
+  // priorise la cliente passée dans l'URL (ex: depuis sa fiche), sinon sélectionne la première
   useEffect(() => {
-    if (!selectedId && clientes.length > 0) {
+    if (clienteId) {
+      setSelectedId(clienteId)
+    } else if (!selectedId && clientes.length > 0) {
       setSelectedId(clientes[0].id)
     }
-  }, [clientes, selectedId])
+  }, [clienteId, clientes, selectedId])
 
   useEffect(() => {
     if (selectedId) {
@@ -110,7 +115,7 @@ export default function Mesures() {
             <div style={{ padding: 20, fontSize: 13, color: '#888' }}>Aucune cliente pour l'instant.</div>
           )}
           {clientes.map((c) => (
-            <div key={c.id} onClick={() => { setSelectedId(c.id); setEditing(false) }}
+            <div key={c.id} onClick={() => { navigate(`/mesures/${c.id}`); setEditing(false) }}
               style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 20px', cursor: 'pointer', borderBottom: '1px solid #f0ede8', background: selectedId === c.id ? '#FFF4ED' : 'white', transition: 'background .15s' }}>
               <div style={{ width: 38, height: 38, borderRadius: '50%', background: selectedId === c.id ? '#F97316' : '#FFF4ED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: selectedId === c.id ? 'white' : '#F97316' }}>
                 {c.nom.charAt(0)}
@@ -136,6 +141,9 @@ export default function Mesures() {
                   <p style={{ margin: '3px 0 0', fontSize: 12, color: '#888' }}>Toutes les mesures en centimètres</p>
                 </div>
                 <div style={{ display: 'flex', gap: 10 }}>
+                  <button onClick={() => navigate(`/clientes/${selected.id}`)} style={{ padding: '9px 16px', background: '#FAFAF8', border: '1px solid #e5e0d8', borderRadius: 10, fontSize: 13, cursor: 'pointer' }}>
+                    ← Fiche cliente
+                  </button>
                   {editing ? (
                     <>
                       <button onClick={() => setEditing(false)} disabled={saving} style={{ padding: '9px 18px', background: '#FAFAF8', border: '1px solid #e5e0d8', borderRadius: 10, fontSize: 13, cursor: 'pointer' }}>Annuler</button>

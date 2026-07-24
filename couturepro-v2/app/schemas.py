@@ -220,6 +220,7 @@ class CommandeOut(CamelModel):
     id: str
     user_id: str
     cliente_id: str
+    cliente_nom: Optional[str] = None
     type_vetement: str
     description: Optional[str] = None
     prix_total: float
@@ -230,6 +231,7 @@ class CommandeOut(CamelModel):
     date_livraison: Optional[datetime] = None
     statut: StatutCommande
     notes: Optional[str] = None
+    temps_conception: Optional[float] = None
 
 
 class PaiementCreate(CamelModel):
