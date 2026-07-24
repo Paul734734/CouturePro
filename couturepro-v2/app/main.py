@@ -9,10 +9,16 @@ from app.database import Base, engine, SessionLocal
 from app.models import User, Role, StatutUser, Forfait, Billing
 from app.security import hash_password
 from app.routers import auth, clientes, mesures, commandes, paiements, factures, dashboard, admin, uploads, stock, catalogue
+from app.db_startup import sync_missing_columns
 
 load_dotenv()
 
+# 1) Crée les tables qui n'existent pas encore.
 Base.metadata.create_all(bind=engine)
+# 2) Ajoute les colonnes manquantes sur les tables déjà existantes
+#    (create_all() ne le fait jamais). Voir app/db_startup.py pour le
+#    contexte détaillé de ce garde-fou.
+sync_missing_columns(engine, Base)
 
 app = FastAPI(
     title="CouturePro API",
