@@ -6,6 +6,7 @@ from app.database import get_db
 from app.models import User, Cliente
 from app.schemas import ClienteCreate, ClienteUpdate, ClienteOut
 from app.dependencies import require_acces
+from app.atelier_scope import valider_atelier_id, filtrer_par_atelier
 
 router = APIRouter(prefix="/api/clientes", tags=["Clientes"])
 
@@ -37,6 +38,7 @@ def creer_cliente(
                     detail=f"Limite de {max_clientes} clientes atteinte pour votre forfait. Passez a un forfait superieur.",
                 )
 
+    valider_atelier_id(db, current_user, payload.atelier_id)
     cliente = Cliente(user_id=current_user.id, **payload.model_dump())
     db.add(cliente)
     db.commit()
@@ -47,10 +49,12 @@ def creer_cliente(
 @router.get("", response_model=List[ClienteOut])
 def lister_clientes(
     recherche: Optional[str] = Query(None, description="Recherche par nom ou telephone"),
+    atelier_id: Optional[str] = Query(None),
     db: Session = Depends(get_db),
     current_user: User = Depends(require_acces("clientes")),
 ):
     query = db.query(Cliente).filter(Cliente.user_id == current_user.id)
+    query = filtrer_par_atelier(query, Cliente, atelier_id)
     if recherche:
         like = f"%{recherche}%"
         query = query.filter((Cliente.nom.ilike(like)) | (Cliente.telephone.ilike(like)))

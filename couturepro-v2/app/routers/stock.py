@@ -6,6 +6,7 @@ from app.database import get_db
 from app.models import User, ArticleStock
 from app.schemas import ArticleStockCreate, ArticleStockUpdate, ArticleStockOut
 from app.dependencies import get_current_user
+from app.atelier_scope import valider_atelier_id, filtrer_par_atelier
 
 router = APIRouter(prefix="/api/stock", tags=["Stock"])
 
@@ -25,6 +26,7 @@ def creer_article(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+    valider_atelier_id(db, current_user, payload.atelier_id)
     article = ArticleStock(user_id=current_user.id, **payload.model_dump())
     db.add(article)
     db.commit()
@@ -36,10 +38,12 @@ def creer_article(
 def lister_stock(
     categorie: Optional[str] = None,
     alerte: Optional[bool] = None,
+    atelier_id: Optional[str] = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     query = db.query(ArticleStock).filter(ArticleStock.user_id == current_user.id)
+    query = filtrer_par_atelier(query, ArticleStock, atelier_id)
     if categorie:
         query = query.filter(ArticleStock.categorie == categorie)
     articles = query.order_by(ArticleStock.nom.asc()).all()

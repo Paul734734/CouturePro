@@ -8,6 +8,7 @@ from app.models import User, Commande, Cliente, StatutCommande, Paiement, TypePa
 from app.schemas import CommandeCreate, CommandeUpdate, CommandeOut, CommandeStatutUpdate
 from app.dependencies import require_acces
 from app.acces import calculer_acces
+from app.atelier_scope import valider_atelier_id, filtrer_par_atelier
 
 router = APIRouter(prefix="/api/commandes", tags=["Commandes"])
 
@@ -84,6 +85,7 @@ def creer_commande(
     current_user: User = Depends(require_acces("commandes")),
 ):
     _check_cliente(db, payload.cliente_id, current_user.id)
+    valider_atelier_id(db, current_user, payload.atelier_id)
     data = payload.model_dump()
     reste = max(data["prix_total"] - data["avance_paye"], 0)
     commande = Commande(user_id=current_user.id, reste_a_payer=reste, **data)
@@ -115,10 +117,12 @@ def creer_commande(
 def lister_commandes(
     statut: Optional[StatutCommande] = None,
     cliente_id: Optional[str] = None,
+    atelier_id: Optional[str] = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(require_acces("commandes")),
 ):
     query = db.query(Commande).filter(Commande.user_id == current_user.id)
+    query = filtrer_par_atelier(query, Commande, atelier_id)
     if statut:
         query = query.filter(Commande.statut == statut)
     if cliente_id:

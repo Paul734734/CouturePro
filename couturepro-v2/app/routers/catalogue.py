@@ -6,6 +6,7 @@ from app.database import get_db
 from app.models import User, ArticleCatalogue
 from app.schemas import ArticleCatalogueCreate, ArticleCatalogueUpdate, ArticleCatalogueOut
 from app.dependencies import get_current_user
+from app.atelier_scope import valider_atelier_id, filtrer_par_atelier
 
 router = APIRouter(prefix="/api/catalogue", tags=["Catalogue"])
 
@@ -25,6 +26,7 @@ def creer_item(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+    valider_atelier_id(db, current_user, payload.atelier_id)
     item = ArticleCatalogue(user_id=current_user.id, **payload.model_dump())
     db.add(item)
     db.commit()
@@ -36,10 +38,12 @@ def creer_item(
 def lister_catalogue(
     categorie: Optional[str] = None,
     actif: Optional[bool] = None,
+    atelier_id: Optional[str] = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     query = db.query(ArticleCatalogue).filter(ArticleCatalogue.user_id == current_user.id)
+    query = filtrer_par_atelier(query, ArticleCatalogue, atelier_id)
     if categorie:
         query = query.filter(ArticleCatalogue.categorie == categorie)
     if actif is not None:

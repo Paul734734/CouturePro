@@ -88,6 +88,7 @@ class UpdateProfilRequest(CamelModel):
 
 # ---------- CLIENTES ----------
 class ClienteCreate(CamelModel):
+    atelier_id: Optional[str] = None
     nom: str
     telephone: Optional[str] = None
     ville: Optional[str] = None
@@ -103,6 +104,7 @@ class ClienteCreate(CamelModel):
 
 
 class ClienteUpdate(CamelModel):
+    atelier_id: Optional[str] = None
     nom: Optional[str] = None
     telephone: Optional[str] = None
     ville: Optional[str] = None
@@ -120,6 +122,7 @@ class ClienteUpdate(CamelModel):
 class ClienteOut(CamelModel):
     id: str
     user_id: str
+    atelier_id: Optional[str] = None
     nom: str
     telephone: Optional[str] = None
     ville: Optional[str] = None
@@ -190,6 +193,7 @@ class MesureOut(CamelModel):
 
 class CommandeCreate(CamelModel):
     cliente_id: str
+    atelier_id: Optional[str] = None
     type_vetement: str
     description: Optional[str] = None
     prix_total: float = 0
@@ -220,6 +224,7 @@ class CommandeStatutUpdate(CamelModel):
 class CommandeOut(CamelModel):
     id: str
     user_id: str
+    atelier_id: Optional[str] = None
     cliente_id: str
     cliente_nom: Optional[str] = None
     type_vetement: str
@@ -365,6 +370,7 @@ class PaiementOutEnrichi(CamelModel):
 
 # ---------- STOCK ----------
 class ArticleStockCreate(CamelModel):
+    atelier_id: Optional[str] = None
     nom: str
     categorie: Optional[str] = None
     quantite: float = 0
@@ -389,6 +395,7 @@ class ArticleStockUpdate(CamelModel):
 class ArticleStockOut(CamelModel):
     id: str
     user_id: str
+    atelier_id: Optional[str] = None
     nom: str
     categorie: Optional[str] = None
     quantite: float
@@ -403,6 +410,7 @@ class ArticleStockOut(CamelModel):
 
 # ---------- CATALOGUE ----------
 class ArticleCatalogueCreate(CamelModel):
+    atelier_id: Optional[str] = None
     nom: str
     categorie: Optional[str] = None
     description: Optional[str] = None
@@ -425,6 +433,7 @@ class ArticleCatalogueUpdate(CamelModel):
 class ArticleCatalogueOut(CamelModel):
     id: str
     user_id: str
+    atelier_id: Optional[str] = None
     nom: str
     categorie: Optional[str] = None
     description: Optional[str] = None

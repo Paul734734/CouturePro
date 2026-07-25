@@ -32,10 +32,9 @@ class Billing(str, enum.Enum):
 
 class Atelier(Base):
     """Espace atelier secondaire pour le forfait Elite (jusqu'a 3 par compte).
-    Etape 1 du multi-atelier : gestion des espaces uniquement. Le rattachement
-    des clientes/commandes/stock a un atelier precis est prevu dans une etape
-    suivante (impact plus large, a valider avant de toucher aux tables
-    existantes en production)."""
+    Les clientes/commandes/stock/catalogue rattaches a un atelier precis
+    portent un atelier_id (nullable) sur leur propre table ; NULL = espace
+    principal (celui d'avant le multi-atelier, jamais renomme ni deplace)."""
 
     __tablename__ = "ateliers"
 
@@ -104,6 +103,7 @@ class Cliente(Base):
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     user_id = Column(String(36), ForeignKey("users.id"), nullable=False, index=True)
+    atelier_id = Column(String(36), ForeignKey("ateliers.id"), nullable=True, index=True)
 
     nom = Column(String(150), nullable=False)
     telephone = Column(String(30), nullable=True)
@@ -162,6 +162,7 @@ class Commande(Base):
     id = Column(String(36), primary_key=True, default=generate_uuid)
     user_id = Column(String(36), ForeignKey("users.id"), nullable=False, index=True)
     cliente_id = Column(String(36), ForeignKey("clientes.id"), nullable=False, index=True)
+    atelier_id = Column(String(36), ForeignKey("ateliers.id"), nullable=True, index=True)
 
     type_vetement = Column(String(100), nullable=False)
     description = Column(Text, nullable=True)
@@ -252,6 +253,7 @@ class ArticleStock(Base):
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     user_id = Column(String(36), ForeignKey("users.id"), nullable=False, index=True)
+    atelier_id = Column(String(36), ForeignKey("ateliers.id"), nullable=True, index=True)
 
     nom = Column(String(150), nullable=False)
     categorie = Column(String(100), nullable=True)  # ex: Tissu, Fil, Bouton, Accessoire
@@ -272,6 +274,7 @@ class ArticleCatalogue(Base):
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     user_id = Column(String(36), ForeignKey("users.id"), nullable=False, index=True)
+    atelier_id = Column(String(36), ForeignKey("ateliers.id"), nullable=True, index=True)
 
     nom = Column(String(150), nullable=False)
     categorie = Column(String(100), nullable=True)  # ex: Robe, Tailleur, Boubou
