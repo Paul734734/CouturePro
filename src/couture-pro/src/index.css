@@ -36,6 +36,17 @@ img, video {
 .cp-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); }
 .cp-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); }
 
+/* Garde-fou anti-débordement : par défaut, un enfant de grid a
+   min-width: auto, donc un contenu insécable (ex: nombres au format
+   français "282 143 FCFA", qui utilise des espaces insécables entre
+   les groupes de chiffres) peut forcer sa colonne à s'élargir au-delà
+   de l'espace disponible et faire déborder TOUTE la grille — débordement
+   silencieusement coupé par overflow-x:hidden sur html/body, donc
+   invisible en dev mais visible en clipping sur mobile. */
+.cp-grid-2 > *, .cp-grid-3 > *, .cp-grid-4 > *, .cp-grid-5 > * {
+  min-width: 0;
+}
+
 /* lignes de type "carte cliquable" : colonnes de contenu + une colonne auto (badge, bouton...) */
 .cp-grid-row-1auto { display: grid; grid-template-columns: 1fr auto; align-items: center; }
 .cp-grid-row-3auto { display: grid; grid-template-columns: 1fr 1fr 1fr auto; align-items: center; }

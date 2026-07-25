@@ -167,14 +167,14 @@ function AnimatedStatCard({
         el.style.transform = 'rotateX(0deg) rotateY(0deg)'
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', minWidth: 0 }}>
+        <div style={{ minWidth: 0 }}>
           <div style={{ fontSize: 12, color: '#888', marginBottom: 8 }}>{title}</div>
-          <div style={{ fontSize: 24, fontWeight: 800, color: '#1a1a1a' }}>{localValue}</div>
+          <div style={{ fontSize: 24, fontWeight: 800, color: '#1a1a1a', overflowWrap: 'break-word' }}>{localValue}</div>
         </div>
-        <div style={{ fontSize: 24 }}>{icon}</div>
+        <div style={{ fontSize: 24, flexShrink: 0 }}>{icon}</div>
       </div>
-      <div style={{ fontSize: 12, color: ok ? '#22c55e' : '#ef4444', marginTop: 12 }}>{change}</div>
+      <div style={{ fontSize: 12, color: ok ? '#22c55e' : '#ef4444', marginTop: 12, overflowWrap: 'break-word' }}>{change}</div>
     </div>
   )
 }
@@ -611,8 +611,8 @@ export default function Dashboard() {
                           <div style={{ fontSize: 12, color: '#6b7280', fontWeight: 800, marginBottom: 6 }}>
                             {idx === 0 ? 'Taux de recouvrement semaine' : idx === 1 ? 'Recette moyenne par semaine' : 'Commandes cette semaine'}
                           </div>
-                          <div style={{ fontSize: 26, fontWeight: 900, color: '#111827', marginBottom: 2 }}>{k.value}</div>
-                          <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 10 }}>{k.subtitle}</div>
+                          <div style={{ fontSize: 26, fontWeight: 900, color: '#111827', marginBottom: 2, overflowWrap: 'break-word' }}>{k.value}</div>
+                          <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 10, overflowWrap: 'break-word' }}>{k.subtitle}</div>
 
                           <div style={{ width: '100%', height: 40, marginBottom: 10 }}>
                             <ResponsiveContainer width="100%" height={40}>
