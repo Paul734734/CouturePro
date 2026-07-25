@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useSyncExternalStore } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
+import { useAteliersStore } from '../../store/ateliersStore'
+import { getAtelierActif, setAtelierActif, subscribeAtelierActif } from '../../lib/atelierActif'
 
 
 const navItems = [
@@ -50,7 +52,34 @@ export default function AppLayout({
   const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
   const logout = useAuthStore((s) => s.logout)
+  const acceduMultiAtelier = useAuthStore((s) => s.acces.multiAtelier)
+  const { ateliers, fetchAteliers } = useAteliersStore()
   const [menuPlusOuvert, setMenuPlusOuvert] = useState(false)
+
+  const atelierActifId = useSyncExternalStore(subscribeAtelierActif, getAtelierActif, () => null)
+
+  useEffect(() => {
+    if (acceduMultiAtelier) fetchAteliers()
+  }, [acceduMultiAtelier, fetchAteliers])
+
+  // Si l'atelier actif a été supprimé entre-temps (ou vient d'un ancien
+  // compte), on retombe proprement sur l'espace principal plutôt que de
+  // continuer à filtrer sur un atelier qui n'existe plus.
+  useEffect(() => {
+    if (atelierActifId && ateliers.length > 0 && !ateliers.some((a) => a.id === atelierActifId)) {
+      setAtelierActif(null)
+    }
+  }, [atelierActifId, ateliers])
+
+  const handleChangerAtelier = (id: string | null) => {
+    if (id === atelierActifId) return
+    setAtelierActif(id)
+    // Recharge complète volontaire : garantit que toutes les données
+    // affichées (dashboard, listes, compteurs...) reflètent bien le nouvel
+    // espace, sans avoir à traquer un rafraîchissement manuel dans chaque
+    // store/page qui consomme des clientes/commandes/stock/catalogue.
+    window.location.reload()
+  }
 
   const handleLogout = () => {
     logout()
@@ -116,15 +145,32 @@ export default function AppLayout({
             <h1 className="text-xl font-bold text-gray-900 break-words">{titre}</h1>
             {sousTitre ? <p className="text-sm text-gray-400 mt-1 break-words">{sousTitre}</p> : null}
           </div>
-          {actionLabel && onAction ? (
-            <button
-              onClick={onAction}
-              className="inline-flex items-center gap-2 bg-gold-500 text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gold-600 transition-colors shrink-0"
-            >
-              <span className="text-lg leading-none">+</span>
-              {actionLabel}
-            </button>
-          ) : null}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 min-w-0">
+            {acceduMultiAtelier && ateliers.length > 0 ? (
+              <select
+                value={atelierActifId ?? ''}
+                onChange={(e) => handleChangerAtelier(e.target.value || null)}
+                className="cp-btn-mobile-full text-sm font-medium text-gray-700 border border-gray-200 rounded-xl px-3 py-2.5 bg-white min-w-0"
+                aria-label="Espace atelier actif"
+              >
+                <option value="">🏠 Espace principal</option>
+                {ateliers.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    🧵 {a.nom}
+                  </option>
+                ))}
+              </select>
+            ) : null}
+            {actionLabel && onAction ? (
+              <button
+                onClick={onAction}
+                className="cp-btn-mobile-full inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gold-600 transition-colors shrink-0"
+              >
+                <span className="text-lg leading-none">+</span>
+                {actionLabel}
+              </button>
+            ) : null}
+          </div>
         </div>
 
         <main className="flex-1 min-w-0 min-h-[calc(100vh-80px)] px-4 md:px-8 py-6 pb-24 md:pb-6 overflow-x-hidden">
