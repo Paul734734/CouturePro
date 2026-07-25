@@ -25,6 +25,7 @@ const FactureDetail = lazy(() => import('./pages/factures/FactureDetail'))
 const Profil = lazy(() => import('./pages/profil/Profil'))
 const Stock = lazy(() => import('./pages/stock/Stock'))
 const Catalogue = lazy(() => import('./pages/catalogue/Catalogue'))
+const Ateliers = lazy(() => import('./pages/ateliers/Ateliers'))
 
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
 const AdminUtilisatrices = lazy(() => import('./pages/admin/AdminUtilisatrices'))
@@ -73,6 +74,7 @@ function App() {
           <Route path="/profil" element={<Profil />} />
           <Route path="/stock" element={<Stock />} />
           <Route path="/catalogue" element={<Catalogue />} />
+          <Route path="/ateliers" element={<Ateliers />} />
 
           {/* Admin */}
           <Route path="/admin" element={<AdminDashboard />} />

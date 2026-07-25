@@ -6,12 +6,13 @@ import { useAuthStore } from '@/store/authStore'
 import { useAcces } from '@/components/hooks/useAcces'
 
 const NAV_ITEMS = [
-  { path: '/dashboard',  label: 'Tableau de bord', icon: '📊', feature: null },
-  { path: '/clientes',   label: 'Clientes',         icon: '👥', feature: null },
-  { path: '/mesures',    label: 'Mesures',           icon: '📏', feature: null },
-  { path: '/commandes',  label: 'Commandes',         icon: '📋', feature: null },
-  { path: '/paiements',  label: 'Paiements',         icon: '💰', feature: 'paiements' as const },
-  { path: '/factures',   label: 'Factures',          icon: '🧾', feature: 'factures' as const },
+  { path: '/dashboard',  label: 'Tableau de bord', icon: '📊', feature: null, forfaitMin: 'Pro' },
+  { path: '/clientes',   label: 'Clientes',         icon: '👥', feature: null, forfaitMin: 'Pro' },
+  { path: '/mesures',    label: 'Mesures',           icon: '📏', feature: null, forfaitMin: 'Pro' },
+  { path: '/commandes',  label: 'Commandes',         icon: '📋', feature: null, forfaitMin: 'Pro' },
+  { path: '/paiements',  label: 'Paiements',         icon: '💰', feature: 'paiements' as const, forfaitMin: 'Pro' },
+  { path: '/factures',   label: 'Factures',          icon: '🧾', feature: 'factures' as const, forfaitMin: 'Pro' },
+  { path: '/ateliers',   label: 'Multi-atelier',     icon: '🏬', feature: 'multiAtelier' as const, forfaitMin: 'Elite' },
 ]
 
 export default function Sidebar() {
@@ -56,7 +57,7 @@ export default function Sidebar() {
             <Link
               key={item.path}
               to={item.path}
-              title={isLocked ? `Disponible à partir du forfait Pro` : undefined}
+              title={isLocked ? `Disponible à partir du forfait ${item.forfaitMin}` : undefined}
               style={{
                 display: 'flex', alignItems: 'center', gap: 10,
                 padding: '10px 12px', borderRadius: 12, marginBottom: 2,
@@ -87,7 +88,7 @@ export default function Sidebar() {
               {/* Icône verrou */}
               {isLocked && (
                 <span style={{ fontSize: 11, color: '#C9A227', background: '#FBF3DC', padding: '2px 6px', borderRadius: 50, fontWeight: 700, flexShrink: 0 }}>
-                  🔒 Pro
+                  🔒 {item.forfaitMin}
                 </span>
               )}
             </Link>
