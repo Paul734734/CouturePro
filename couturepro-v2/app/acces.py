@@ -1,7 +1,9 @@
 from app.models import Forfait, StatutUser
 
-# Copie exacte de FORFAIT_ACCES dans src/store/authStore.ts
-# IMPORTANT : si tu modifies un forfait côté frontend, modifie ici aussi.
+# Source de vérité unique pour les accès par forfait.
+# Le frontend (src/store/authStore.ts) ne duplique plus cette logique :
+# il consomme directement le champ "acces" renvoyé par l'API (voir routers/auth.py).
+# IMPORTANT : si tu modifies un forfait ici, aucune autre synchro n'est nécessaire.
 FORFAIT_ACCES = {
     Forfait.STARTER: {
         "clientes": True,
