@@ -30,6 +30,26 @@ class Billing(str, enum.Enum):
     ANNUEL = "annuel"
 
 
+class Atelier(Base):
+    """Espace atelier secondaire pour le forfait Elite (jusqu'a 3 par compte).
+    Etape 1 du multi-atelier : gestion des espaces uniquement. Le rattachement
+    des clientes/commandes/stock a un atelier precis est prevu dans une etape
+    suivante (impact plus large, a valider avant de toucher aux tables
+    existantes en production)."""
+
+    __tablename__ = "ateliers"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey("users.id"), nullable=False, index=True)
+
+    nom = Column(String(150), nullable=False)
+    ville = Column(String(100), nullable=True)
+    quartier = Column(String(100), nullable=True)
+    telephone = Column(String(30), nullable=True)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
 class User(Base):
     __tablename__ = "users"
 

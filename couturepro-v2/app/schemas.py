@@ -433,3 +433,28 @@ class ArticleCatalogueOut(CamelModel):
     image_url: Optional[str] = None
     actif: bool
     date_ajout: datetime
+
+
+# ── Ateliers (multi-atelier, forfait Elite) ────────────────────────────
+class AtelierCreate(CamelModel):
+    nom: str
+    ville: Optional[str] = None
+    quartier: Optional[str] = None
+    telephone: Optional[str] = None
+
+
+class AtelierUpdate(CamelModel):
+    nom: Optional[str] = None
+    ville: Optional[str] = None
+    quartier: Optional[str] = None
+    telephone: Optional[str] = None
+
+
+class AtelierOut(CamelModel):
+    id: str
+    user_id: str
+    nom: str
+    ville: Optional[str] = None
+    quartier: Optional[str] = None
+    telephone: Optional[str] = None
+    created_at: datetime
