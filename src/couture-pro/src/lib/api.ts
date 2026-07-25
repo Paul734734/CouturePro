@@ -30,6 +30,18 @@ export async function uploadPhoto(file: File): Promise<string> {
   return resolveFileUrl(data.url);
 }
 
+export async function exporterComptabilite(): Promise<void> {
+  const response = await api.get("/api/export/comptabilite", { responseType: "blob" });
+  const url = window.URL.createObjectURL(new Blob([response.data]));
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "comptabilite-couturepro.csv";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
+}
+
 const TOKEN_KEY = "couture-pro-token";
 
 export function getToken(): string | null {

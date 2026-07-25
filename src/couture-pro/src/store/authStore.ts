@@ -16,10 +16,12 @@ export interface ForfaitAcces {
   clientes: boolean;
   mesures: boolean;
   commandes: boolean;
+  commandesPhotos: boolean;
   factures: boolean;
   paiements: boolean;
   multiAtelier: boolean;
   exportCompta: boolean;
+  logoPersonnalise: boolean;
   dashboardAvance: boolean;
   maxClientes: number | null;
 }
@@ -30,10 +32,12 @@ const ACCES_PAR_DEFAUT: ForfaitAcces = {
   clientes: true,
   mesures: false,
   commandes: false,
+  commandesPhotos: false,
   factures: false,
   paiements: false,
   multiAtelier: false,
   exportCompta: false,
+  logoPersonnalise: false,
   dashboardAvance: false,
   maxClientes: 0,
 };

@@ -5,6 +5,7 @@ from app.database import get_db
 from app.models import User, Facture, Cliente, StatutFacture
 from app.schemas import FactureCreate, FactureOut
 from app.dependencies import require_acces
+from app.acces import calculer_acces
 from app.pdf_generator import generer_pdf_facture
 
 router = APIRouter(prefix="/api/factures", tags=["Factures"])
@@ -50,6 +51,7 @@ def creer_facture(
     montant_reste = max(0.0, montant_total - montant_paye)
     statut = _calculer_statut(montant_total, montant_paye)
 
+    acces = calculer_acces(current_user)
     facture = Facture(
         user_id=current_user.id,
         cliente_id=cliente.id,
@@ -59,7 +61,7 @@ def creer_facture(
         montant_paye=montant_paye,
         montant_reste=montant_reste,
         statut=statut,
-        logo_atelier=current_user.logo_url,
+        logo_atelier=current_user.logo_url if acces.get("logoPersonnalise") else None,
         nom_atelier=current_user.nom_atelier,
         **data,
     )

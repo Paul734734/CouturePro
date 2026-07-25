@@ -8,6 +8,7 @@ import { useClientesStore } from '@/store/clientesStore'
 import { usePaiementsStore } from '@/store/paiementsStore'
 import { calculerSemaines, variationPct } from '@/lib/weeklyStats'
 import { FeatureGate } from '@/components/hooks/useAcces'
+import { exporterComptabilite } from '@/lib/api'
 import { useEffect, useMemo, useState } from 'react'
 
 import {
@@ -265,12 +266,25 @@ export default function Dashboard() {
     },
   ]
 
-  const actionsRapides = [
+  const [exportEnCours, setExportEnCours] = useState(false)
+  const handleExport = async () => {
+    if (exportEnCours) return
+    setExportEnCours(true)
+    try {
+      await exporterComptabilite()
+    } catch {
+      alert("L'export a échoué, réessayez dans un instant.")
+    } finally {
+      setExportEnCours(false)
+    }
+  }
+
+  const actionsRapides: { icon: string; label: string; href?: string; onClick?: () => void }[] = [
     { icon: '👩', label: 'Ajouter une cliente', href: '/clientes/ajouter' },
     { icon: '📋', label: 'Nouvelle commande', href: '/commandes/ajouter' },
     ...(acces.factures ? [{ icon: '🧾', label: 'Créer une facture', href: '/factures' }] : []),
     { icon: '📏', label: 'Saisir des mesures', href: '/mesures' },
-    ...(acces.exportCompta ? [{ icon: '📊', label: 'Exporter comptabilité', href: '/admin/abonnements' }] : []),
+    ...(acces.exportCompta ? [{ icon: '📊', label: exportEnCours ? 'Export en cours…' : 'Exporter comptabilité', onClick: handleExport }] : []),
   ]
 
   return (
@@ -415,6 +429,43 @@ export default function Dashboard() {
                 </tbody>
               </table>
               </div>
+            </div>
+          </div>
+
+          {/* BLOC 3bis — Actions rapides */}
+          <div style={{ marginBottom: 24 }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Actions rapides</h3>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              {actionsRapides.map((a) =>
+                a.href ? (
+                  <Link
+                    key={a.label}
+                    to={a.href}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 8,
+                      background: 'white', border: '1px solid #f0ede8', borderRadius: 12,
+                      padding: '12px 16px', fontSize: 13, fontWeight: 600, color: '#1a1a1a',
+                      textDecoration: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.02)',
+                    }}
+                  >
+                    <span style={{ fontSize: 16 }}>{a.icon}</span> {a.label}
+                  </Link>
+                ) : (
+                  <button
+                    key={a.label}
+                    onClick={a.onClick}
+                    disabled={exportEnCours}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 8,
+                      background: 'white', border: '1px solid #f0ede8', borderRadius: 12,
+                      padding: '12px 16px', fontSize: 13, fontWeight: 600, color: '#1a1a1a',
+                      cursor: exportEnCours ? 'default' : 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.02)',
+                    }}
+                  >
+                    <span style={{ fontSize: 16 }}>{a.icon}</span> {a.label}
+                  </button>
+                )
+              )}
             </div>
           </div>
 

@@ -5,6 +5,7 @@ import AppLayout from '../../components/layout/AppLayout'
 import { useCommandesStore } from '../../store/commandesStore'
 import { useClientesStore } from '../../store/clientesStore'
 import { useAuthStore } from '../../store/authStore'
+import { useAcces, FeatureGate } from '../../components/hooks/useAcces'
 
 const TYPES_VETEMENTS = [
   'Robe', 'Tailleur', 'Boubou', 'Ensemble 2 pièces', 'Ensemble 3 pièces',
@@ -25,6 +26,8 @@ export default function AjouterCommande() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
+  const { peutAcceder, estEssai } = useAcces()
+  const acceptePhotos = peutAcceder('commandesPhotos') || estEssai
   const { ajouterCommande, modifierCommande, getCommandeById } = useCommandesStore()
   const { clientes, fetchClientes } = useClientesStore()
 
@@ -210,36 +213,42 @@ export default function AjouterCommande() {
             />
           </Champ>
           <Champ label="Photo du modèle">
-            <div
-              onClick={() => fileRef.current?.click()}
-              style={{
-                border: '2px dashed #e5e5e5', borderRadius: 10, padding: '16px',
-                textAlign: 'center', cursor: 'pointer', background: '#FAFAF8',
-                transition: 'border-color 0.15s',
-              }}
-            >
-              {photoPreview ? (
-                <div>
-                  <img
-                    src={photoPreview}
-                    alt="Modèle"
-                    style={{ maxHeight: 200, borderRadius: 8, maxWidth: '100%', objectFit: 'cover' }}
-                  />
-                  <p style={{ color: '#C9A227', fontSize: 12, margin: '8px 0 0', fontWeight: 600 }}>
-                    Cliquer pour changer
-                  </p>
+            {acceptePhotos ? (
+              <>
+                <div
+                  onClick={() => fileRef.current?.click()}
+                  style={{
+                    border: '2px dashed #e5e5e5', borderRadius: 10, padding: '16px',
+                    textAlign: 'center', cursor: 'pointer', background: '#FAFAF8',
+                    transition: 'border-color 0.15s',
+                  }}
+                >
+                  {photoPreview ? (
+                    <div>
+                      <img
+                        src={photoPreview}
+                        alt="Modèle"
+                        style={{ maxHeight: 200, borderRadius: 8, maxWidth: '100%', objectFit: 'cover' }}
+                      />
+                      <p style={{ color: '#C9A227', fontSize: 12, margin: '8px 0 0', fontWeight: 600 }}>
+                        Cliquer pour changer
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      <div style={{ fontSize: 32, marginBottom: 8 }}>📷</div>
+                      <p style={{ color: '#aaa', fontSize: 13, margin: 0 }}>
+                        Cliquez pour ajouter une photo du modèle
+                      </p>
+                      <p style={{ color: '#ccc', fontSize: 11, margin: '4px 0 0' }}>JPG, PNG — max 5MB</p>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div>
-                  <div style={{ fontSize: 32, marginBottom: 8 }}>📷</div>
-                  <p style={{ color: '#aaa', fontSize: 13, margin: 0 }}>
-                    Cliquez pour ajouter une photo du modèle
-                  </p>
-                  <p style={{ color: '#ccc', fontSize: 11, margin: '4px 0 0' }}>JPG, PNG — max 5MB</p>
-                </div>
-              )}
-            </div>
-            <input ref={fileRef} type="file" accept="image/*" onChange={handlePhoto} style={{ display: 'none' }} />
+                <input ref={fileRef} type="file" accept="image/*" onChange={handlePhoto} style={{ display: 'none' }} />
+              </>
+            ) : (
+              <FeatureGate feature="commandesPhotos" compact />
+            )}
           </Champ>
         </Section>
 

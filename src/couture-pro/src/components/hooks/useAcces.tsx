@@ -54,6 +54,16 @@ const FEATURE_LABELS: Partial<Record<keyof ForfaitAcces, { titre: string; desc: 
     desc: 'Exportez vos données financières pour votre comptable.',
     forfaitMin: 'Elite',
   },
+  commandesPhotos: {
+    titre: 'Photos sur les commandes',
+    desc: 'Ajoutez une photo du modèle à chaque commande pour ne rien oublier.',
+    forfaitMin: 'Pro',
+  },
+  logoPersonnalise: {
+    titre: 'Logo personnalisé sur vos PDF',
+    desc: 'Affichez le logo de votre atelier sur vos factures et reçus PDF.',
+    forfaitMin: 'Elite',
+  },
 }
 
 // ─── Composant FeatureGate ────────────────────────────────────────────────────

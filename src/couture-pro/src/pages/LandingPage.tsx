@@ -415,10 +415,6 @@ export default function LandingPage() {
     <div style={{ fontFamily: 'Inter,sans-serif', background: '#FAFAF8', color: '#1a1a1a' }}>
 
       {/* Injection des styles responsive */}
-      {/* ─── BANNIÈRE PRÊT ────────────────────────────────────── */}
-      <div style={{ background: '#1a1a1a', color: '#D4AF37', textAlign: 'center', padding: '10px 16px', fontSize: 13, fontWeight: 500 }}>
-        À partir d'1 an d'ancienneté, demandez un prêt de 250 000 FCFA pour financer votre prochaine collection.
-      </div>
       <style>{mobileStyles}</style>
 
       {/* ─── NAV ─────────────────────────────────────────────── */}
@@ -528,17 +524,6 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div style={{
-            marginTop: 24,
-            display: 'flex', alignItems: 'flex-start', gap: 10,
-            background: '#FFFBEB', border: '1px solid #FDE68A',
-            borderRadius: 14, padding: '14px 18px', maxWidth: 460,
-          }}>
-            <span style={{ fontSize: 18, lineHeight: 1 }}>💰</span>
-            <p style={{ fontSize: 13.5, color: '#7a5b00', lineHeight: 1.6, margin: 0 }}>
-              <strong>Bon à savoir :</strong> à partir d'1 an d'ancienneté sur Eureka, vous pouvez demander un prêt de <strong>250 000 FCFA</strong> pour financer votre prochaine collection.
-            </p>
-          </div>
         </div>
 
         {/* Dashboard mock — caché sur mobile via CSS */}

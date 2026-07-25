@@ -7,6 +7,7 @@ from app.database import get_db
 from app.models import User, Commande, Cliente, StatutCommande, Paiement, TypePaiement, Facture, StatutFacture, TypeDocument
 from app.schemas import CommandeCreate, CommandeUpdate, CommandeOut, CommandeStatutUpdate
 from app.dependencies import require_acces
+from app.acces import calculer_acces
 
 router = APIRouter(prefix="/api/commandes", tags=["Commandes"])
 
@@ -57,6 +58,7 @@ def _synchroniser_facture_commande(db: Session, commande: Commande, current_user
         facture.statut = statut
     else:
         cliente = db.query(Cliente).filter(Cliente.id == commande.cliente_id).first()
+        acces = calculer_acces(current_user)
         facture = Facture(
             user_id=current_user.id,
             cliente_id=commande.cliente_id,
@@ -69,7 +71,7 @@ def _synchroniser_facture_commande(db: Session, commande: Commande, current_user
             montant_paye=montant_paye,
             montant_reste=montant_reste,
             statut=statut,
-            logo_atelier=current_user.logo_url,
+            logo_atelier=current_user.logo_url if acces.get("logoPersonnalise") else None,
             nom_atelier=current_user.nom_atelier,
         )
         db.add(facture)

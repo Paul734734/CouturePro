@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from app.database import Base, engine, SessionLocal
 from app.models import User, Role, StatutUser, Forfait, Billing
 from app.security import hash_password
-from app.routers import auth, clientes, mesures, commandes, paiements, factures, dashboard, admin, uploads, stock, catalogue
+from app.routers import auth, clientes, mesures, commandes, paiements, factures, dashboard, admin, uploads, stock, catalogue, export
 from app.db_startup import sync_missing_columns
 
 load_dotenv()
@@ -63,6 +63,7 @@ app.include_router(admin.router)
 app.include_router(uploads.router)
 app.include_router(stock.router)
 app.include_router(catalogue.router)
+app.include_router(export.router)
 
 
 @app.get("/api/health")
