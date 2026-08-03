@@ -81,6 +81,7 @@ export interface Commande {
   userId: string
   typeVetement: string
   description?: string
+  photoUrl?: string
   prixTotal: number
   avancePaye: number
   resteAPayer: number

@@ -1,6 +1,6 @@
 from datetime import datetime, date
 from typing import Optional, Dict, Any
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, EmailStr, ConfigDict, model_validator
 from app.models import Role, StatutUser, Forfait, Billing, StatutCommande, TypePaiement, TypeDocument, StatutFacture
 
 
@@ -17,6 +17,19 @@ class CamelModel(BaseModel):
         populate_by_name=True,
         from_attributes=True,
     )
+
+    @model_validator(mode="before")
+    @classmethod
+    def _chaine_vide_devient_none(cls, data):
+        # Les formulaires du frontend envoient souvent "" (pas absent) pour un
+        # champ optionnel laisse vide (date, nombre...). Pydantic rejette ""
+        # pour tout type non-str avec un 422 que le frontend n'affichait pas
+        # (ex: creation de commande silencieusement en echec si la date
+        # d'essayage/livraison est vide). On neutralise "" -> None une seule
+        # fois ici plutot que champ par champ dans chaque schema.
+        if isinstance(data, dict):
+            return {k: (None if v == "" else v) for k, v in data.items()}
+        return data
 
 
 # ---------- AUTH ----------
@@ -196,6 +209,7 @@ class CommandeCreate(CamelModel):
     atelier_id: Optional[str] = None
     type_vetement: str
     description: Optional[str] = None
+    photo_url: Optional[str] = None
     prix_total: float = 0
     avance_paye: float = 0
     date_essayage: Optional[datetime] = None
@@ -208,6 +222,7 @@ class CommandeCreate(CamelModel):
 class CommandeUpdate(CamelModel):
     type_vetement: Optional[str] = None
     description: Optional[str] = None
+    photo_url: Optional[str] = None
     prix_total: Optional[float] = None
     avance_paye: Optional[float] = None
     date_essayage: Optional[datetime] = None
@@ -229,6 +244,7 @@ class CommandeOut(CamelModel):
     cliente_nom: Optional[str] = None
     type_vetement: str
     description: Optional[str] = None
+    photo_url: Optional[str] = None
     prix_total: float
     avance_paye: float
     reste_a_payer: float

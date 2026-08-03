@@ -6,6 +6,7 @@ import { useCommandesStore } from '../../store/commandesStore'
 import { useClientesStore } from '../../store/clientesStore'
 import { useAuthStore } from '../../store/authStore'
 import { useAcces, FeatureGate } from '../../components/hooks/useAcces'
+import { api, resolveFileUrl } from '../../lib/api'
 
 const TYPES_VETEMENTS = [
   'Robe', 'Tailleur', 'Boubou', 'Ensemble 2 pièces', 'Ensemble 3 pièces',
@@ -52,6 +53,9 @@ export default function AjouterCommande() {
   const [erreurs, setErreurs] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
   const [photoPreview, setPhotoPreview] = useState<string>('')
+  const [photoUrl, setPhotoUrl] = useState<string>('')
+  const [photoUploading, setPhotoUploading] = useState(false)
+  const [photoErreur, setPhotoErreur] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -73,6 +77,10 @@ export default function AjouterCommande() {
         notes: existing.notes || '',
         tempsConception: existing.tempsConception?.toString() || '',
       })
+      if (existing.photoUrl) {
+        setPhotoUrl(existing.photoUrl)
+        setPhotoPreview(resolveFileUrl(existing.photoUrl))
+      }
     }
   }, [existing])
 
@@ -84,12 +92,24 @@ export default function AjouterCommande() {
   const handlePhoto = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+    setPhotoErreur('')
     const reader = new FileReader()
     reader.onload = (ev) => {
       const result = ev.target?.result as string
       setPhotoPreview(result)
     }
     reader.readAsDataURL(file)
+
+    // L'aperçu local (FileReader) est instantané pour l'UX, mais seule cette
+    // upload vers le backend rend la photo persistée et visible sur la fiche
+    // commande une fois enregistrée (auparavant : jamais envoyée du tout).
+    setPhotoUploading(true)
+    const formData = new FormData()
+    formData.append('file', file)
+    api.post<{ url: string }>('/api/upload/photo', formData)
+      .then(({ data }) => setPhotoUrl(data.url))
+      .catch(() => setPhotoErreur("Échec de l'envoi de la photo. Réessayez."))
+      .finally(() => setPhotoUploading(false))
   }
 
   const valider = () => {
@@ -105,6 +125,7 @@ export default function AjouterCommande() {
     if (!user) return
     const e = valider()
     if (Object.keys(e).length > 0) { setErreurs(e); return }
+    if (photoUploading) return
     setLoading(true)
     await new Promise((r) => setTimeout(r, 300))
 
@@ -116,6 +137,7 @@ export default function AjouterCommande() {
       clienteId: form.clienteId,
       typeVetement: form.typeVetement,
       description: form.description,
+      photoUrl: photoUrl || undefined,
       prixTotal,
       avancePaye,
       dateCommande: form.dateCommande,
@@ -245,6 +267,12 @@ export default function AjouterCommande() {
                   )}
                 </div>
                 <input ref={fileRef} type="file" accept="image/*" onChange={handlePhoto} style={{ display: 'none' }} />
+                {photoUploading && (
+                  <p style={{ color: '#888', fontSize: 12, margin: '6px 0 0' }}>Envoi de la photo en cours...</p>
+                )}
+                {photoErreur && (
+                  <p style={{ color: '#dc2626', fontSize: 12, margin: '6px 0 0' }}>{photoErreur}</p>
+                )}
               </>
             ) : (
               <FeatureGate feature="commandesPhotos" compact />
@@ -374,11 +402,11 @@ export default function AjouterCommande() {
           </button>
           <button
             onClick={handleSubmit}
-            disabled={loading}
+            disabled={loading || photoUploading}
             style={{
               flex: 2, padding: '14px', borderRadius: 12, border: 'none',
-              background: loading ? '#eeddb0' : '#C9A227', color: '#fff',
-              fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', fontSize: 15,
+              background: (loading || photoUploading) ? '#eeddb0' : '#C9A227', color: '#fff',
+              fontWeight: 700, cursor: (loading || photoUploading) ? 'not-allowed' : 'pointer', fontSize: 15,
             }}
           >
             {loading ? 'Enregistrement...' : isEdit ? '✅ Enregistrer' : '✅ Créer la commande'}

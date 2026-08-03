@@ -5,7 +5,7 @@ import { useCommandesStore } from "@/store/commandesStore";
 import { usePaiementsStore } from "@/store/paiementsStore";
 import { useFacturesStore } from "@/store/facturesStore";
 import AppLayout from "@/components/layout/AppLayout";
-import { useClientesStore } from "@/store/clientesStore";
+import { resolveFileUrl } from "@/lib/api";
 
 const card: CSSProperties = {
   background: "white",
@@ -65,9 +65,7 @@ function CommandeDetail() {
   }, [fetchCommandes, fetchFactures]);
 
   const commande = commandes.find((c) => c.id === id);
-  const clienteNom = useClientesStore((s) =>
-    commande ? s.getClienteById(commande.clienteId)?.nom : undefined
-  );
+  const clienteNom = commande?.clienteNom;
 
   const factureLiee = commande
     ? factures.find((f) => f.commandeId === commande.id)
@@ -131,6 +129,16 @@ function CommandeDetail() {
   return (
     <AppLayout titre="Détail de la commande" sousTitre={commande.typeVetement}>
       <div style={{ maxWidth: 640 }}>
+        {commande.photoUrl && (
+          <div style={card}>
+            <div style={label}>Photo du modèle</div>
+            <img
+              src={resolveFileUrl(commande.photoUrl)}
+              alt="Modèle de la commande"
+              style={{ maxHeight: 280, maxWidth: "100%", borderRadius: 10, objectFit: "cover", marginTop: 6 }}
+            />
+          </div>
+        )}
         <div style={card}>
           <div className="cp-grid-2" style={{ gap: 18 }}>
             <div>

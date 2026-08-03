@@ -166,6 +166,7 @@ class Commande(Base):
 
     type_vetement = Column(String(100), nullable=False)
     description = Column(Text, nullable=True)
+    photo_url = Column(String(500), nullable=True)
 
     prix_total = Column(Float, default=0)
     avance_paye = Column(Float, default=0)
