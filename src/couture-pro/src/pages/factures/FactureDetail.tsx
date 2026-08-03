@@ -64,21 +64,40 @@ export default function FactureDetail() {
         import('html2canvas'),
       ])
 
-      // html2canvas capture le DOM tel quel au moment de l'appel : sans ça,
-      // le logo (chargé de façon asynchrone depuis /uploads/...) apparaît
-      // comme un cadre vide sur le PDF si le navigateur n'a pas fini de le
-      // charger avant la capture (constaté en test : logo absent du PDF
-      // malgré un <img src=...> correct dans le DOM).
+      // html2canvas peine à rendre une image chargée depuis le réseau (ex:
+      // le logo /uploads/...) quand elle a un border-radius : constaté en
+      // test, le cadre reste vide sur le PDF alors que l'image s'affiche
+      // normalement à l'écran (bug connu de html2canvas avec ce genre
+      // d'image, indépendant du chargement réseau lui-même - attendre que
+      // l'image soit chargée ne suffit pas). On convertit chaque image en
+      // data-URL avant la capture pour contourner ça, puis on restaure le
+      // src d'origine juste après.
       const images: HTMLImageElement[] = Array.from(printRef.current.querySelectorAll('img'))
+      const srcOriginaux = images.map((img) => img.src)
       await Promise.all(
-        images.map(
-          (img) =>
-            new Promise<void>((resolve) => {
-              if (img.complete) { resolve(); return }
-              img.addEventListener('load', () => resolve(), { once: true })
-              img.addEventListener('error', () => resolve(), { once: true })
+        images.map(async (img) => {
+          if (img.src.startsWith('data:')) return
+          try {
+            const res = await fetch(img.src)
+            const blob = await res.blob()
+            const dataUrl: string = await new Promise((resolve, reject) => {
+              const reader = new FileReader()
+              reader.onload = () => resolve(reader.result as string)
+              reader.onerror = reject
+              reader.readAsDataURL(blob)
             })
-        )
+            img.src = dataUrl
+            if (!img.complete) {
+              await new Promise<void>((resolve) => {
+                img.addEventListener('load', () => resolve(), { once: true })
+                img.addEventListener('error', () => resolve(), { once: true })
+              })
+            }
+          } catch {
+            // Si le fetch échoue, on garde le src d'origine (comportement
+            // précédent) plutôt que de bloquer tout le téléchargement.
+          }
+        })
       )
 
       const canvas = await html2canvas(printRef.current, {
@@ -86,6 +105,7 @@ export default function FactureDetail() {
         useCORS: true,
         backgroundColor: '#ffffff',
       })
+      images.forEach((img, i) => { img.src = srcOriginaux[i] })
       const imgData = canvas.toDataURL('image/png')
 
       const pdf = new jsPDF({
