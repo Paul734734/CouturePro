@@ -62,9 +62,13 @@ def sync_missing_columns(engine: Engine, base) -> None:
 
             try:
                 col_type = column.type.compile(dialect=engine.dialect)
+                # Pas de "IF NOT EXISTS" ici : SQLite ne supporte pas cette
+                # clause sur ADD COLUMN (erreur de syntaxe garantie). La
+                # verification "column.name in existing_columns" ci-dessus
+                # suffit deja a ne jamais retenter une colonne existante.
                 ddl = (
                     f'ALTER TABLE "{table.name}" '
-                    f'ADD COLUMN IF NOT EXISTS "{column.name}" {col_type}'
+                    f'ADD COLUMN "{column.name}" {col_type}'
                 )
                 # Toujours ajoutée en NULLABLE : on ne peut pas ajouter une
                 # colonne NOT NULL sans valeur par défaut sur une table qui
