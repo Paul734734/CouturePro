@@ -1,9 +1,9 @@
 import uuid
 
 
-def creer_utilisatrice(client, nom="Test"):
+def creer_utilisatrice(client, nom="Test", forfait="pro"):
     email = f"{uuid.uuid4().hex[:8]}@test.com"
-    r = client.post("/api/auth/register", json={"nom": nom, "email": email, "password": "azerty123"})
+    r = client.post("/api/auth/register", json={"nom": nom, "email": email, "password": "azerty123", "forfait": forfait})
     return r.json()["token"]
 
 

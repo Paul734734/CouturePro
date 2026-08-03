@@ -46,20 +46,6 @@ FORFAIT_ACCES = {
     },
 }
 
-ESSAI_ACCES = {
-    "clientes": True,
-    "mesures": True,
-    "commandes": True,
-    "commandesPhotos": True,
-    "factures": True,
-    "paiements": True,
-    "multiAtelier": False,
-    "exportCompta": False,
-    "logoPersonnalise": False,
-    "dashboardAvance": True,
-    "maxClientes": None,
-}
-
 BLOQUE_ACCES = {
     "clientes": True,
     "mesures": False,
@@ -79,9 +65,10 @@ def calculer_acces(user) -> dict:
     """Reproduit exactement la logique de getAcces() du frontend."""
     statut = user.statut_effectif
 
-    if statut == StatutUser.ESSAI:
-        return ESSAI_ACCES
-    if statut != StatutUser.ACTIF:
-        # suspendu ou expiré => accès minimal (lecture clientes uniquement)
-        return BLOQUE_ACCES
-    return FORFAIT_ACCES.get(user.forfait, FORFAIT_ACCES[Forfait.STARTER])
+    if statut in (StatutUser.ESSAI, StatutUser.ACTIF):
+        # L'essai gratuit donne acces aux fonctionnalites du forfait CHOISI
+        # (pas un deblocage total) : on decouvre le forfait qu'on a selectionne,
+        # pas celui du voisin.
+        return FORFAIT_ACCES.get(user.forfait, FORFAIT_ACCES[Forfait.STARTER])
+    # suspendu ou expiré => accès minimal (lecture clientes uniquement)
+    return BLOQUE_ACCES

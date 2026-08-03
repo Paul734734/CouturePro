@@ -13,7 +13,9 @@ def test_register_retourne_un_compte_en_essai(client):
     data = r.json()
     assert data["user"]["statut"] == "essai"
     assert data["user"]["forfait"] == "starter"
-    assert data["acces"]["factures"] is True  # tout debloque pendant l'essai
+    # L'essai reflete le forfait choisi (starter par defaut) : pas de deblocage total.
+    assert data["acces"]["factures"] is False
+    assert data["acces"]["maxClientes"] == 30
     assert "token" in data
 
 

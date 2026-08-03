@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from app.models import User, Role, StatutUser, Forfait, Billing
-from app.acces import calculer_acces, ESSAI_ACCES, BLOQUE_ACCES
+from app.acces import calculer_acces, FORFAIT_ACCES, BLOQUE_ACCES
 
 
 def make_user(**kwargs):
@@ -18,9 +18,16 @@ def make_user(**kwargs):
     return User(**defaults)
 
 
-def test_essai_debloque_tout():
-    user = make_user(statut=StatutUser.ESSAI)
-    assert calculer_acces(user) == ESSAI_ACCES
+def test_essai_reflete_le_forfait_choisi_starter():
+    # L'essai gratuit donne un avant-gout du forfait CHOISI, pas un deblocage
+    # total : sinon n'importe quel compte Starter en essai a les features Elite.
+    user = make_user(statut=StatutUser.ESSAI, forfait=Forfait.STARTER)
+    assert calculer_acces(user) == FORFAIT_ACCES[Forfait.STARTER]
+
+
+def test_essai_reflete_le_forfait_choisi_elite():
+    user = make_user(statut=StatutUser.ESSAI, forfait=Forfait.ELITE)
+    assert calculer_acces(user) == FORFAIT_ACCES[Forfait.ELITE]
 
 
 def test_starter_bloque_factures_et_limite_clientes():
