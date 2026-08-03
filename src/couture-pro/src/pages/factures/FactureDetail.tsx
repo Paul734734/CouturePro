@@ -11,6 +11,7 @@ export default function FactureDetail() {
   const user = useAuthStore((s) => s.user)
   const { getFactureById, fetchFactures, isLoading } = useFacturesStore()
   const printRef = useRef<HTMLDivElement>(null)
+  const [isGenerating, setIsGenerating] = useState(false)
 
   // Sans ça, un acces direct/rechargement sur cette page (lien partage,
   // favori, F5) affichait "Facture introuvable" : le store ne contenait la
@@ -51,8 +52,6 @@ export default function FactureDetail() {
   }
 
   const handleImprimer = () => window.print()
-
-  const [isGenerating, setIsGenerating] = useState(false)
 
   const handleTelecharger = async () => {
     if (!printRef.current) return
