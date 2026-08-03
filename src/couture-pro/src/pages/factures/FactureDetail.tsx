@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import { useFacturesStore } from '../../store/facturesStore'
 import { useAuthStore } from '../../store/authStore'
@@ -9,10 +9,26 @@ export default function FactureDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
-  const { getFactureById } = useFacturesStore()
+  const { getFactureById, fetchFactures, isLoading } = useFacturesStore()
   const printRef = useRef<HTMLDivElement>(null)
 
+  // Sans ça, un acces direct/rechargement sur cette page (lien partage,
+  // favori, F5) affichait "Facture introuvable" : le store ne contenait la
+  // facture que si une AUTRE page (ex: detail de commande) l'avait deja
+  // chargee juste avant, dans la meme session client-side.
+  useEffect(() => {
+    fetchFactures()
+  }, [fetchFactures])
+
   const facture = id ? getFactureById(id) : undefined
+
+  if (!facture && isLoading) {
+    return (
+      <AppLayout titre="Facture">
+        <p style={{ color: '#888', textAlign: 'center', padding: '60px 20px' }}>Chargement...</p>
+      </AppLayout>
+    )
+  }
 
   if (!facture) {
     return (
