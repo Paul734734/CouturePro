@@ -57,12 +57,12 @@ img, video {
 .cp-grid-sidebar { display: grid; grid-template-columns: 280px 1fr; }
 
 @media (max-width: 900px) {
-  .cp-grid-5 { grid-template-columns: repeat(3, 1fr); }
   .cp-grid-sidebar { grid-template-columns: 1fr; }
-  /* Sur tablette, la sidebar fixe laisse trop peu de place pour 3-4
+  /* Sur tablette, la sidebar fixe laisse trop peu de place pour 3-5
      colonnes : les gros montants ("52 345 FCFA") se retrouvent coupes
-     au milieu du nombre, constate en test sur le dashboard a 768px. */
-  .cp-grid-3, .cp-grid-4 { grid-template-columns: repeat(2, 1fr); }
+     au milieu du nombre, constate en test sur le dashboard a 768px
+     (y compris a 3 colonnes, essaye d'abord et encore trop etroit). */
+  .cp-grid-3, .cp-grid-4, .cp-grid-5 { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 640px) {
