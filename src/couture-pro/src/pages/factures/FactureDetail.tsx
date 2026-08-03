@@ -49,6 +49,23 @@ export default function FactureDetail() {
         import('html2canvas'),
       ])
 
+      // html2canvas capture le DOM tel quel au moment de l'appel : sans ça,
+      // le logo (chargé de façon asynchrone depuis /uploads/...) apparaît
+      // comme un cadre vide sur le PDF si le navigateur n'a pas fini de le
+      // charger avant la capture (constaté en test : logo absent du PDF
+      // malgré un <img src=...> correct dans le DOM).
+      const images: HTMLImageElement[] = Array.from(printRef.current.querySelectorAll('img'))
+      await Promise.all(
+        images.map(
+          (img) =>
+            new Promise<void>((resolve) => {
+              if (img.complete) { resolve(); return }
+              img.addEventListener('load', () => resolve(), { once: true })
+              img.addEventListener('error', () => resolve(), { once: true })
+            })
+        )
+      )
+
       const canvas = await html2canvas(printRef.current, {
         scale: 2,
         useCORS: true,
