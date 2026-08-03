@@ -6,7 +6,17 @@ import { getAtelierActif } from "./atelierActif";
 // en retirant un éventuel suffixe "/api" final de VITE_API_URL, pour éviter
 // un double prefixe (https://host/api/api/...) si la variable d'env sur
 // Netlify est definie avec ou sans ce suffixe.
-const RAW_API_URL = import.meta.env.VITE_API_URL || "https://couturepro.app";
+//
+// Fallback : sans VITE_API_URL (aucun .env commite, CI/CD existante ne la
+// definit pas non plus), on utilise l'origine courante de la page plutot
+// qu'un domaine fige en dur. Nginx sert le frontend ET proxy /api sur le
+// meme domaine en prod, donc c'est toujours correct sans configuration -
+// contrairement a l'ancien defaut "https://couturepro.app" qui pointait
+// vers un domaine different de celui reellement utilise (couturepro.cm),
+// cassant tous les appels API des qu'un build oubliait de definir la variable.
+const RAW_API_URL =
+  import.meta.env.VITE_API_URL ||
+  (typeof window !== "undefined" ? window.location.origin : "");
 const API_BASE_URL = RAW_API_URL.replace(/\/api\/?$/, "");
 
 export const api = axios.create({
