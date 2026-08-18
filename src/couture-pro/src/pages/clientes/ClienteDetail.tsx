@@ -261,19 +261,12 @@ export default function ClienteDetail() {
               <InfoLigne label="Téléphone" valeur={cliente.telephone || '—'} />
               <InfoLigne label="Ville" valeur={cliente.ville || '—'} />
               <InfoLigne label="Quartier" valeur={cliente.quartier || '—'} />
-              <InfoLigne label="Adresse" valeur={cliente.adresse || '—'} />
             </InfoCard>
 
             <InfoCard titre="👩 Profil">
-              <InfoLigne label="Profession" valeur={cliente.profession || '—'} />
               <InfoLigne
                 label="Anniversaire"
                 valeur={cliente.dateAnniversaire ? formatDate(cliente.dateAnniversaire) : '—'}
-              />
-              <InfoLigne label="Style préféré" valeur={cliente.stylePreference || '—'} />
-              <InfoLigne
-                label="Budget habituel"
-                valeur={cliente.budgetHabituel ? `${Number(cliente.budgetHabituel).toLocaleString()} FCFA` : '—'}
               />
               <InfoLigne label="Taille vêtement" valeur={cliente.tailleVetement || '—'} />
               <InfoLigne
@@ -368,19 +361,15 @@ export default function ClienteDetail() {
 
                 <div className="cp-grid-4" style={{ gap: 10, marginBottom: 16 }}>
                   {[
-                    { label: 'Poitrine', val: mesures[0].poitrine },
-                    { label: 'Taille', val: mesures[0].taille },
-                    { label: 'Hanche', val: mesures[0].hanche },
-                    { label: 'Longueur robe', val: mesures[0].longueurRobe },
-                    { label: 'Manches', val: mesures[0].manches },
-                    { label: 'Épaules', val: mesures[0].epaules },
-                    { label: 'Bras', val: mesures[0].bras },
-                    { label: 'Sous-poitrine', val: mesures[0].sousPoitrine },
-                    { label: 'Hauteur poitrine', val: mesures[0].hauteurPoitrine },
-                    { label: 'Écart poitrine', val: mesures[0].ecartPoitrine },
-                    { label: 'Longueur jupe', val: mesures[0].longueurJupe },
-                    { label: 'Pantalon', val: mesures[0].pantalon },
-                  ].map((m) => (
+                    { label: 'Tour de poitrine', val: mesures[0].tourPoitrine },
+                    { label: 'Tour de taille', val: mesures[0].tourTaille },
+                    { label: 'Tour de hanches', val: mesures[0].tourHanches },
+                    { label: 'Tour de bras', val: mesures[0].tourBras },
+                    { label: 'Longueur du dos', val: mesures[0].longueurDos },
+                    { label: 'Largeur d\u2019épaules', val: mesures[0].largeurEpaules },
+                    { label: 'Tour de cuisse', val: mesures[0].tourCuisse },
+                    { label: 'Hauteur totale', val: mesures[0].hauteurTotale },
+                  ].filter((m) => m.val !== undefined && m.val !== null).map((m) => (
                     <div
                       key={m.label}
                       style={{
@@ -400,6 +389,10 @@ export default function ClienteDetail() {
                     </div>
                   ))}
                 </div>
+
+                <p style={{ margin: '0 0 16px', fontSize: 12, color: '#aaa' }}>
+                  Aperçu des mensurations principales — <Link to={`/mesures/${cliente.id}`} style={{ color: '#C9A227', fontWeight: 600 }}>voir toutes les mesures détaillées →</Link>
+                </p>
 
                 {mesures[0].notesMorphologie && (
                   <InfoCard titre="📝 Notes morphologie">

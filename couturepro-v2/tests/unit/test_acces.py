@@ -30,10 +30,10 @@ def test_essai_reflete_le_forfait_choisi_elite():
     assert calculer_acces(user) == FORFAIT_ACCES[Forfait.ELITE]
 
 
-def test_starter_bloque_factures_et_limite_clientes():
+def test_starter_limite_clientes_mais_a_les_factures():
     user = make_user(statut=StatutUser.ACTIF, forfait=Forfait.STARTER)
     acces = calculer_acces(user)
-    assert acces["factures"] is False
+    assert acces["factures"] is True
     assert acces["paiements"] is False
     assert acces["maxClientes"] == 30
 

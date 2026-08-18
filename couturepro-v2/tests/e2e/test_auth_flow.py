@@ -14,7 +14,8 @@ def test_register_retourne_un_compte_en_essai(client):
     assert data["user"]["statut"] == "essai"
     assert data["user"]["forfait"] == "starter"
     # L'essai reflete le forfait choisi (starter par defaut) : pas de deblocage total.
-    assert data["acces"]["factures"] is False
+    assert data["acces"]["factures"] is True
+    assert data["acces"]["paiements"] is False
     assert data["acces"]["maxClientes"] == 30
     assert "token" in data
 

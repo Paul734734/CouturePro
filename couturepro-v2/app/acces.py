@@ -10,7 +10,7 @@ FORFAIT_ACCES = {
         "mesures": True,
         "commandes": True,
         "commandesPhotos": False,
-        "factures": False,
+        "factures": True,
         "paiements": False,
         "multiAtelier": False,
         "exportCompta": False,

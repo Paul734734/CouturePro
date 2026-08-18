@@ -3,21 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import AppLayout from '../../components/layout/AppLayout'
 import { useClientesStore } from '@/store/clientesStore'
 import { useMesuresStore, type FormulaireMesure } from '@/store/mesuresStore'
-
-const champsMesures = [
-  { key: 'poitrine', label: 'Poitrine', icon: '📏' },
-  { key: 'taille', label: 'Taille', icon: '📏' },
-  { key: 'hanche', label: 'Hanche', icon: '📏' },
-  { key: 'longueurRobe', label: 'Longueur robe', icon: '👗' },
-  { key: 'manches', label: 'Manches', icon: '👕' },
-  { key: 'epaules', label: 'Épaules', icon: '👤' },
-  { key: 'bras', label: 'Bras', icon: '💪' },
-  { key: 'sousPoitrine', label: 'Sous-poitrine', icon: '📐' },
-  { key: 'hauteurPoitrine', label: 'Hauteur poitrine', icon: '📐' },
-  { key: 'ecartPoitrine', label: 'Écart poitrine', icon: '📐' },
-  { key: 'longueurJupe', label: 'Longueur jupe', icon: '👘' },
-  { key: 'pantalon', label: 'Pantalon', icon: '👖' },
-] as const
+import { CATEGORIES_MESURES } from '@/types'
 
 export default function Mesures() {
   const { clienteId } = useParams()
@@ -68,26 +54,19 @@ export default function Mesures() {
     if (!selectedId) return
     setSaving(true)
     try {
-      const payload: FormulaireMesure = {
-        clienteId: selectedId,
-        poitrine: form.poitrine ? Number(form.poitrine) : undefined,
-        taille: form.taille ? Number(form.taille) : undefined,
-        hanche: form.hanche ? Number(form.hanche) : undefined,
-        longueurRobe: form.longueurRobe ? Number(form.longueurRobe) : undefined,
-        manches: form.manches ? Number(form.manches) : undefined,
-        epaules: form.epaules ? Number(form.epaules) : undefined,
-        bras: form.bras ? Number(form.bras) : undefined,
-        sousPoitrine: form.sousPoitrine ? Number(form.sousPoitrine) : undefined,
-        hauteurPoitrine: form.hauteurPoitrine ? Number(form.hauteurPoitrine) : undefined,
-        ecartPoitrine: form.ecartPoitrine ? Number(form.ecartPoitrine) : undefined,
-        longueurJupe: form.longueurJupe ? Number(form.longueurJupe) : undefined,
-        pantalon: form.pantalon ? Number(form.pantalon) : undefined,
-        notesMorphologie: form.notesMorphologie || undefined,
+      const payload: any = { clienteId: selectedId }
+      for (const cat of CATEGORIES_MESURES) {
+        for (const c of cat.champs) {
+          const v = form[c.key]
+          payload[c.key] = v !== undefined && v !== '' ? Number(v) : undefined
+        }
       }
+      payload.notesMorphologie = form.notesMorphologie || undefined
+
       if (currentMesures) {
-        await modifierMesure(currentMesures.id, selectedId, payload)
+        await modifierMesure(currentMesures.id, selectedId, payload as Partial<FormulaireMesure>)
       } else {
-        await ajouterMesure(payload)
+        await ajouterMesure(payload as FormulaireMesure)
       }
       setEditing(false)
     } finally {
@@ -135,7 +114,7 @@ export default function Mesures() {
             </div>
           ) : (
             <>
-              <div style={{ padding: '20px 24px', borderBottom: '1px solid #f0ede8', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ padding: '20px 24px', borderBottom: '1px solid #f0ede8', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
                 <div>
                   <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700 }}>📏 Mesures — {selected.nom}</h3>
                   <p style={{ margin: '3px 0 0', fontSize: 12, color: '#888' }}>Toutes les mesures en centimètres</p>
@@ -169,14 +148,27 @@ export default function Mesures() {
                   <div style={{ textAlign: 'center', padding: 40, color: '#888', fontSize: 13 }}>Chargement des mesures...</div>
                 ) : editing ? (
                   <>
-                    <div className="cp-grid-3" style={{ gap: 16, marginBottom: 16 }}>
-                      {champsMesures.map(c => (
-                        <div key={c.key}>
-                          <label style={{ fontSize: 12, fontWeight: 600, color: '#555', marginBottom: 4, display: 'block' }}>{c.icon} {c.label} (cm)</label>
-                          <input type="number" value={form[c.key] ?? ''} onChange={e => setForm((p: any) => ({ ...p, [c.key]: e.target.value }))} placeholder="0" style={inputStyle} />
+                    {CATEGORIES_MESURES.map((cat) => (
+                      <div key={cat.titre} style={{ marginBottom: 22 }}>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: '#C9A227', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '.3px' }}>
+                          {cat.titre}
                         </div>
-                      ))}
-                    </div>
+                        <div className="cp-grid-3" style={{ gap: 16 }}>
+                          {cat.champs.map((c) => (
+                            <div key={c.key as string}>
+                              <label style={{ fontSize: 12, fontWeight: 600, color: '#555', marginBottom: 4, display: 'block' }}>{c.label} (cm)</label>
+                              <input
+                                type="number"
+                                value={form[c.key] ?? ''}
+                                onChange={(e) => setForm((p: any) => ({ ...p, [c.key]: e.target.value }))}
+                                placeholder="0"
+                                style={inputStyle}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                     <div>
                       <label style={{ fontSize: 12, fontWeight: 600, color: '#555', marginBottom: 4, display: 'block' }}>📝 Notes morphologie</label>
                       <textarea value={form.notesMorphologie ?? ''} onChange={e => setForm((p: any) => ({ ...p, notesMorphologie: e.target.value }))} placeholder="Ex: Épaules légèrement tombantes, préfère les robes évasées..." style={{ ...inputStyle, height: 80, resize: 'none' }} />
@@ -184,47 +176,28 @@ export default function Mesures() {
                   </>
                 ) : currentMesures ? (
                   <>
-                    <div className="cp-grid-2" style={{ gap: 12, marginBottom: 20 }}>
-                      <div style={{ background: '#FBF3DC', borderRadius: 14, padding: 20 }}>
-                        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 14, color: '#C9A227' }}>📐 Mensurations principales</div>
-                        {[
-                          { key: 'poitrine', label: 'Poitrine' },
-                          { key: 'taille', label: 'Taille' },
-                          { key: 'hanche', label: 'Hanche' },
-                        ].map(m => (
-                          <div key={m.key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                            <span style={{ fontSize: 13, color: '#555' }}>{m.label}</span>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                              <div style={{ height: 6, width: Math.min((((currentMesures as any)[m.key] || 0) / 120) * 80, 80), background: '#C9A227', borderRadius: 3 }} />
-                              <span style={{ fontSize: 15, fontWeight: 700, color: '#1a1a1a', minWidth: 40, textAlign: 'right' }}>{(currentMesures as any)[m.key] ?? '—'} cm</span>
-                            </div>
+                    {CATEGORIES_MESURES.map((cat) => {
+                      const champsRenseignes = cat.champs.filter(
+                        (c) => (currentMesures as any)[c.key] !== undefined && (currentMesures as any)[c.key] !== null
+                      )
+                      if (champsRenseignes.length === 0) return null
+                      return (
+                        <div key={cat.titre} style={{ marginBottom: 18 }}>
+                          <div style={{ fontSize: 13, fontWeight: 700, color: '#C9A227', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '.3px' }}>
+                            {cat.titre}
                           </div>
-                        ))}
-                      </div>
-                      <div style={{ background: '#EFF6FF', borderRadius: 14, padding: 20 }}>
-                        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 14, color: '#2563eb' }}>📏 Longueurs & détails</div>
-                        {[
-                          { key: 'longueurRobe', label: 'Longueur robe' },
-                          { key: 'longueurJupe', label: 'Longueur jupe' },
-                          { key: 'pantalon', label: 'Pantalon' },
-                        ].map(m => (
-                          <div key={m.key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                            <span style={{ fontSize: 13, color: '#555' }}>{m.label}</span>
-                            <span style={{ fontSize: 15, fontWeight: 700, color: '#1a1a1a' }}>{(currentMesures as any)[m.key] ?? '—'} cm</span>
+                          <div className="cp-grid-4" style={{ gap: 12 }}>
+                            {champsRenseignes.map((c) => (
+                              <div key={c.key as string} style={{ background: '#FAFAF8', borderRadius: 12, padding: '14px', border: '1px solid #f0ede8', textAlign: 'center' }}>
+                                <div style={{ fontSize: 10, color: '#888', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '.5px' }}>{c.label}</div>
+                                <div style={{ fontSize: 22, fontWeight: 700, color: '#1a1a1a' }}>{(currentMesures as any)[c.key] ?? '—'}</div>
+                                <div style={{ fontSize: 10, color: '#aaa' }}>cm</div>
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="cp-grid-4" style={{ gap: 12 }}>
-                      {champsMesures.map(c => (
-                        <div key={c.key} style={{ background: '#FAFAF8', borderRadius: 12, padding: '14px', border: '1px solid #f0ede8', textAlign: 'center' }}>
-                          <div style={{ fontSize: 10, color: '#888', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '.5px' }}>{c.label}</div>
-                          <div style={{ fontSize: 22, fontWeight: 700, color: '#1a1a1a' }}>{(currentMesures as any)[c.key] ?? '—'}</div>
-                          <div style={{ fontSize: 10, color: '#aaa' }}>cm</div>
                         </div>
-                      ))}
-                    </div>
+                      )
+                    })}
 
                     {currentMesures.notesMorphologie && (
                       <div style={{ marginTop: 16, background: '#FAFAF8', borderRadius: 12, padding: 16, border: '1px solid #f0ede8' }}>

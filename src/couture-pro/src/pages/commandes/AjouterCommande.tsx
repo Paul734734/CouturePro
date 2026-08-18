@@ -46,6 +46,9 @@ export default function AjouterCommande() {
     dateCommande: new Date().toISOString().split('T')[0],
     dateEssayage: '',
     dateLivraison: '',
+    modeLivraison: 'retrait_atelier',
+    prixLivraison: '',
+    adresseLivraison: '',
     statut: 'en_attente',
     notes: '',
     tempsConception: '',
@@ -73,6 +76,9 @@ export default function AjouterCommande() {
         dateCommande: existing.dateCommande || new Date().toISOString().split('T')[0],
         dateEssayage: existing.dateEssayage || '',
         dateLivraison: existing.dateLivraison || '',
+        modeLivraison: existing.modeLivraison || 'retrait_atelier',
+        prixLivraison: existing.prixLivraison?.toString() || '',
+        adresseLivraison: existing.adresseLivraison || '',
         statut: existing.statut || 'en_attente',
         notes: existing.notes || '',
         tempsConception: existing.tempsConception?.toString() || '',
@@ -143,6 +149,9 @@ export default function AjouterCommande() {
       dateCommande: form.dateCommande,
       dateEssayage: form.dateEssayage,
       dateLivraison: form.dateLivraison,
+      modeLivraison: form.modeLivraison,
+      prixLivraison: form.modeLivraison === 'livraison_domicile' ? (Number(form.prixLivraison) || 0) : 0,
+      adresseLivraison: form.modeLivraison === 'livraison_domicile' ? form.adresseLivraison : undefined,
       statut: form.statut,
       notes: form.notes,
       resteAPayer,
@@ -356,6 +365,53 @@ export default function AjouterCommande() {
               style={inputStyle(false)}
             />
           </Champ>
+        </Section>
+
+        <Section titre="🚚 Livraison / Expédition">
+          <Champ label="Mode de remise">
+            <div style={{ display: 'flex', gap: 8 }}>
+              {[
+                { value: 'retrait_atelier', label: '🏪 Retrait à l\'atelier' },
+                { value: 'livraison_domicile', label: '🚚 Livraison à domicile' },
+              ].map((m) => (
+                <button
+                  key={m.value}
+                  type="button"
+                  onClick={() => set('modeLivraison', m.value)}
+                  style={{
+                    flex: 1, padding: '10px 12px', borderRadius: 10, fontSize: 13, fontWeight: 600,
+                    border: form.modeLivraison === m.value ? 'none' : '1px solid #e5e5e5',
+                    background: form.modeLivraison === m.value ? '#C9A227' : '#fff',
+                    color: form.modeLivraison === m.value ? '#fff' : '#555',
+                    cursor: 'pointer', transition: 'all 0.15s',
+                  }}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+          </Champ>
+          {form.modeLivraison === 'livraison_domicile' && (
+            <>
+              <Champ label="Adresse de livraison">
+                <input
+                  value={form.adresseLivraison}
+                  onChange={(e) => set('adresseLivraison', e.target.value)}
+                  placeholder="Rue, quartier, ville..."
+                  style={inputStyle(false)}
+                />
+              </Champ>
+              <Champ label="Prix de livraison (FCFA)">
+                <input
+                  type="number"
+                  value={form.prixLivraison}
+                  onChange={(e) => set('prixLivraison', e.target.value)}
+                  placeholder="Ex: 2000"
+                  style={inputStyle(false)}
+                />
+              </Champ>
+            </>
+          )}
         </Section>
 
         <Section titre="📌 Statut & Notes">

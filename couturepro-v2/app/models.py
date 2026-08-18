@@ -130,18 +130,59 @@ class Mesure(Base):
     user_id = Column(String(36), ForeignKey("users.id"), nullable=False, index=True)
     cliente_id = Column(String(36), ForeignKey("clientes.id"), nullable=False, index=True)
 
-    poitrine = Column(Float, nullable=True)
-    taille = Column(Float, nullable=True)
-    hanche = Column(Float, nullable=True)
-    longueur_robe = Column(Float, nullable=True)
-    manches = Column(Float, nullable=True)
-    epaules = Column(Float, nullable=True)
-    bras = Column(Float, nullable=True)
-    sous_poitrine = Column(Float, nullable=True)
-    hauteur_poitrine = Column(Float, nullable=True)
+    # ── Tete et cou ───────────────────────────────────
+    tour_tete = Column(Float, nullable=True)
+    tour_cou = Column(Float, nullable=True)
+    hauteur_cou = Column(Float, nullable=True)
+
+    # ── Epaules et buste ──────────────────────────────
+    largeur_epaules = Column(Float, nullable=True)
+    longueur_epaule = Column(Float, nullable=True)
+    tour_poitrine = Column(Float, nullable=True)
+    tour_sous_poitrine = Column(Float, nullable=True)
     ecart_poitrine = Column(Float, nullable=True)
-    longueur_jupe = Column(Float, nullable=True)
-    pantalon = Column(Float, nullable=True)
+    hauteur_poitrine = Column(Float, nullable=True)
+    tour_carrure_dos = Column(Float, nullable=True)
+    tour_carrure_devant = Column(Float, nullable=True)
+
+    # ── Dos et longueur de buste ──────────────────────
+    longueur_dos = Column(Float, nullable=True)
+    longueur_taille_devant = Column(Float, nullable=True)
+    longueur_taille_hanches = Column(Float, nullable=True)
+
+    # ── Taille et hanches ─────────────────────────────
+    tour_taille = Column(Float, nullable=True)
+    tour_hanches = Column(Float, nullable=True)
+    hauteur_taille = Column(Float, nullable=True)
+    tour_ventre = Column(Float, nullable=True)
+
+    # ── Bras ───────────────────────────────────────────
+    tour_bras = Column(Float, nullable=True)
+    tour_coude = Column(Float, nullable=True)
+    tour_poignet = Column(Float, nullable=True)
+    longueur_bras = Column(Float, nullable=True)
+    longueur_epaule_coude = Column(Float, nullable=True)
+    longueur_coude_poignet = Column(Float, nullable=True)
+
+    # ── Jambes ─────────────────────────────────────────
+    tour_cuisse = Column(Float, nullable=True)
+    tour_genou = Column(Float, nullable=True)
+    tour_mollet = Column(Float, nullable=True)
+    tour_cheville = Column(Float, nullable=True)
+    longueur_entrejambe = Column(Float, nullable=True)
+    longueur_totale_jambe = Column(Float, nullable=True)
+    hauteur_genou = Column(Float, nullable=True)
+
+    # ── Longueurs generales ────────────────────────────
+    hauteur_totale = Column(Float, nullable=True)
+    longueur_totale_vetement = Column(Float, nullable=True)
+    longueur_jupe_pantalon = Column(Float, nullable=True)
+
+    # ── Mesures specifiques optionnelles ──────────────
+    tour_tete_capuche = Column(Float, nullable=True)
+    profondeur_emmanchure = Column(Float, nullable=True)
+    largeur_dos_taille = Column(Float, nullable=True)
+
     notes_morphologie = Column(Text, nullable=True)
 
     updated_at = Column(DateTime, default=datetime.utcnow)
@@ -175,6 +216,10 @@ class Commande(Base):
     date_commande = Column(DateTime, default=datetime.utcnow)
     date_essayage = Column(DateTime, nullable=True)
     date_livraison = Column(DateTime, nullable=True)
+
+    mode_livraison = Column(String(30), default="retrait_atelier")  # retrait_atelier | livraison_domicile
+    prix_livraison = Column(Float, default=0)
+    adresse_livraison = Column(String(255), nullable=True)
 
     statut = Column(Enum(StatutCommande), default=StatutCommande.EN_ATTENTE)
     notes = Column(Text, nullable=True)

@@ -145,3 +145,33 @@ def test_isolation_multi_tenant_sur_commandes(client):
 
     r3 = client.get("/api/commandes", headers=headers(token_b))
     assert all(c["id"] != commande_id_a for c in r3.json())
+
+
+def test_commande_par_defaut_est_retrait_atelier_sans_frais(client):
+    token = creer_utilisatrice(client)
+    cliente_id = creer_cliente(client, token)
+
+    r = client.post("/api/commandes", json={
+        "clienteId": cliente_id, "typeVetement": "Robe", "prixTotal": 20000, "avancePaye": 0,
+    }, headers=headers(token))
+
+    assert r.status_code == 201
+    data = r.json()
+    assert data["modeLivraison"] == "retrait_atelier"
+    assert data["prixLivraison"] == 0
+
+
+def test_commande_avec_livraison_a_domicile_et_prix_livraison(client):
+    token = creer_utilisatrice(client)
+    cliente_id = creer_cliente(client, token)
+
+    r = client.post("/api/commandes", json={
+        "clienteId": cliente_id, "typeVetement": "Robe", "prixTotal": 20000, "avancePaye": 0,
+        "modeLivraison": "livraison_domicile", "prixLivraison": 2000, "adresseLivraison": "Bastos, Yaounde",
+    }, headers=headers(token))
+
+    assert r.status_code == 201
+    data = r.json()
+    assert data["modeLivraison"] == "livraison_domicile"
+    assert data["prixLivraison"] == 2000
+    assert data["adresseLivraison"] == "Bastos, Yaounde"

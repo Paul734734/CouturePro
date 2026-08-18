@@ -9,9 +9,6 @@ export interface ArticleStock {
   quantite: number;
   unite: string;
   seuilAlerte?: number;
-  prixUnitaire?: number;
-  fournisseur?: string;
-  notes?: string;
   dateAjout: string;
   dateMaj: string;
 }

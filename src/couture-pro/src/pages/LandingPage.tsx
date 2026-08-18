@@ -127,8 +127,8 @@ function ModalInscription({ onClose }: { onClose: () => void }) {
       couleur: '#C9A227',
       bg: '#FBF3DC',
       border: '#E8D28C',
-      features: ["Jusqu'à 30 clientes", 'Carnet de mesures', 'Gestion commandes', 'Tableau de bord'],
-      exclues: ['Factures PDF', 'Suivi paiements avancé'],
+      features: ["Jusqu'à 30 clientes", 'Carnet de mesures', 'Gestion commandes', 'Factures PDF', 'Tableau de bord'],
+      exclues: ['Suivi paiements avancé'],
     },
     {
       id: 'pro',
@@ -644,8 +644,8 @@ export default function LandingPage() {
               {
                 nom: 'Starter', prix_m: 1000, prix_a: 10000, couleur: '#C9A227',
                 bg: 'white', border: '#f0ede8', btnBg: '#FBF3DC', btnColor: '#C9A227',
-                features: ["Jusqu'à 30 clientes", 'Carnet de mesures', 'Gestion commandes', 'Tableau de bord de base'],
-                exclues: ['Factures PDF', 'Suivi paiements avancé'],
+                features: ["Jusqu'à 30 clientes", 'Carnet de mesures', 'Gestion commandes', 'Factures PDF', 'Tableau de bord de base'],
+                exclues: ['Suivi paiements avancé'],
                 desc: 'Idéal pour démarrer',
               },
               {

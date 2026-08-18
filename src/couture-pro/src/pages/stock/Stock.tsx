@@ -3,7 +3,7 @@ import AppLayout from '../../components/layout/AppLayout'
 import { useStockStore, type FormulaireArticleStock } from '@/store/stockStore'
 import ConfirmModal from '@/components/ui/ConfirmModal'
 
-const UNITES = ['unite', 'metre', 'rouleau', 'kg', 'boite']
+const UNITES = ['unite', 'metre', 'bobine', 'yard', 'rouleau', 'kg', 'boite']
 
 export default function Stock() {
   const { articles, fetchStock, ajouterArticle, modifierArticle, supprimerArticle, isLoading, error } = useStockStore()
@@ -11,7 +11,7 @@ export default function Stock() {
   const [showForm, setShowForm] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [form, setForm] = useState({
-    nom: '', categorie: '', quantite: '', unite: 'unite', seuilAlerte: '', prixUnitaire: '', fournisseur: '', notes: '',
+    nom: '', categorie: '', quantite: '', unite: 'unite', seuilAlerte: '',
   })
   const [idASupprimer, setIdASupprimer] = useState<string | null>(null)
   const [suppressionEnCours, setSuppressionEnCours] = useState(false)
@@ -26,7 +26,7 @@ export default function Stock() {
   )
 
   const resetForm = () => {
-    setForm({ nom: '', categorie: '', quantite: '', unite: 'unite', seuilAlerte: '', prixUnitaire: '', fournisseur: '', notes: '' })
+    setForm({ nom: '', categorie: '', quantite: '', unite: 'unite', seuilAlerte: '' })
     setEditingId(null)
   }
 
@@ -39,9 +39,6 @@ export default function Stock() {
       quantite: String(a.quantite),
       unite: a.unite || 'unite',
       seuilAlerte: a.seuilAlerte != null ? String(a.seuilAlerte) : '',
-      prixUnitaire: a.prixUnitaire != null ? String(a.prixUnitaire) : '',
-      fournisseur: a.fournisseur || '',
-      notes: a.notes || '',
     })
     setEditingId(id)
     setShowForm(true)
@@ -55,9 +52,6 @@ export default function Stock() {
       quantite: Number(form.quantite) || 0,
       unite: form.unite,
       seuilAlerte: form.seuilAlerte ? Number(form.seuilAlerte) : undefined,
-      prixUnitaire: form.prixUnitaire ? Number(form.prixUnitaire) : undefined,
-      fournisseur: form.fournisseur || undefined,
-      notes: form.notes || undefined,
     }
     if (editingId) {
       await modifierArticle(editingId, payload)
@@ -133,10 +127,6 @@ export default function Stock() {
                 <div style={{ fontSize: 18, fontWeight: 700, marginTop: 8, color: enAlerte ? '#DC2626' : '#1a1a1a' }}>
                   {a.quantite} {a.unite}
                 </div>
-                {a.prixUnitaire != null && (
-                  <div style={{ color: '#888', fontSize: 12, marginTop: 4 }}>{a.prixUnitaire.toLocaleString()} FCFA / {a.unite}</div>
-                )}
-                {a.fournisseur && <div style={{ color: '#bbb', fontSize: 11, marginTop: 6 }}>Fournisseur : {a.fournisseur}</div>}
                 <button
                   onClick={(e) => { e.stopPropagation(); handleSupprimer(a.id) }}
                   style={{ marginTop: 10, background: 'none', border: 'none', color: '#DC2626', fontSize: 12, cursor: 'pointer', padding: 0 }}
@@ -173,23 +163,9 @@ export default function Stock() {
                     </select>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: 12 }}>
-                  <div style={{ flex: 1 }}>
-                    <label style={labelStyle}>Seuil d'alerte</label>
-                    <input type="number" placeholder="Ex: 5" style={inputStyle} value={form.seuilAlerte} onChange={(e) => setForm({ ...form, seuilAlerte: e.target.value })} />
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <label style={labelStyle}>Prix unitaire (FCFA)</label>
-                    <input type="number" style={inputStyle} value={form.prixUnitaire} onChange={(e) => setForm({ ...form, prixUnitaire: e.target.value })} />
-                  </div>
-                </div>
                 <div>
-                  <label style={labelStyle}>Fournisseur</label>
-                  <input style={inputStyle} value={form.fournisseur} onChange={(e) => setForm({ ...form, fournisseur: e.target.value })} />
-                </div>
-                <div>
-                  <label style={labelStyle}>Notes</label>
-                  <textarea style={{ ...inputStyle, minHeight: 70, resize: 'vertical' as const }} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
+                  <label style={labelStyle}>Seuil d'alerte</label>
+                  <input type="number" placeholder="Ex: 5" style={inputStyle} value={form.seuilAlerte} onChange={(e) => setForm({ ...form, seuilAlerte: e.target.value })} />
                 </div>
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>

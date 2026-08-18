@@ -47,7 +47,7 @@ def _synchroniser_facture_commande(db: Session, commande: Commande, current_user
     """Crée ou met à jour la facture liée à la commande pour qu'elle reflète
     toujours le prix total et le montant réellement payé de la commande."""
     facture = db.query(Facture).filter(Facture.commande_id == commande.id).first()
-    montant_total = commande.prix_total or 0
+    montant_total = (commande.prix_total or 0) + (commande.prix_livraison or 0)
     montant_paye = commande.avance_paye or 0
     montant_reste = max(0.0, montant_total - montant_paye)
     statut = _calculer_statut_facture(montant_total, montant_paye)

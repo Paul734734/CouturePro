@@ -27,8 +27,8 @@ const FORFAITS = [
     bg: '#FBF3DC',
     border: '#E8D28C',
     desc: 'Pour débuter',
-    features: ["Jusqu'à 30 clientes", 'Carnet de mesures', 'Gestion commandes', 'Tableau de bord'],
-    exclues: ['Factures PDF', 'Suivi paiements avancé'],
+    features: ["Jusqu'à 30 clientes", 'Carnet de mesures', 'Gestion commandes', 'Factures PDF', 'Tableau de bord'],
+    exclues: ['Suivi paiements avancé'],
   },
   {
     id: 'pro' as Forfait,
@@ -203,7 +203,7 @@ const handleSubmit = async () => {
         {step === 1 && (
           <div style={{ padding: '32px 28px' }}>
             <h2 style={{ margin: '0 0 4px', fontSize: 22, fontWeight: 800 }}>Choisissez votre forfait</h2>
-            <p style={{ margin: '0 0 24px', fontSize: 13, color: '#888' }}>7 jours d'essai gratuit · Sans carte bancaire · Résiliation à tout moment</p>
+            <p style={{ margin: '0 0 24px', fontSize: 13, color: '#888' }}>Sans carte bancaire · Résiliation à tout moment</p>
 
             {/* Toggle mensuel/annuel */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 28, padding: '12px', background: '#FAFAF8', borderRadius: 12, border: '1px solid #f0ede8' }}>
@@ -421,12 +421,6 @@ const handleSubmit = async () => {
                   )}
                 </div>
               ))}
-            </div>
-
-            <div style={{ marginTop: 14, padding: '10px 14px', background: '#F0FDF4', borderRadius: 10, border: '1px solid #BBF7D0' }}>
-              <span style={{ fontSize: 12, color: '#16a34a', fontWeight: 600 }}>
-                🎁 7 jours d'essai gratuit — Toutes les fonctionnalités débloquées · Aucun paiement requis
-              </span>
             </div>
 
             <button

@@ -6,7 +6,6 @@ import { useAuthStore } from '../../store/authStore'
 import type { Cliente } from '@/types'
 import type * as React from 'react'
 
-const STYLES = ['Africain moderne', 'Classique élégant', 'Traditionnel', 'Soirée', 'Casual chic', 'Boubou luxe', 'Tailleur', 'Décontracté']
 const TAILLES = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 
 const FORM_VIDE = {
@@ -14,11 +13,7 @@ const FORM_VIDE = {
   telephone: '',
   ville: '',
   quartier: '',
-  adresse: '',
-  profession: '',
   dateAnniversaire: '',
-  stylePreference: '',
-  budgetHabituel: '',
   tailleVetement: '',
   hauteur: '',
   notes: '',
@@ -42,11 +37,7 @@ export default function AjouterCliente() {
       telephone: c.telephone || '',
       ville: c.ville || '',
       quartier: c.quartier || '',
-      adresse: c.adresse || '',
-      profession: c.profession || '',
       dateAnniversaire: c.dateAnniversaire || '',
-      stylePreference: c.stylePreference || '',
-      budgetHabituel: c.budgetHabituel?.toString() || '',
       tailleVetement: c.tailleVetement || '',
       hauteur: c.hauteur?.toString() || '',
       notes: c.notes || '',
@@ -93,11 +84,7 @@ export default function AjouterCliente() {
       telephone: form.telephone,
       ville: form.ville,
       quartier: form.quartier,
-      adresse: form.adresse,
-      profession: form.profession,
       dateAnniversaire: form.dateAnniversaire,
-      stylePreference: form.stylePreference,
-      budgetHabituel: Number(form.budgetHabituel) || 0,
       tailleVetement: form.tailleVetement,
       hauteur: form.hauteur ? Number(form.hauteur) : undefined,
       notes: form.notes,
@@ -151,9 +138,6 @@ export default function AjouterCliente() {
           <Champ label="Téléphone *" erreur={erreurs.telephone}>
             <input value={form.telephone} onChange={(e) => set('telephone', e.target.value)} placeholder="+221 77 123 45 67" style={inputStyle(!!erreurs.telephone)} />
           </Champ>
-          <Champ label="Profession">
-            <input value={form.profession} onChange={(e) => set('profession', e.target.value)} placeholder="Ex: Enseignante, Avocate..." style={inputStyle(false)} />
-          </Champ>
           <Champ label="Date de naissance">
             <input type="date" value={form.dateAnniversaire} onChange={(e) => set('dateAnniversaire', e.target.value)} style={inputStyle(false)} />
           </Champ>
@@ -165,9 +149,6 @@ export default function AjouterCliente() {
           </Champ>
           <Champ label="Quartier">
             <input value={form.quartier} onChange={(e) => set('quartier', e.target.value)} placeholder="Ex: Akwa, Bastos, Plateau..." style={inputStyle(false)} />
-          </Champ>
-          <Champ label="Adresse complète">
-            <input value={form.adresse} onChange={(e) => set('adresse', e.target.value)} placeholder="Rue, numéro..." style={inputStyle(false)} />
           </Champ>
         </Section>
 
@@ -184,18 +165,6 @@ export default function AjouterCliente() {
               value={form.hauteur} onChange={(e) => set('hauteur', e.target.value)}
               placeholder="Ex: 1.72" style={inputStyle(!!erreurs.hauteur)}
             />
-          </Champ>
-        </Section>
-
-        <Section titre="✨ Préférences & Budget">
-          <Champ label="Style préféré">
-            <select value={form.stylePreference} onChange={(e) => set('stylePreference', e.target.value)} style={inputStyle(false)}>
-              <option value="">Choisir un style...</option>
-              {STYLES.map((s) => <option key={s} value={s}>{s}</option>)}
-            </select>
-          </Champ>
-          <Champ label="Budget habituel (FCFA)">
-            <input type="number" value={form.budgetHabituel} onChange={(e) => set('budgetHabituel', e.target.value)} placeholder="Ex: 50000" style={inputStyle(false)} />
           </Champ>
         </Section>
 

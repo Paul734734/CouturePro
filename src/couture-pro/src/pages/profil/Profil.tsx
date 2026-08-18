@@ -96,12 +96,14 @@ export default function Profil() {
         }}>
           <div style={{
             width: 80, height: 80, borderRadius: '50%',
-            background: 'linear-gradient(135deg, #C9A227, #d9bb5c)',
+            background: user?.logoUrl
+              ? `center / cover no-repeat url(${resolveFileUrl(user.logoUrl)})`
+              : 'linear-gradient(135deg, #C9A227, #d9bb5c)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 32, fontWeight: 700, color: '#fff',
-            margin: '0 auto 12px',
+            margin: '0 auto 12px', overflow: 'hidden',
           }}>
-            {user?.nom?.charAt(0).toUpperCase()}
+            {!user?.logoUrl && user?.nom?.charAt(0).toUpperCase()}
           </div>
           <div style={{ fontWeight: 700, fontSize: 18, color: '#1a1a1a' }}>{user?.nom}</div>
           <div style={{ color: '#C9A227', fontSize: 14, fontWeight: 600, marginTop: 2 }}>{user?.nomAtelier}</div>

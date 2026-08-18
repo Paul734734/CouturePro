@@ -115,7 +115,7 @@ function CommandeDetail() {
         clienteId: commande.clienteId,
         commandeId: commande.id,
         type: "facture",
-        montantTotal: commande.prixTotal,
+        montantTotal: commande.prixTotal + (commande.prixLivraison || 0),
         montantPaye: commande.avancePaye,
       });
       navigate(`/factures/${facture.id}`);
@@ -159,6 +159,15 @@ function CommandeDetail() {
                 <div style={value}>{commande.tempsConception} jour(s)</div>
               </div>
             )}
+            <div>
+              <div style={label}>Livraison / Expédition</div>
+              <div style={value}>
+                {commande.modeLivraison === 'livraison_domicile' ? '🚚 Livraison à domicile' : '🏪 Retrait à l\u2019atelier'}
+              </div>
+              {commande.modeLivraison === 'livraison_domicile' && commande.adresseLivraison && (
+                <div style={{ ...label, marginTop: 4 }}>{commande.adresseLivraison}</div>
+              )}
+            </div>
           </div>
 
           <div className="cp-grid-3" style={{ gap: 12, marginTop: 20, paddingTop: 20, borderTop: "1px solid #f0ede8" }}>
@@ -174,6 +183,12 @@ function CommandeDetail() {
               <div style={label}>Reste à payer</div>
               <div style={{ ...value, color: resteAPayer > 0 ? "#C9A227" : "#16a34a" }}>{resteAPayer.toLocaleString()} FCFA</div>
             </div>
+            {!!commande.prixLivraison && (
+              <div>
+                <div style={label}>Prix de livraison</div>
+                <div style={{ ...value, color: "#1a1a1a" }}>{commande.prixLivraison.toLocaleString()} FCFA</div>
+              </div>
+            )}
           </div>
         </div>
 

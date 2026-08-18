@@ -151,56 +151,68 @@ class ClienteOut(CamelModel):
     date_ajout: datetime
 
 
-class MesureCreate(CamelModel):
+class MesureChampsMixin(CamelModel):
+    # Tete et cou
+    tour_tete: Optional[float] = None
+    tour_cou: Optional[float] = None
+    hauteur_cou: Optional[float] = None
+    # Epaules et buste
+    largeur_epaules: Optional[float] = None
+    longueur_epaule: Optional[float] = None
+    tour_poitrine: Optional[float] = None
+    tour_sous_poitrine: Optional[float] = None
+    ecart_poitrine: Optional[float] = None
+    hauteur_poitrine: Optional[float] = None
+    tour_carrure_dos: Optional[float] = None
+    tour_carrure_devant: Optional[float] = None
+    # Dos et longueur de buste
+    longueur_dos: Optional[float] = None
+    longueur_taille_devant: Optional[float] = None
+    longueur_taille_hanches: Optional[float] = None
+    # Taille et hanches
+    tour_taille: Optional[float] = None
+    tour_hanches: Optional[float] = None
+    hauteur_taille: Optional[float] = None
+    tour_ventre: Optional[float] = None
+    # Bras
+    tour_bras: Optional[float] = None
+    tour_coude: Optional[float] = None
+    tour_poignet: Optional[float] = None
+    longueur_bras: Optional[float] = None
+    longueur_epaule_coude: Optional[float] = None
+    longueur_coude_poignet: Optional[float] = None
+    # Jambes
+    tour_cuisse: Optional[float] = None
+    tour_genou: Optional[float] = None
+    tour_mollet: Optional[float] = None
+    tour_cheville: Optional[float] = None
+    longueur_entrejambe: Optional[float] = None
+    longueur_totale_jambe: Optional[float] = None
+    hauteur_genou: Optional[float] = None
+    # Longueurs generales
+    hauteur_totale: Optional[float] = None
+    longueur_totale_vetement: Optional[float] = None
+    longueur_jupe_pantalon: Optional[float] = None
+    # Mesures specifiques optionnelles
+    tour_tete_capuche: Optional[float] = None
+    profondeur_emmanchure: Optional[float] = None
+    largeur_dos_taille: Optional[float] = None
+
+    notes_morphologie: Optional[str] = None
+
+
+class MesureCreate(MesureChampsMixin):
     cliente_id: str
-    poitrine: Optional[float] = None
-    taille: Optional[float] = None
-    hanche: Optional[float] = None
-    longueur_robe: Optional[float] = None
-    manches: Optional[float] = None
-    epaules: Optional[float] = None
-    bras: Optional[float] = None
-    sous_poitrine: Optional[float] = None
-    hauteur_poitrine: Optional[float] = None
-    ecart_poitrine: Optional[float] = None
-    longueur_jupe: Optional[float] = None
-    pantalon: Optional[float] = None
-    notes_morphologie: Optional[str] = None
 
 
-class MesureUpdate(CamelModel):
-    poitrine: Optional[float] = None
-    taille: Optional[float] = None
-    hanche: Optional[float] = None
-    longueur_robe: Optional[float] = None
-    manches: Optional[float] = None
-    epaules: Optional[float] = None
-    bras: Optional[float] = None
-    sous_poitrine: Optional[float] = None
-    hauteur_poitrine: Optional[float] = None
-    ecart_poitrine: Optional[float] = None
-    longueur_jupe: Optional[float] = None
-    pantalon: Optional[float] = None
-    notes_morphologie: Optional[str] = None
+class MesureUpdate(MesureChampsMixin):
+    pass
 
 
-class MesureOut(CamelModel):
+class MesureOut(MesureChampsMixin):
     id: str
     user_id: str
     cliente_id: str
-    poitrine: Optional[float] = None
-    taille: Optional[float] = None
-    hanche: Optional[float] = None
-    longueur_robe: Optional[float] = None
-    manches: Optional[float] = None
-    epaules: Optional[float] = None
-    bras: Optional[float] = None
-    sous_poitrine: Optional[float] = None
-    hauteur_poitrine: Optional[float] = None
-    ecart_poitrine: Optional[float] = None
-    longueur_jupe: Optional[float] = None
-    pantalon: Optional[float] = None
-    notes_morphologie: Optional[str] = None
     updated_at: datetime
 
 
@@ -214,6 +226,9 @@ class CommandeCreate(CamelModel):
     avance_paye: float = 0
     date_essayage: Optional[datetime] = None
     date_livraison: Optional[datetime] = None
+    mode_livraison: Optional[str] = "retrait_atelier"
+    prix_livraison: Optional[float] = 0
+    adresse_livraison: Optional[str] = None
     statut: StatutCommande = StatutCommande.EN_ATTENTE
     notes: Optional[str] = None
     temps_conception: Optional[float] = None
@@ -227,6 +242,9 @@ class CommandeUpdate(CamelModel):
     avance_paye: Optional[float] = None
     date_essayage: Optional[datetime] = None
     date_livraison: Optional[datetime] = None
+    mode_livraison: Optional[str] = None
+    prix_livraison: Optional[float] = None
+    adresse_livraison: Optional[str] = None
     statut: Optional[StatutCommande] = None
     notes: Optional[str] = None
     temps_conception: Optional[float] = None
@@ -251,6 +269,9 @@ class CommandeOut(CamelModel):
     date_commande: datetime
     date_essayage: Optional[datetime] = None
     date_livraison: Optional[datetime] = None
+    mode_livraison: Optional[str] = None
+    prix_livraison: Optional[float] = None
+    adresse_livraison: Optional[str] = None
     statut: StatutCommande
     notes: Optional[str] = None
     temps_conception: Optional[float] = None
