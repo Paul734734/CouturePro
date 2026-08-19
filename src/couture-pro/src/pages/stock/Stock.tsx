@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
+import GroupeBoutonsAction from '../../components/layout/GroupeBoutonsAction'
 import { useStockStore, type FormulaireArticleStock } from '@/store/stockStore'
 import ConfirmModal from '@/components/ui/ConfirmModal'
 
@@ -139,8 +140,11 @@ export default function Stock() {
         </div>
 
         {showForm && (
-          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
-            <div style={{ background: '#fff', borderRadius: 16, padding: 24, width: '100%', maxWidth: 480, maxHeight: '90vh', overflowY: 'auto' }}>
+          <div
+            className="pb-[calc(16px_+_64px_+_env(safe-area-inset-bottom))] md:pb-0"
+            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}
+          >
+            <div style={{ background: '#fff', borderRadius: 16, padding: 24, width: '100%', maxWidth: 480, maxHeight: 'min(90vh, 100%)', overflowY: 'auto' }}>
               <h3 style={{ marginTop: 0 }}>{editingId ? "Modifier l'article" : 'Nouvel article de stock'}</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <div>
@@ -168,10 +172,10 @@ export default function Stock() {
                   <input type="number" placeholder="Ex: 5" style={inputStyle} value={form.seuilAlerte} onChange={(e) => setForm({ ...form, seuilAlerte: e.target.value })} />
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-                <button onClick={() => { setShowForm(false); resetForm() }} style={{ flex: 1, padding: 10, borderRadius: 10, border: '1px solid #e5e5e5', background: '#fff', cursor: 'pointer' }}>Annuler</button>
-                <button onClick={handleSubmit} style={{ flex: 1, padding: 10, borderRadius: 10, border: 'none', background: '#C9A227', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Enregistrer</button>
-              </div>
+              <GroupeBoutonsAction className="mt-5">
+                <button onClick={() => { setShowForm(false); resetForm() }} className="w-full min-[480px]:w-auto" style={{ flex: 1, padding: 10, borderRadius: 10, border: '1px solid #e5e5e5', background: '#fff', cursor: 'pointer' }}>Annuler</button>
+                <button onClick={handleSubmit} className="w-full min-[480px]:w-auto" style={{ flex: 1, padding: 10, borderRadius: 10, border: 'none', background: '#C9A227', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Enregistrer</button>
+              </GroupeBoutonsAction>
             </div>
           </div>
         )}

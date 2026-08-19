@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useEffect, useMemo, useState, useSyncExternalStore } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { useAteliersStore } from '../../store/ateliersStore'
@@ -55,8 +55,30 @@ export default function AppLayout({
   const acceduMultiAtelier = useAuthStore((s) => s.acces.multiAtelier)
   const { ateliers, fetchAteliers } = useAteliersStore()
   const [menuPlusOuvert, setMenuPlusOuvert] = useState(false)
+  const bottomNavRef = useRef<HTMLElement>(null)
 
   const atelierActifId = useSyncExternalStore(subscribeAtelierActif, getAtelierActif, () => null)
+
+  // Mesure la hauteur RÉELLE de la bottom nav (plutôt que de l'estimer en
+  // CSS) : le rendu des emojis dans les icônes varie fortement d'un
+  // téléphone/OS à l'autre et peut être bien plus haut que prévu. On pousse
+  // la valeur mesurée dans --bottom-nav-height, utilisée partout ailleurs
+  // pour réserver l'espace nécessaire au-dessus de la nav.
+  useLayoutEffect(() => {
+    const nav = bottomNavRef.current
+    if (!nav) return
+    const mesurer = () => {
+      document.documentElement.style.setProperty('--bottom-nav-height', `${nav.offsetHeight}px`)
+    }
+    mesurer()
+    const observer = new ResizeObserver(mesurer)
+    observer.observe(nav)
+    window.addEventListener('orientationchange', mesurer)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('orientationchange', mesurer)
+    }
+  }, [])
 
   useEffect(() => {
     if (acceduMultiAtelier) fetchAteliers()
@@ -173,7 +195,7 @@ export default function AppLayout({
           </div>
         </div>
 
-        <main className="flex-1 min-w-0 min-h-[calc(100vh-80px)] px-4 md:px-8 py-6 pb-24 md:pb-6 overflow-x-hidden">
+        <main className="scrollable-content flex-1 min-w-0 min-h-[calc(100vh-80px)] px-4 md:px-8 py-6 overflow-x-hidden">
           {children}
         </main>
       </div>
@@ -215,8 +237,9 @@ export default function AppLayout({
 
       {/* ✅ Bottom nav reste pour mobile */}
       <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around py-2 z-50"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+        ref={bottomNavRef}
+        className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around z-50"
+        style={{ padding: '2px 0', paddingBottom: 'calc(2px + env(safe-area-inset-bottom))' }}
       >
 
         {bottomNavItems.map((item) => {
@@ -225,25 +248,25 @@ export default function AppLayout({
             <Link
               key={item.href}
               to={item.href}
-              className={`flex flex-col items-center gap-1 px-2 py-1 rounded-xl text-[11px] font-medium ${
+              className={`flex flex-col items-center gap-1 px-2 py-1.5 rounded-xl font-medium ${
                 active ? 'text-gold-500' : 'text-gray-500'
               }`}
             >
-              <span className="text-xl">{item.icon}</span>
+              <span className="text-[16px] leading-none">{item.icon}</span>
 
-              <span className="text-[10px]">{item.label}</span>
+              <span className="text-[10px] leading-[1.2]">{item.label}</span>
             </Link>
 
           )
         })}
         <button
           onClick={() => setMenuPlusOuvert(true)}
-          className={`flex flex-col items-center gap-1 px-2 py-1 rounded-xl text-[11px] font-medium ${
+          className={`flex flex-col items-center gap-1 px-2 py-1.5 rounded-xl font-medium ${
             plusNavItems.some((i) => i.href === location.pathname) ? 'text-gold-500' : 'text-gray-500'
           }`}
         >
-          <span className="text-xl">☰</span>
-          <span className="text-[10px]">Plus</span>
+          <span className="text-[16px] leading-none">☰</span>
+          <span className="text-[10px] leading-[1.2]">Plus</span>
         </button>
       </nav>
     </div>

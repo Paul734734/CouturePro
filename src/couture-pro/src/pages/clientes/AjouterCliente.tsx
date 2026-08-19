@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import AppLayout from '../../components/layout/AppLayout'
+import GroupeBoutonsAction from '../../components/layout/GroupeBoutonsAction'
 import { useClientesStore } from '../../store/clientesStore'
 import { useAuthStore } from '../../store/authStore'
 import type { Cliente } from '@/types'
@@ -106,18 +107,18 @@ export default function AjouterCliente() {
 
   return (
     <AppLayout titre={isEdit ? 'Modifier cliente' : 'Nouvelle cliente'}>
-      <div style={{ maxWidth: 600, margin: '0 auto', paddingBottom: 40 }}>
-        <div style={{ marginBottom: 24 }}>
+      <div style={{ maxWidth: 600, margin: '0 auto', paddingBottom: 'var(--form-bottom-reserve)' }}>
+        <div style={{ marginBottom: 16 }}>
           <button
             onClick={() => navigate(-1)}
-            style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: 14, marginBottom: 8, padding: 0 }}
+            style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: 14, marginBottom: 6, padding: 0 }}
           >
             ← Retour
           </button>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#1a1a1a', margin: 0 }}>
+          <h1 style={{ fontSize: 20, fontWeight: 700, color: '#1a1a1a', margin: 0 }}>
             {isEdit ? '✏️ Modifier la cliente' : '➕ Nouvelle cliente'}
           </h1>
-          <p style={{ color: '#888', fontSize: 14, margin: '4px 0 0' }}>
+          <p style={{ color: '#888', fontSize: 13, margin: '4px 0 0' }}>
             {isEdit ? 'Modifiez les informations de la cliente' : 'Enregistrez une nouvelle cliente dans votre carnet'}
           </p>
         </div>
@@ -132,40 +133,46 @@ export default function AjouterCliente() {
         )}
 
         <Section titre="👤 Identité">
-          <Champ label="Nom complet *" erreur={erreurs.nom}>
-            <input value={form.nom} onChange={(e) => set('nom', e.target.value)} placeholder="Ex: Aminata Diallo" style={inputStyle(!!erreurs.nom)} />
-          </Champ>
-          <Champ label="Téléphone *" erreur={erreurs.telephone}>
-            <input value={form.telephone} onChange={(e) => set('telephone', e.target.value)} placeholder="+221 77 123 45 67" style={inputStyle(!!erreurs.telephone)} />
-          </Champ>
+          <div className="cp-grid-2" style={{ gap: 10 }}>
+            <Champ label="Nom complet *" erreur={erreurs.nom}>
+              <input value={form.nom} onChange={(e) => set('nom', e.target.value)} placeholder="Ex: Aminata Diallo" style={inputStyle(!!erreurs.nom)} />
+            </Champ>
+            <Champ label="Téléphone *" erreur={erreurs.telephone}>
+              <input value={form.telephone} onChange={(e) => set('telephone', e.target.value)} placeholder="+221 77 123 45 67" style={inputStyle(!!erreurs.telephone)} />
+            </Champ>
+          </div>
           <Champ label="Date de naissance">
             <input type="date" value={form.dateAnniversaire} onChange={(e) => set('dateAnniversaire', e.target.value)} style={inputStyle(false)} />
           </Champ>
         </Section>
 
         <Section titre="📍 Localisation">
-          <Champ label="Ville *" erreur={erreurs.ville}>
-            <input value={form.ville} onChange={(e) => set('ville', e.target.value)} placeholder="Ex: Douala, Yaoundé, Dakar..." style={inputStyle(!!erreurs.ville)} />
-          </Champ>
-          <Champ label="Quartier">
-            <input value={form.quartier} onChange={(e) => set('quartier', e.target.value)} placeholder="Ex: Akwa, Bastos, Plateau..." style={inputStyle(false)} />
-          </Champ>
+          <div className="cp-grid-2" style={{ gap: 10 }}>
+            <Champ label="Ville *" erreur={erreurs.ville}>
+              <input value={form.ville} onChange={(e) => set('ville', e.target.value)} placeholder="Ex: Douala, Yaoundé, Dakar..." style={inputStyle(!!erreurs.ville)} />
+            </Champ>
+            <Champ label="Quartier">
+              <input value={form.quartier} onChange={(e) => set('quartier', e.target.value)} placeholder="Ex: Akwa, Bastos, Plateau..." style={inputStyle(false)} />
+            </Champ>
+          </div>
         </Section>
 
         <Section titre="📏 Gabarit">
-          <Champ label="Taille vêtement" erreur={erreurs.tailleVetement}>
-            <select value={form.tailleVetement} onChange={(e) => set('tailleVetement', e.target.value)} style={inputStyle(false)}>
-              <option value="">Choisir...</option>
-              {TAILLES.map((t) => <option key={t} value={t}>{t}</option>)}
-            </select>
-          </Champ>
-          <Champ label="Hauteur (m)" erreur={erreurs.hauteur}>
-            <input
-              type="number" step="0.01" min="1" max="2.5"
-              value={form.hauteur} onChange={(e) => set('hauteur', e.target.value)}
-              placeholder="Ex: 1.72" style={inputStyle(!!erreurs.hauteur)}
-            />
-          </Champ>
+          <div className="cp-grid-2" style={{ gap: 10 }}>
+            <Champ label="Taille vêtement" erreur={erreurs.tailleVetement}>
+              <select value={form.tailleVetement} onChange={(e) => set('tailleVetement', e.target.value)} style={inputStyle(false)}>
+                <option value="">Choisir...</option>
+                {TAILLES.map((t) => <option key={t} value={t}>{t}</option>)}
+              </select>
+            </Champ>
+            <Champ label="Hauteur (m)" erreur={erreurs.hauteur}>
+              <input
+                type="number" step="0.01" min="1" max="2.5"
+                value={form.hauteur} onChange={(e) => set('hauteur', e.target.value)}
+                placeholder="Ex: 1.72" style={inputStyle(!!erreurs.hauteur)}
+              />
+            </Champ>
+          </div>
         </Section>
 
         <Section titre="📝 Notes">
@@ -178,9 +185,10 @@ export default function AjouterCliente() {
           </Champ>
         </Section>
 
-        <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
+        <GroupeBoutonsAction className="mt-2">
           <button
             onClick={() => navigate(-1)}
+            className="w-full min-[480px]:w-auto"
             style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid #e5e5e5', background: '#fff', color: '#555', fontWeight: 600, cursor: 'pointer', fontSize: 15 }}
           >
             Annuler
@@ -188,6 +196,7 @@ export default function AjouterCliente() {
           <button
             onClick={handleSubmit}
             disabled={loading}
+            className="w-full min-[480px]:w-auto"
             style={{
               flex: 2, padding: '14px', borderRadius: 12, border: 'none',
               background: loading ? '#eeddb0' : '#C9A227', color: '#fff',
@@ -196,7 +205,7 @@ export default function AjouterCliente() {
           >
             {loading ? 'Enregistrement...' : isEdit ? '✅ Enregistrer les modifications' : '✅ Ajouter la cliente'}
           </button>
-        </div>
+        </GroupeBoutonsAction>
       </div>
     </AppLayout>
   )
@@ -204,9 +213,9 @@ export default function AjouterCliente() {
 
 function Section({ titre, children }: { titre: string; children: React.ReactNode }) {
   return (
-    <div style={{ background: '#fff', border: '1px solid #f0f0f0', borderRadius: 14, padding: '20px 20px', marginBottom: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-      <h3 style={{ fontSize: 13, fontWeight: 700, color: '#C9A227', margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: 0.5 }}>{titre}</h3>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>{children}</div>
+    <div style={{ background: '#fff', border: '1px solid #f0f0f0', borderRadius: 14, padding: '14px 16px', marginBottom: 12, boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <h3 style={{ fontSize: 13, fontWeight: 700, color: '#C9A227', margin: '0 0 12px', textTransform: 'uppercase', letterSpacing: 0.5 }}>{titre}</h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>{children}</div>
     </div>
   )
 }
@@ -214,7 +223,7 @@ function Section({ titre, children }: { titre: string; children: React.ReactNode
 function Champ({ label, erreur, children }: { label: string; erreur?: string; children: React.ReactNode }) {
   return (
     <div>
-      <label style={{ fontSize: 13, fontWeight: 600, color: '#444', display: 'block', marginBottom: 6 }}>{label}</label>
+      <label style={{ fontSize: 13, fontWeight: 600, color: '#444', display: 'block', marginBottom: 4 }}>{label}</label>
       {children}
       {erreur && <p style={{ color: '#ef4444', fontSize: 12, margin: '4px 0 0' }}>{erreur}</p>}
     </div>
@@ -222,7 +231,7 @@ function Champ({ label, erreur, children }: { label: string; erreur?: string; ch
 }
 
 const inputStyle = (hasError: boolean): React.CSSProperties => ({
-  width: '100%', padding: '11px 14px', borderRadius: 10, fontSize: 14,
+  width: '100%', padding: '9px 12px', borderRadius: 10, fontSize: 14,
   border: `1.5px solid ${hasError ? '#ef4444' : '#e5e5e5'}`,
   outline: 'none', background: '#FAFAF8', boxSizing: 'border-box',
   fontFamily: 'Inter, sans-serif', color: '#1a1a1a',

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import type { ChangeEvent, CSSProperties, ReactNode } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import AppLayout from '../../components/layout/AppLayout'
+import GroupeBoutonsAction from '../../components/layout/GroupeBoutonsAction'
 import { useCommandesStore } from '../../store/commandesStore'
 import { useClientesStore } from '../../store/clientesStore'
 import { useAuthStore } from '../../store/authStore'
@@ -173,7 +174,7 @@ export default function AjouterCommande() {
 
   return (
     <AppLayout titre={isEdit ? 'Modifier commande' : 'Nouvelle commande'}>
-      <div style={{ maxWidth: 600, margin: '0 auto', paddingBottom: 40 }}>
+      <div style={{ maxWidth: 600, margin: '0 auto', paddingBottom: 'var(--form-bottom-reserve)' }}>
         <div style={{ marginBottom: 24 }}>
           <button
             onClick={() => navigate(-1)}
@@ -446,9 +447,10 @@ export default function AjouterCommande() {
           </Champ>
         </Section>
 
-        <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
+        <GroupeBoutonsAction className="mt-2">
           <button
             onClick={() => navigate(-1)}
+            className="w-full min-[480px]:w-auto"
             style={{
               flex: 1, padding: '14px', borderRadius: 12, border: '1px solid #e5e5e5',
               background: '#fff', color: '#555', fontWeight: 600, cursor: 'pointer', fontSize: 15,
@@ -459,6 +461,7 @@ export default function AjouterCommande() {
           <button
             onClick={handleSubmit}
             disabled={loading || photoUploading}
+            className="w-full min-[480px]:w-auto"
             style={{
               flex: 2, padding: '14px', borderRadius: 12, border: 'none',
               background: (loading || photoUploading) ? '#eeddb0' : '#C9A227', color: '#fff',
@@ -467,7 +470,7 @@ export default function AjouterCommande() {
           >
             {loading ? 'Enregistrement...' : isEdit ? '✅ Enregistrer' : '✅ Créer la commande'}
           </button>
-        </div>
+        </GroupeBoutonsAction>
       </div>
     </AppLayout>
   )

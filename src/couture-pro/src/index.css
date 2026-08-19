@@ -13,6 +13,32 @@ html, body {
   width: 100%;
 }
 
+:root {
+  /* Valeur de repli avant la mesure JS (AppLayout.tsx mesure la hauteur
+     RÉELLE de la bottom nav via ResizeObserver et écrase cette variable —
+     le rendu des emojis dans les icônes varie trop d'un téléphone à
+     l'autre pour se fier à une estimation CSS fixe). */
+  --bottom-nav-height: 70px;
+  /* Réserve à laisser en bas de tout conteneur scrollable de page pour
+     qu'aucun contenu ne soit masqué par la bottom nav mobile. La zone de
+     sécurité iOS/Android est déjà incluse dans --bottom-nav-height mesuré
+     (la nav a son propre padding-bottom avec env(safe-area-inset-bottom)),
+     pas besoin de la rajouter ici. Référencée en style inline (priorité
+     CSS maximale) sur les pages concernées, pas seulement via une classe,
+     pour exclure tout risque d'être écrasée par une autre règle. */
+  --form-bottom-reserve: calc(var(--bottom-nav-height) + 110px);
+}
+@media (min-width: 768px) {
+  /* Pas de bottom nav sur desktop : simple marge de confort. */
+  :root {
+    --form-bottom-reserve: 32px;
+  }
+}
+
+.scrollable-content {
+  padding-bottom: var(--form-bottom-reserve);
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background-color: #FAFAF8;

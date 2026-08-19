@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import AppLayout from '../../components/layout/AppLayout'
+import GroupeBoutonsAction from '../../components/layout/GroupeBoutonsAction'
 import { useClientesStore } from '@/store/clientesStore'
 import { useMesuresStore, type FormulaireMesure } from '@/store/mesuresStore'
 import { CATEGORIES_MESURES } from '@/types'
@@ -114,28 +115,28 @@ export default function Mesures() {
             </div>
           ) : (
             <>
-              <div style={{ padding: '20px 24px', borderBottom: '1px solid #f0ede8', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+              <div className="flex flex-col min-[640px]:flex-row min-[640px]:justify-between min-[640px]:items-center gap-3" style={{ padding: '20px 24px', borderBottom: '1px solid #f0ede8' }}>
                 <div>
                   <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700 }}>📏 Mesures — {selected.nom}</h3>
                   <p style={{ margin: '3px 0 0', fontSize: 12, color: '#888' }}>Toutes les mesures en centimètres</p>
                 </div>
-                <div style={{ display: 'flex', gap: 10 }}>
-                  <button onClick={() => navigate(`/clientes/${selected.id}`)} style={{ padding: '9px 16px', background: '#FAFAF8', border: '1px solid #e5e0d8', borderRadius: 10, fontSize: 13, cursor: 'pointer' }}>
+                <GroupeBoutonsAction>
+                  <button onClick={() => navigate(`/clientes/${selected.id}`)} className="w-full min-[480px]:w-auto" style={{ padding: '9px 16px', background: '#FAFAF8', border: '1px solid #e5e0d8', borderRadius: 10, fontSize: 13, cursor: 'pointer' }}>
                     ← Fiche cliente
                   </button>
                   {editing ? (
                     <>
-                      <button onClick={() => setEditing(false)} disabled={saving} style={{ padding: '9px 18px', background: '#FAFAF8', border: '1px solid #e5e0d8', borderRadius: 10, fontSize: 13, cursor: 'pointer' }}>Annuler</button>
-                      <button onClick={save} disabled={saving} style={{ padding: '9px 18px', background: '#C9A227', color: 'white', border: 'none', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                      <button onClick={() => setEditing(false)} disabled={saving} className="w-full min-[480px]:w-auto" style={{ padding: '9px 18px', background: '#FAFAF8', border: '1px solid #e5e0d8', borderRadius: 10, fontSize: 13, cursor: 'pointer' }}>Annuler</button>
+                      <button onClick={save} disabled={saving} className="w-full min-[480px]:w-auto" style={{ padding: '9px 18px', background: '#C9A227', color: 'white', border: 'none', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                         {saving ? 'Sauvegarde...' : '💾 Sauvegarder'}
                       </button>
                     </>
                   ) : (
-                    <button onClick={startEdit} style={{ padding: '9px 18px', background: '#FBF3DC', color: '#C9A227', border: '1px solid #E8D28C', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                    <button onClick={startEdit} className="w-full min-[480px]:w-auto" style={{ padding: '9px 18px', background: '#FBF3DC', color: '#C9A227', border: '1px solid #E8D28C', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                       ✏️ {currentMesures ? 'Modifier' : 'Saisir les mesures'}
                     </button>
                   )}
-                </div>
+                </GroupeBoutonsAction>
               </div>
 
               <div style={{ padding: 24 }}>

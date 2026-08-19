@@ -80,7 +80,7 @@ export default function Profil() {
 
   return (
     <AppLayout titre="Mon profil">
-      <div style={{ maxWidth: 600, margin: '0 auto', paddingBottom: 40 }}>
+      <div style={{ maxWidth: 600, margin: '0 auto', paddingBottom: 'var(--form-bottom-reserve)' }}>
 
         <div style={{ marginBottom: 24 }}>
           <h1 style={{ fontSize: 22, fontWeight: 700, color: '#1a1a1a', margin: '0 0 4px' }}>
